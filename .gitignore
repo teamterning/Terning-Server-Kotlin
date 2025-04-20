@@ -1,0 +1,72 @@
+# === 기본 ===
+HELP.md
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**
+!**/src/test/**
+
+# === Kotlin ===
+*.class
+*.kt.class
+*.kts.class
+
+# === Gradle ===
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+gradlew
+gradlew.bat
+
+# === IntelliJ IDEA ===
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# === VS Code ===
+.vscode/
+
+# === STS (Spring Tool Suite) ===
+.apt_generated/
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans/
+.sts4-cache/
+
+# === NetBeans ===
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# === Vaadin or Node-based (if used) ===
+node_modules/
+webpack.generated.js
+target/
+pnpmfile.js
+
+# === Docker 관련 파일 ===
+docker/db/mysql/data/
+docker/db/mysql/init/*
+!docker/db/mysql/init/init.sql
+
+# === Spring REST Docs ===
+**/src/main/resources/static/docs/
+
+# === 시스템 무시 파일 ===
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# === 로그 및 환경 ===
+*.log
+.env
+*.env
+
