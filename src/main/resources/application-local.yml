@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url: ${DB_URL_LOCAL}
+    username: ${USER_NAME_LOCAL}
+    password: ${USER_PW_LOCAL}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: ${DDL_AUTO_LOCAL}
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+    show-sql: true
+
+  jackson:
+    time-zone: Asia/Seoul
+
+  sql:
+    init:
+      encoding: UTF-8
+
+server:
+  port: ${SERVER_PORT_LOCAL}

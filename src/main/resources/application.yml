@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    active: local
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+    show-sql: true
+
+  jackson:
+    time-zone: Asia/Seoul
+
+  sql:
+    init:
+      encoding: UTF-8
