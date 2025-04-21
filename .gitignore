@@ -2,12 +2,17 @@
 # 📦 빌드 시스템 (Gradle)
 # ================================
 .gradle/
+.gradle/**
+**/.gradle/**
 build/
 caches/
 daemon/
 kotlin-profile/
 native/
 out/
+jdks/
+jdks/**
+
 
 # Gradle Wrapper (필수 파일은 제외)
 !gradle/wrapper/gradle-wrapper.jar
