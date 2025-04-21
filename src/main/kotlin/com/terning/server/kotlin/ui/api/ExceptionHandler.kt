@@ -24,8 +24,8 @@ class ExceptionHandler : ResponseEntityExceptionHandler() {
     ): ResponseEntity<Any> {
         logger.error("message", ex)
         val message = when (val exception = ex.cause) {
-            is MismatchedInputException -> "${exception.path.lastOrNull()?.fieldName.orEmpty()}: 널이어서는 안됩니다"
-            is InvalidFormatException -> "${exception.path.lastOrNull()?.fieldName.orEmpty()}: 올바른 형식이어야 합니다"
+            is MismatchedInputException -> "${exception.path.lastOrNull()?.fieldName ?: "UnknownField"}: 널이어서는 안됩니다"
+            is InvalidFormatException -> "${exception.path.lastOrNull()?.fieldName ?: "UnknownField"}: 올바른 형식이어야 합니다"
             else -> exception?.message.orEmpty()
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
