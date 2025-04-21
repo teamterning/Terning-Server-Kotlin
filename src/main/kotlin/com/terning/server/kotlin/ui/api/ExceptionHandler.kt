@@ -16,20 +16,22 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @RestControllerAdvice
 class ExceptionHandler : ResponseEntityExceptionHandler() {
+
     override fun handleHttpMessageNotReadable(
         ex: HttpMessageNotReadableException,
         headers: HttpHeaders,
         status: HttpStatusCode,
         request: WebRequest
-    ): ResponseEntity<Any> {
+    ): ResponseEntity<Any>? {
         logger.error("message", ex)
         val message = when (val exception = ex.cause) {
             is MismatchedInputException -> "${exception.path.lastOrNull()?.fieldName ?: "UnknownField"}: 널이어서는 안됩니다"
             is InvalidFormatException -> "${exception.path.lastOrNull()?.fieldName ?: "UnknownField"}: 올바른 형식이어야 합니다"
             else -> exception?.message.orEmpty()
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(ApiResponse.error(message))
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(ApiResponse.error(HttpStatus.BAD_REQUEST, message))
     }
 
     override fun handleMethodArgumentNotValid(
@@ -37,34 +39,41 @@ class ExceptionHandler : ResponseEntityExceptionHandler() {
         headers: HttpHeaders,
         status: HttpStatusCode,
         request: WebRequest
-    ): ResponseEntity<Any> {
+    ): ResponseEntity<Any>? {
         logger.error("message", ex)
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(ApiResponse.error(ex.messages()))
+        val message = ex.messages()
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(ApiResponse.error(HttpStatus.BAD_REQUEST, message))
     }
 
     @ExceptionHandler(IllegalArgumentException::class, IllegalStateException::class)
     fun handleBadRequestException(exception: RuntimeException): ResponseEntity<ApiResponse<Unit>> {
         logger.error("message", exception)
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(ApiResponse.error(exception.message))
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(ApiResponse.error(HttpStatus.BAD_REQUEST, exception.message ?: "잘못된 요청입니다."))
     }
 
     @ExceptionHandler(EntityNotFoundException::class)
     fun handleNotFoundException(exception: EntityNotFoundException): ResponseEntity<ApiResponse<Unit>> {
         logger.error("message", exception)
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-            .body(ApiResponse.error(exception.message))
+        return ResponseEntity
+            .status(HttpStatus.NOT_FOUND)
+            .body(ApiResponse.error(HttpStatus.NOT_FOUND, exception.message ?: "데이터를 찾을 수 없습니다."))
     }
 
     @ExceptionHandler(Exception::class)
     fun handleGlobalException(exception: Exception): ResponseEntity<ApiResponse<Unit>> {
         logger.error("message", exception)
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(ApiResponse.error(exception.message))
+        return ResponseEntity
+            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(ApiResponse.error(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류가 발생했습니다."))
     }
 
     private fun MethodArgumentNotValidException.messages(): String {
-        return bindingResult.fieldErrors.joinToString(", ") { "${it.field}: ${it.defaultMessage.orEmpty()}" }
+        return bindingResult.fieldErrors.joinToString(", ") {
+            "${it.field}: ${it.defaultMessage.orEmpty()}"
+        }
     }
 }
