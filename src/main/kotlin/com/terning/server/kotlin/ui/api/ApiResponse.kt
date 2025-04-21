@@ -1,12 +1,19 @@
 package com.terning.server.kotlin.ui.api
 
+import com.fasterxml.jackson.annotation.JsonInclude
+import org.springframework.http.HttpStatus
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class ApiResponse<T>(
-    val message: String? = "",
-    val body: T? = null
+    val status: Int,
+    val message: String,
+    val result: T? = null
 ) {
     companion object {
-        fun error(message: String?): ApiResponse<Unit> = ApiResponse(message = message)
+        fun <T> success(status: HttpStatus, message: String, result: T): ApiResponse<T> =
+            ApiResponse(status.value(), message, result)
 
-        fun <T> success(body: T?): ApiResponse<T> = ApiResponse(body = body)
+        fun error(status: HttpStatus, message: String): ApiResponse<Unit> =
+            ApiResponse(status.value(), message, null)
     }
 }
