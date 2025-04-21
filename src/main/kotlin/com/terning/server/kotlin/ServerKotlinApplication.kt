@@ -1,4 +1,4 @@
-package com.turning.server.kotlin
+package com.terning.server.kotlin
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
