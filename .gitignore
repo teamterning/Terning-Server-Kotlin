@@ -2,12 +2,17 @@
 # 📦 빌드 시스템 (Gradle)
 # ================================
 .gradle/
+.gradle/**
+**/.gradle/**
 build/
 caches/
 daemon/
 kotlin-profile/
-out/
 native/
+out/
+jdks/
+jdks/**
+
 
 # Gradle Wrapper (필수 파일은 제외)
 !gradle/wrapper/gradle-wrapper.jar
@@ -33,7 +38,6 @@ native/
 *.iml
 *.iws
 *.ipr
-out/
 
 # VS Code
 .vscode/
@@ -77,7 +81,7 @@ docker/db/mysql/init/*
 !docker/db/mysql/init/init.sql
 
 # ================================
-# 📝 Spring REST Docs
+# 📄 Spring REST Docs
 # ================================
 **/src/main/resources/static/docs/
 
@@ -97,10 +101,15 @@ desktop.ini
 *.env
 
 # ================================
-# 📝 기타
+# 📘 기타
 # ================================
 HELP.md
 
 # Gradle wrapper distribution (자동 설치된 바이너리 - 커밋 X)
 wrapper/
 
+# 🧊 GraalVM Native Build Tools
+native-build-tools/
+
+# 🧼 Gradle 임시 작업 파일
+.tmp/
