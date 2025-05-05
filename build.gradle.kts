@@ -6,6 +6,7 @@ plugins {
     id("org.hibernate.orm") version "6.6.11.Final"
     id("org.graalvm.buildtools.native") version "0.10.6"
     kotlin("plugin.jpa") version "1.9.25"
+    id("org.jlleitschuh.gradle.ktlint").version("12.1.0")
 }
 
 group = "com.turning"
