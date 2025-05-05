@@ -33,3 +33,6 @@ jobs:
 
       - name: Gradle Build & Test 실행
         run: ./gradlew build
+
+      - name: ktlint 실행
+        run: ./gradlew ktlintCheck
