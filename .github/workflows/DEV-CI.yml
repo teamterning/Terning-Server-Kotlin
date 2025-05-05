@@ -39,7 +39,7 @@ jobs:
 
       - name: ktlint 리포트 업로드
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3.1.3
         with:
           name: ktlint-report
           path: '**/build/reports/ktlint/**/*.json'
