@@ -12,11 +12,14 @@ jobs:
       - name: 체크아웃
         uses: actions/checkout@v3
 
-      - name: Set up Amazon Corretto JDK 21
+      - name: Set up GraalVM JDK 21
         uses: actions/setup-java@v3
         with:
-          distribution: 'corretto'
+          distribution: 'graalvm'
           java-version: '21'
+
+      - name: Install Native Image
+        run: gu install native-image
 
       - name: Gradle 캐시 설정
         uses: actions/cache@v3
@@ -36,3 +39,9 @@ jobs:
 
       - name: ktlint 실행
         run: ./gradlew ktlintCheck
+
+      - name: Native Image Compile (Fail-safe)
+        run: |
+          echo "::group::GraalVM Native Image Build"
+          ./gradlew nativeCompile || echo "⚠️ nativeCompile 실패 - 무시하고 진행합니다"
+          echo "::endgroup::"
