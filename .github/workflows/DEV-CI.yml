@@ -12,19 +12,13 @@ jobs:
       - name: 체크아웃
         uses: actions/checkout@v3
 
-      - name: Set up GraalVM JDK 21
+      - name: Set up GraalVM JDK 21 with native-image
         uses: graalvm/setup-graalvm@v1
         with:
+          distribution: 'graalvm-community'
           version: '21.0.2'
           java-version: '21'
-          distribution: 'graalvm-community'
-
-      - name: Install Native Image
-        run: |
-          echo "🔧 PATH 설정 중..."
-          export PATH="$GRAALVM_HOME/bin:$PATH"
-          echo "🧩 native-image 설치 시도..."
-          gu install native-image
+          components: 'native-image'
 
       - name: Gradle 캐시 설정
         uses: actions/cache@v3
