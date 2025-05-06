@@ -12,13 +12,12 @@ jobs:
       - name: 체크아웃
         uses: actions/checkout@v3
 
-      - name: Set up GraalVM JDK 21 with native-image
+      - name: Set up GraalVM JDK 21
         uses: graalvm/setup-graalvm@v1
         with:
           distribution: 'graalvm-community'
           version: '21.0.2'
           java-version: '21'
-          components: 'native-image'
 
       - name: Gradle 캐시 설정
         uses: actions/cache@v3
