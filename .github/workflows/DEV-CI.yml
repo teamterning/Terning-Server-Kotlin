@@ -43,5 +43,5 @@ jobs:
         continue-on-error: true
         run: |
           echo "::group::GraalVM Native Image Build"
-          ./gradlew nativeCompile
+          ./gradlew nativeCompile --info --stacktrace
           echo "::endgroup::"
