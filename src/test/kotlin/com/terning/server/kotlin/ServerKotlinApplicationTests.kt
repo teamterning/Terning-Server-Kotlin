@@ -7,9 +7,7 @@ import org.springframework.test.context.ActiveProfiles
 @ActiveProfiles("test")
 @SpringBootTest
 class ServerKotlinApplicationTests {
-
     @Test
     fun contextLoads() {
     }
-
 }
