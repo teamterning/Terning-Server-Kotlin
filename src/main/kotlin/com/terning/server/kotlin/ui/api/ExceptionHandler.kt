@@ -2,6 +2,7 @@ package com.terning.server.kotlin.ui.api
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException
 import com.fasterxml.jackson.databind.exc.MismatchedInputException
+import com.terning.server.kotlin.domain.UserException
 import jakarta.persistence.EntityNotFoundException
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -69,6 +70,14 @@ class ExceptionHandler : ResponseEntityExceptionHandler() {
         return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(ApiResponse.error(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류가 발생했습니다."))
+    }
+
+    @ExceptionHandler(UserException::class)
+    fun handleUserException(exception: UserException): ResponseEntity<ApiResponse<Unit>> {
+        logger.error("UserException", exception)
+        return ResponseEntity
+            .status(exception.errorCode.status)
+            .body(ApiResponse.error(exception.errorCode.status, exception.errorCode.message))
     }
 
     private fun MethodArgumentNotValidException.messages(): String =
