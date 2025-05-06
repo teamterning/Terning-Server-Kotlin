@@ -2,7 +2,7 @@ package com.terning.server.kotlin.ui.api
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException
 import com.fasterxml.jackson.databind.exc.MismatchedInputException
-import com.terning.server.kotlin.domain.UserException
+import com.terning.server.kotlin.domain.user.UserException
 import jakarta.persistence.EntityNotFoundException
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus

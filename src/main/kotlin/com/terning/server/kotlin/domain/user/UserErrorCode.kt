@@ -1,4 +1,4 @@
-package com.terning.server.kotlin.domain
+package com.terning.server.kotlin.domain.user
 
 import org.springframework.http.HttpStatus
 
