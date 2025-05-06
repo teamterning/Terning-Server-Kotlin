@@ -19,6 +19,9 @@ jobs:
           java-version: '21'
           distribution: 'graalvm-community'
 
+      - name: Add GraalVM to PATH
+        run: echo "$GRAALVM_HOME/bin" >> $GITHUB_PATH
+
       - name: Install Native Image
         run: gu install native-image
 
