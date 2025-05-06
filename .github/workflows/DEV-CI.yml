@@ -12,12 +12,13 @@ jobs:
       - name: 체크아웃
         uses: actions/checkout@v3
 
-      - name: Set up GraalVM JDK 21
+      - name: Set up GraalVM JDK 21 with native-image
         uses: graalvm/setup-graalvm@v1
         with:
           distribution: 'graalvm-community'
           version: '21.0.2'
           java-version: '21'
+          components: 'native-image'
 
       - name: Gradle 캐시 설정
         uses: actions/cache@v3
@@ -39,7 +40,8 @@ jobs:
         run: ./gradlew ktlintCheck
 
       - name: Native Image Compile (Fail-safe)
+        continue-on-error: true
         run: |
           echo "::group::GraalVM Native Image Build"
-          ./gradlew nativeCompile || echo "⚠️ nativeCompile 실패 - 무시하고 진행합니다"
+          ./gradlew nativeCompile
           echo "::endgroup::"
