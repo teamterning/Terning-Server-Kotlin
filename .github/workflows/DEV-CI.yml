@@ -19,11 +19,10 @@ jobs:
           java-version: '21'
           distribution: 'graalvm-community'
 
-      - name: Add GraalVM to PATH
-        run: echo "$GRAALVM_HOME/bin" >> $GITHUB_PATH
-
       - name: Install Native Image
-        run: gu install native-image
+        run: |
+          export PATH="$GRAALVM_HOME/bin:$PATH"
+          gu install native-image
 
       - name: Gradle 캐시 설정
         uses: actions/cache@v3
