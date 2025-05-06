@@ -21,7 +21,9 @@ jobs:
 
       - name: Install Native Image
         run: |
+          echo "🔧 PATH 설정 중..."
           export PATH="$GRAALVM_HOME/bin:$PATH"
+          echo "🧩 native-image 설치 시도..."
           gu install native-image
 
       - name: Gradle 캐시 설정
