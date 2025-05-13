@@ -5,19 +5,25 @@ import jakarta.persistence.*
 
 @Entity
 class User(
-    @Embedded
-    var userInformation: UserInformation,
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0L,
+    @Column(length = 12)
+    var name: String,
+    @Enumerated(EnumType.STRING)
+    @Column(length = 12)
+    var profileImage: ProfileImage,
     @Enumerated(EnumType.STRING)
     @Column(length = 12)
     var userState: UserState,
-    id: Long = 0L,
-) : BaseRootEntity<User>(id) {
-    fun getName(): String = userInformation.name
+) : BaseRootEntity() {
+    fun getName(): String = name
 
     fun updateProfile(
         name: String,
         profileImage: ProfileImage,
     ) {
-        this.userInformation = UserInformation(name = name, profileImage = profileImage)
+        this.name = name
+        this.profileImage = profileImage
     }
 }
