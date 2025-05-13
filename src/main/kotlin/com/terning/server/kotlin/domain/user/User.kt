@@ -11,6 +11,7 @@ class User(
     var userState: UserState,
     id: Long = 0L,
 ) : BaseRootEntity<User>(id) {
+    fun getName(): String = userInformation.name
     fun updateProfile(
         name: String,
         profileImage: ProfileImage,
