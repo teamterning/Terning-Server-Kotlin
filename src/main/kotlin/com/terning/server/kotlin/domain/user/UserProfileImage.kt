@@ -9,5 +9,5 @@ import jakarta.persistence.Enumerated
 data class UserProfileImage(
     @Enumerated(EnumType.STRING)
     @Column(length = 12)
-    val profileImage: ProfileImage
+    val profileImage: ProfileImage,
 )
