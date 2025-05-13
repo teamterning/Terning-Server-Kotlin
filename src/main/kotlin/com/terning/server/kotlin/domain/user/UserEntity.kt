@@ -3,8 +3,9 @@ package com.terning.server.kotlin.domain.user
 import com.terning.server.kotlin.utils.BaseRootEntity
 import jakarta.persistence.*
 
+@Table(name = "Users")
 @Entity
-class User(
+class UserEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
