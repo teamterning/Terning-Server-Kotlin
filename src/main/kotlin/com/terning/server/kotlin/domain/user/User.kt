@@ -8,20 +8,19 @@ class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
-    @Column(length = 12)
-    var name: String,
-    @Enumerated(EnumType.STRING)
-    @Column(length = 12)
-    var profileImage: ProfileImage,
+    @Embedded
+    var name: UserName,
+    @Embedded
+    var profileImage: UserProfileImage,
     @Enumerated(EnumType.STRING)
     @Column(length = 12)
     var userState: UserState,
 ) : BaseRootEntity() {
-    fun getName(): String = name
+    fun getName(): String = name.value
 
     fun updateProfile(
-        name: String,
-        profileImage: ProfileImage,
+        name: UserName,
+        profileImage: UserProfileImage,
     ) {
         this.name = name
         this.profileImage = profileImage
