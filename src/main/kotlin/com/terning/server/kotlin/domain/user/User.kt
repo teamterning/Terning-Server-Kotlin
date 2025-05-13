@@ -1,5 +1,6 @@
 package com.terning.server.kotlin.domain.user
 
+import com.terning.server.kotlin.utils.BaseRootEntity
 import jakarta.persistence.*
 
 @Entity

@@ -1,4 +1,4 @@
-package com.terning.server.kotlin.domain.user
+package com.terning.server.kotlin.utils
 
 import jakarta.persistence.*
 import java.time.LocalDateTime
