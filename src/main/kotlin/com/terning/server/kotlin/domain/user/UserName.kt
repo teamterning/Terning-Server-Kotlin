@@ -9,6 +9,11 @@ data class UserName(
     val value: String,
 ) {
     init {
-        require(value.length in 1..12) { "이름은 1~12자여야 합니다" }
+        require(value.length in MIN_LENGTH..MAX_LENGTH) { "이름은 1~12자여야 합니다" }
+    }
+
+    companion object {
+        private const val MIN_LENGTH = 1
+        private const val MAX_LENGTH = 12
     }
 }
