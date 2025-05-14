@@ -13,7 +13,7 @@ data class UserName(
     }
 
     companion object {
-        private const val MIN_LENGTH = 1
-        private const val MAX_LENGTH = 12
+        private const val MIN_LENGTH: Int = 1
+        private const val MAX_LENGTH: Int = 12
     }
 }
