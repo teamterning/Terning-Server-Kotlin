@@ -6,7 +6,7 @@ import jakarta.persistence.Embeddable
 @Embeddable
 class UserName private constructor(
     @Column(name = "user_name", length = MAX_LENGTH, nullable = false)
-    val value: String
+    val value: String,
 ) {
 
     init {
@@ -14,8 +14,7 @@ class UserName private constructor(
         require(value.length in MIN_LENGTH..MAX_LENGTH) { ERROR_LENGTH }
     }
 
-    override fun equals(other: Any?): Boolean =
-        this === other || (other is UserName && this.value == other.value)
+    override fun equals(other: Any?): Boolean = this === other || (other is UserName && this.value == other.value)
 
     override fun hashCode(): Int = value.hashCode()
 
