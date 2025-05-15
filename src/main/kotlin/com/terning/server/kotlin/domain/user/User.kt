@@ -1,6 +1,6 @@
 package com.terning.server.kotlin.domain.user
 
-import com.terning.server.kotlin.utils.BaseRootEntity
+import com.terning.server.kotlin.domain.common.BaseRootEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Embedded
 import jakarta.persistence.Entity
