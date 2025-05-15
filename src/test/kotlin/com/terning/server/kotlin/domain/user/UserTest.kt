@@ -1,16 +1,14 @@
 package com.terning.server.kotlin.domain.user
 
-import org.assertj.core.api.Assertions.*
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 class UserTest {
-
     @Nested
     @DisplayName("updateProfile(name, image)는")
     inner class UpdateProfile {
-
         @Test
         @DisplayName("이름과 프로필 이미지를 변경한다")
         fun updatesNameAndProfileImage() {
@@ -28,7 +26,6 @@ class UserTest {
     @Nested
     @DisplayName("상태 변경 메서드는")
     inner class StateChanges {
-
         @Test
         @DisplayName("deactivate() 호출 시 상태가 INACTIVE가 된다")
         fun becomesInactive() {
@@ -57,7 +54,6 @@ class UserTest {
     @Nested
     @DisplayName("isActive()는")
     inner class IsActive {
-
         @Test
         @DisplayName("ACTIVE 상태일 경우 true를 반환한다")
         fun returnsTrueIfActive() {
