@@ -7,11 +7,9 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 class ProfileImageTest {
-
     @Nested
     @DisplayName("from(value) 메서드는")
     inner class FromMethod {
-
         @Test
         @DisplayName("문자열이 정확히 일치하면 해당 enum을 반환한다")
         fun returnsEnumWhenExactMatch() {
