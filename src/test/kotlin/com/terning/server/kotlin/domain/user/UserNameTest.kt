@@ -1,16 +1,15 @@
 package com.terning.server.kotlin.domain.user
 
-import org.assertj.core.api.Assertions.*
+import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 class UserNameTest {
-
     @Nested
     @DisplayName("from(value)는")
     inner class From {
-
         @Test
         @DisplayName("유효한 이름이면 인스턴스를 반환한다")
         fun createWithValidName() {
