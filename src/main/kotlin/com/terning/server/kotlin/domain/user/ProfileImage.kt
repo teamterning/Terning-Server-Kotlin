@@ -6,7 +6,8 @@ enum class ProfileImage(val value: String) {
     SMART("smart"),
     GLASS("glass"),
     CALENDAR("calendar"),
-    PASSION("passion");
+    PASSION("passion"),
+    ;
 
     companion object {
         fun from(value: String): ProfileImage =
