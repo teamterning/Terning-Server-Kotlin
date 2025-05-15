@@ -8,7 +8,6 @@ class UserName private constructor(
     @Column(name = "user_name", length = MAX_LENGTH, nullable = false)
     val value: String,
 ) {
-
     init {
         require(value.isNotBlank()) { ERROR_EMPTY }
         require(value.length in MIN_LENGTH..MAX_LENGTH) { ERROR_LENGTH }
