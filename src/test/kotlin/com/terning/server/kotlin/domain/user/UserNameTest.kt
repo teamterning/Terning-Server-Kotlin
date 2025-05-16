@@ -13,14 +13,14 @@ class UserNameTest {
         @Test
         @DisplayName("유효한 이름이면 인스턴스를 반환한다")
         fun createWithValidName() {
-            val name = UserName.from("장순님")
+            val name = UserName("장순님")
             assertThat(name.value).isEqualTo("장순님")
         }
 
         @Test
         @DisplayName("공백 이름이면 예외를 발생시킨다")
         fun throwsExceptionOnBlankName() {
-            assertThatThrownBy { UserName.from("   ") }
+            assertThatThrownBy { UserName("   ") }
                 .isInstanceOf(IllegalArgumentException::class.java)
                 .hasMessage("이름은 공백일 수 없습니다.")
         }
@@ -28,7 +28,7 @@ class UserNameTest {
         @Test
         @DisplayName("길이가 너무 짧으면 예외를 발생시킨다")
         fun throwsExceptionOnTooShortName() {
-            assertThatThrownBy { UserName.from("") }
+            assertThatThrownBy { UserName("") }
                 .isInstanceOf(IllegalArgumentException::class.java)
                 .hasMessage("이름은 공백일 수 없습니다.")
         }
@@ -36,7 +36,7 @@ class UserNameTest {
         @Test
         @DisplayName("길이가 너무 길면 예외를 발생시킨다")
         fun throwsExceptionOnTooLongName() {
-            assertThatThrownBy { UserName.from("1234567890123") }
+            assertThatThrownBy { UserName("1234567890123") }
                 .isInstanceOf(IllegalArgumentException::class.java)
                 .hasMessage("이름은 1~12자여야 합니다.")
         }

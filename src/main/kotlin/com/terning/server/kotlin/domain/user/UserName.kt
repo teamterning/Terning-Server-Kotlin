@@ -4,7 +4,7 @@ import jakarta.persistence.Column
 import jakarta.persistence.Embeddable
 
 @Embeddable
-class UserName private constructor(
+class UserName(
     @Column(name = "user_name", length = MAX_LENGTH, nullable = false)
     val value: String,
 ) {
