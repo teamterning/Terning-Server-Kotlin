@@ -13,7 +13,7 @@ class UserTest {
         @DisplayName("이름과 프로필 이미지를 변경한다")
         fun updatesNameAndProfileImage() {
             val user = createUser()
-            val newName = UserName.from("새이름")
+            val newName = UserName("새이름")
             val newImage = ProfileImage.LUCKY
 
             user.updateProfile(newName, newImage)
@@ -75,7 +75,7 @@ class UserTest {
         userState: UserState = UserState.ACTIVE,
     ): User {
         return User(
-            name = UserName.from(name),
+            name = UserName(name),
             profileImage = profile,
             userState = userState,
         )
