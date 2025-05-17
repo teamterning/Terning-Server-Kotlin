@@ -8,4 +8,5 @@ enum class FilterErrorCode(
     override val message: String,
 ) : BaseErrorCode {
     INVALID_WORKING_PERIOD(HttpStatus.BAD_REQUEST, "유효하지 않은 근무 기간입니다."),
+    INVALID_GRADE(HttpStatus.BAD_REQUEST, "유효하지 않은 학년입니다."),
 }
