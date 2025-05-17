@@ -8,10 +8,11 @@ import jakarta.persistence.Embedded
 @Embeddable
 class StartDate private constructor(
     @Embedded
-    @AttributeOverride(name = "value", column = Column(name = "start_year"))
+    @AttributeOverride(name = "value", column = Column(name = "start_year", nullable = false))
     val year: Year,
+
     @Embedded
-    @AttributeOverride(name = "value", column = Column(name = "start_month"))
+    @AttributeOverride(name = "value", column = Column(name = "start_month", nullable = false))
     val month: Month,
 ) {
     companion object {
@@ -21,13 +22,8 @@ class StartDate private constructor(
         ): StartDate = StartDate(year, month)
     }
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other == null || this::class != other::class) return false
-
-        other as StartDate
-        return year == other.year && month == other.month
-    }
+    override fun equals(other: Any?): Boolean =
+        this === other || (other is StartDate && year == other.year && month == other.month)
 
     override fun hashCode(): Int = 31 * year.hashCode() + month.hashCode()
 
