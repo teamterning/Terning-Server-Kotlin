@@ -1,5 +1,5 @@
 package com.terning.server.kotlin.domain.scrap
 
-class ScrapException(
-    val errorCode: ScrapErrorCode,
-) : RuntimeException(errorCode.message)
+import com.terning.server.kotlin.domain.common.BaseException
+
+class ScrapException(errorCode: ScrapErrorCode) : BaseException(errorCode)
