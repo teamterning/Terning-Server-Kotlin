@@ -1,5 +1,5 @@
 package com.terning.server.kotlin.domain.user
 
-class UserException(
-    val errorCode: UserErrorCode,
-) : RuntimeException(errorCode.message)
+import com.terning.server.kotlin.domain.common.BaseException
+
+class UserException(errorCode: UserErrorCode) : BaseException(errorCode)
