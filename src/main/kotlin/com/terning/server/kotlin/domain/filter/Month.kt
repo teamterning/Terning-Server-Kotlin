@@ -5,7 +5,7 @@ import jakarta.persistence.Embeddable
 
 @Embeddable
 class Month private constructor(
-    @Column(name = "start_month", nullable = false)
+    @Column(nullable = false)
     val value: Int,
 ) {
     init {
