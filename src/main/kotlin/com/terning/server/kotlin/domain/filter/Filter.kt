@@ -19,39 +19,35 @@ class Filter private constructor(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private var jobType: JobType,
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private var grade: Grade,
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private var workingPeriod: WorkingPeriod,
-
     @Embedded
     @AttributeOverrides(
         AttributeOverride(name = "year.value", column = Column(name = "start_year", nullable = false)),
-        AttributeOverride(name = "month.value", column = Column(name = "start_month", nullable = false))
+        AttributeOverride(name = "month.value", column = Column(name = "start_month", nullable = false)),
     )
     private var startDate: StartDate,
 ) : BaseRootEntity() {
-
     companion object {
         fun of(
             jobType: JobType,
             grade: Grade,
             workingPeriod: WorkingPeriod,
             startDate: StartDate,
-        ): Filter = Filter(
-            jobType = jobType,
-            grade = grade,
-            workingPeriod = workingPeriod,
-            startDate = startDate,
-        )
+        ): Filter =
+            Filter(
+                jobType = jobType,
+                grade = grade,
+                workingPeriod = workingPeriod,
+                startDate = startDate,
+            )
     }
 
     fun update(
@@ -67,8 +63,11 @@ class Filter private constructor(
     }
 
     fun jobType(): JobType = jobType
+
     fun grade(): Grade = grade
+
     fun workingPeriod(): WorkingPeriod = workingPeriod
+
     fun startDate(): StartDate = startDate
 
     override fun equals(other: Any?): Boolean {
