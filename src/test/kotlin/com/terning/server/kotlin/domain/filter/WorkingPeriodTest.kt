@@ -9,19 +9,20 @@ import org.junit.jupiter.params.provider.CsvSource
 import org.junit.jupiter.params.provider.ValueSource
 
 class WorkingPeriodTest {
-
     @Nested
     @DisplayName("from 메서드는")
     inner class From {
-
         @ParameterizedTest(name = "[{index}] period가 \"{0}\"이면 {1} 을(를) 반환한다")
         @CsvSource(
             "short, SHORT_TERM",
             "middle, MID_TERM",
-            "long, LONG_TERM"
+            "long, LONG_TERM",
         )
         @DisplayName("유효한 period가 주어지면 해당 WorkingPeriod를 반환한다")
-        fun validPeriodReturnsWorkingPeriod(period: String, expected: WorkingPeriod) {
+        fun validPeriodReturnsWorkingPeriod(
+            period: String,
+            expected: WorkingPeriod,
+        ) {
             val result = WorkingPeriod.from(period)
 
             assertThat(result).isEqualTo(expected)
