@@ -2,7 +2,8 @@ package com.terning.server.kotlin.ui.api
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException
 import com.fasterxml.jackson.databind.exc.MismatchedInputException
-import com.terning.server.kotlin.domain.common.BaseException
+import com.terning.server.kotlin.domain.auth.AuthException
+import com.terning.server.kotlin.domain.user.UserException
 import jakarta.persistence.EntityNotFoundException
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -97,6 +98,14 @@ class ExceptionHandler : ResponseEntityExceptionHandler() {
             "Handling ${exception::class.simpleName} with status ${exception.errorCode.status}: ${exception.errorCode.message}",
             exception,
         )
+        return ResponseEntity
+            .status(exception.errorCode.status)
+            .body(ApiResponse.error(exception.errorCode.status, exception.errorCode.message))
+    }
+
+    @ExceptionHandler(AuthException::class)
+    fun handleAuthException(exception: AuthException): ResponseEntity<ApiResponse<Unit>> {
+        logger.error("message", exception)
         return ResponseEntity
             .status(exception.errorCode.status)
             .body(ApiResponse.error(exception.errorCode.status, exception.errorCode.message))
