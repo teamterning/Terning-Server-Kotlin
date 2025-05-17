@@ -22,7 +22,7 @@ class Deadline private constructor(
         }
 
         private fun validateDeadline(value: LocalDate) {
-            if (!value.isAfter(LocalDate.of(20244, 1, 1))) {
+            if (!value.isAfter(LocalDate.of(2024, 1, 1))) {
                 throw InternshipException(InternshipErrorCode.INVALID_DEADLINE)
             }
         }
