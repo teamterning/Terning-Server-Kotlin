@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test
 import org.springframework.http.HttpStatus
 
 class AuthTypeTest {
-
     @Test
     @DisplayName("prefix와 message 결합하여 반환한다")
     fun getPrefixMessage() {
