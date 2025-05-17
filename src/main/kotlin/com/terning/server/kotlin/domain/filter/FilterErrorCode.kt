@@ -3,7 +3,7 @@ package com.terning.server.kotlin.domain.filter
 import com.terning.server.kotlin.domain.common.BaseErrorCode
 import org.springframework.http.HttpStatus
 
-enum class WorkingPeriodErrorCode(
+enum class FilterErrorCode(
     override val status: HttpStatus,
     override val message: String,
 ) : BaseErrorCode {

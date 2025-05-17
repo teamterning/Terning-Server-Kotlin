@@ -12,6 +12,6 @@ enum class WorkingPeriod(
     companion object {
         fun from(period: String): WorkingPeriod =
             entries.firstOrNull { it.period == period }
-                ?: throw FilterException(WorkingPeriodErrorCode.INVALID_WORKING_PERIOD)
+                ?: throw FilterException(FilterErrorCode.INVALID_WORKING_PERIOD)
     }
 }

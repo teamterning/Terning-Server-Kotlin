@@ -34,7 +34,7 @@ class WorkingPeriodTest {
         fun invalidPeriodThrowsException(invalidPeriod: String) {
             assertThatThrownBy { WorkingPeriod.from(invalidPeriod) }
                 .isInstanceOfSatisfying(FilterException::class.java) { ex ->
-                    assertThat(ex.errorCode).isEqualTo(WorkingPeriodErrorCode.INVALID_WORKING_PERIOD)
+                    assertThat(ex.errorCode).isEqualTo(FilterErrorCode.INVALID_WORKING_PERIOD)
                 }
         }
     }
