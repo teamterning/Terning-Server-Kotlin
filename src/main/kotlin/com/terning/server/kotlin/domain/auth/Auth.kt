@@ -14,9 +14,9 @@ class Auth private constructor(
     @JoinColumn(name = "userId", nullable = false)
     val user: User,
     @Column(length = 255)
-    private val authId: String,
+    private var authId: String,
     @Column(length = 12)
-    private val authType: AuthType,
+    private var authType: AuthType,
     @Column(length = 255)
     private var refreshToken: String?,
 ) : BaseRootEntity() {
