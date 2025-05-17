@@ -25,10 +25,10 @@ class Auth private constructor(
     }
 
     fun resetRefreshToken() {
-        try{
+        try {
             this.refreshToken = null
-        }catch (e :Exception) {
-          //  throw
+        } catch (e: Exception) {
+            throw AuthException(AuthErrorCode.FAILED_REFRESH_TOKEN_RESET)
         }
     }
 }
