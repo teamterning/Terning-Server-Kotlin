@@ -17,7 +17,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @RestControllerAdvice
 class ExceptionHandler : ResponseEntityExceptionHandler() {
-
     override fun handleHttpMessageNotReadable(
         ex: HttpMessageNotReadableException,
         headers: HttpHeaders,
@@ -33,7 +32,7 @@ class ExceptionHandler : ResponseEntityExceptionHandler() {
 
         logger.error(
             "Handling ${ex::class.simpleName} with status ${HttpStatus.BAD_REQUEST}: $message",
-            ex
+            ex,
         )
 
         return ResponseEntity
@@ -51,7 +50,7 @@ class ExceptionHandler : ResponseEntityExceptionHandler() {
 
         logger.error(
             "Handling ${ex::class.simpleName} with status ${HttpStatus.BAD_REQUEST}: $message",
-            ex
+            ex,
         )
 
         return ResponseEntity
@@ -63,7 +62,7 @@ class ExceptionHandler : ResponseEntityExceptionHandler() {
     fun handleBadRequestException(exception: RuntimeException): ResponseEntity<ApiResponse<Unit>> {
         logger.error(
             "Handling ${exception::class.simpleName} with status ${HttpStatus.BAD_REQUEST}: ${exception.message}",
-            exception
+            exception,
         )
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
@@ -74,7 +73,7 @@ class ExceptionHandler : ResponseEntityExceptionHandler() {
     fun handleNotFoundException(exception: EntityNotFoundException): ResponseEntity<ApiResponse<Unit>> {
         logger.error(
             "Handling ${exception::class.simpleName} with status ${HttpStatus.NOT_FOUND}: ${exception.message}",
-            exception
+            exception,
         )
         return ResponseEntity
             .status(HttpStatus.NOT_FOUND)
@@ -85,7 +84,7 @@ class ExceptionHandler : ResponseEntityExceptionHandler() {
     fun handleGlobalException(exception: Exception): ResponseEntity<ApiResponse<Unit>> {
         logger.error(
             "Handling ${exception::class.simpleName} with status ${HttpStatus.INTERNAL_SERVER_ERROR}: ${exception.message}",
-            exception
+            exception,
         )
         return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -96,7 +95,7 @@ class ExceptionHandler : ResponseEntityExceptionHandler() {
     fun handleBaseException(exception: BaseException): ResponseEntity<ApiResponse<Unit>> {
         logger.error(
             "Handling ${exception::class.simpleName} with status ${exception.errorCode.status}: ${exception.errorCode.message}",
-            exception
+            exception,
         )
         return ResponseEntity
             .status(exception.errorCode.status)
