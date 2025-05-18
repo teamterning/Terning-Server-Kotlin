@@ -9,11 +9,13 @@ class Month private constructor(
     val value: Int,
 ) {
     init {
-        require(value in 1..12) { INVALID_MONTH_MESSAGE.format(value) }
+        require(value in MIN_MONTH..MAX_MONTH) { INVALID_MONTH_MESSAGE.format(value) }
     }
 
     companion object {
-        private const val INVALID_MONTH_MESSAGE = "월은 1~12 사이여야 합니다. 입력값: %d"
+        private const val MIN_MONTH = 1
+        private const val MAX_MONTH = 12
+        private const val INVALID_MONTH_MESSAGE = "월은 $MIN_MONTH~$MAX_MONTH 사이여야 합니다. 입력값: %d"
 
         fun from(value: Int): Month = Month(value)
     }
