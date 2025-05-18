@@ -20,13 +20,10 @@ class Filter private constructor(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private var jobType: JobType,
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private var grade: Grade,
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private var workingPeriod: WorkingPeriod,
     @Embedded
     @AttributeOverrides(
