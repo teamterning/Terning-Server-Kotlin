@@ -8,7 +8,6 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 
 class JobTypeTest {
-
     @ParameterizedTest(name = "입력: {0} → 기대 결과: {1}")
     @CsvSource(
         "total, 전체",

@@ -9,11 +9,9 @@ import org.junit.jupiter.params.provider.CsvSource
 import org.junit.jupiter.params.provider.ValueSource
 
 class WorkingPeriodTest {
-
     @Nested
     @DisplayName("from 메서드는")
     inner class From {
-
         @ParameterizedTest(name = "[{index}] period가 \"{0}\"이면 {1} 을(를) 반환한다")
         @CsvSource(
             "short, SHORT_TERM",

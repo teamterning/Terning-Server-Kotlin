@@ -7,11 +7,9 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 class ColorTest {
-
     @Nested
     @DisplayName("from(color: String)")
     inner class From {
-
         @Test
         @DisplayName("정상적인 color 문자열을 전달하면 해당 Color를 반환한다")
         fun returnsColorWhenColorIsValid() {
@@ -38,7 +36,6 @@ class ColorTest {
     @Nested
     @DisplayName("toHexString()")
     inner class ToHexString {
-
         @Test
         @DisplayName("HEX 코드 앞에 #을 붙여 반환한다")
         fun returnsHexWithHashPrefix() {

@@ -5,7 +5,6 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
 class StartDateTest {
-
     @Test
     @DisplayName("Year와 Month로 StartDate를 생성할 수 있다")
     fun createStartDateWithYearAndMonth() {

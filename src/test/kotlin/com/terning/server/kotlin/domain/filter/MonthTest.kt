@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
 class MonthTest {
-
     @Test
     @DisplayName("1부터 12 사이 값으로 Month를 생성할 수 있다")
     fun createValidMonth() {

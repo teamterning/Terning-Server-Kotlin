@@ -7,7 +7,6 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 
 class GradeTest {
-
     @ParameterizedTest(name = "입력: {0} → 기대 결과: {1}")
     @CsvSource(
         "freshman, 1학년",

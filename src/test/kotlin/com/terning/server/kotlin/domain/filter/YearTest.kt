@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
 class YearTest {
-
     @Test
     @DisplayName("유효한 연도 값으로 Year를 생성할 수 있다")
     fun createValidYear() {
