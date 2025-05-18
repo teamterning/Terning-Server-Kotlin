@@ -22,7 +22,7 @@ class Scrap private constructor(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "userId", nullable = false)
     val user: User,
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
