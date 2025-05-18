@@ -8,6 +8,7 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 
 class JobTypeTest {
+
     @ParameterizedTest(name = "입력: {0} → 기대 결과: {1}")
     @CsvSource(
         "total, 전체",
@@ -25,7 +26,10 @@ class JobTypeTest {
         type: String,
         expectedLabel: String,
     ) {
+        // when
         val jobType = JobType.from(type)
+
+        // then
         assertEquals(expectedLabel, jobType.label)
     }
 
@@ -33,6 +37,7 @@ class JobTypeTest {
     @CsvSource("invalid", "unknown", "none", "test")
     @DisplayName("잘못된 type 문자열을 넣었을 때, 예외를 발생시킨다.")
     fun `should throw exception when invalid type is provided`(invalidType: String) {
+        // expect
         assertThrows(ScrapException::class.java) {
             JobType.from(invalidType)
         }

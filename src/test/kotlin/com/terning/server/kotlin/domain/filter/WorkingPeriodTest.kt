@@ -9,9 +9,11 @@ import org.junit.jupiter.params.provider.CsvSource
 import org.junit.jupiter.params.provider.ValueSource
 
 class WorkingPeriodTest {
+
     @Nested
     @DisplayName("from 메서드는")
     inner class From {
+
         @ParameterizedTest(name = "[{index}] period가 \"{0}\"이면 {1} 을(를) 반환한다")
         @CsvSource(
             "short, SHORT_TERM",
@@ -23,8 +25,10 @@ class WorkingPeriodTest {
             period: String,
             expected: WorkingPeriod,
         ) {
+            // when
             val result = WorkingPeriod.from(period)
 
+            // then
             assertThat(result).isEqualTo(expected)
         }
 
@@ -32,6 +36,7 @@ class WorkingPeriodTest {
         @ValueSource(strings = ["", "invalid", "Short", "LONGTERM", "mid"])
         @DisplayName("유효하지 않은 period가 주어지면 FilterException을 던진다")
         fun invalidPeriodThrowsException(invalidPeriod: String) {
+            // expect
             assertThatThrownBy { WorkingPeriod.from(invalidPeriod) }
                 .isInstanceOfSatisfying(FilterException::class.java) { ex ->
                     assertThat(ex.errorCode).isEqualTo(FilterErrorCode.INVALID_WORKING_PERIOD)
