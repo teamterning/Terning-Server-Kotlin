@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
 class DeadlineTest {
-
     @Test
     @DisplayName("마감일이 오늘보다 이전이면 isOver는 true를 반환한다")
     fun `deadline before today returns true`() {

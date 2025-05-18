@@ -5,9 +5,8 @@ import java.time.LocalDate
 
 @Embeddable
 class Deadline private constructor(
-    val value: LocalDate
+    val value: LocalDate,
 ) {
-
     companion object {
         fun from(value: LocalDate): Deadline {
             require(value.isAfter(LocalDate.of(2025, 1, 1))) {
@@ -21,8 +20,7 @@ class Deadline private constructor(
         return value.isBefore(today)
     }
 
-    override fun equals(other: Any?): Boolean =
-        other is Deadline && value == other.value
+    override fun equals(other: Any?): Boolean = other is Deadline && value == other.value
 
     override fun hashCode(): Int = value.hashCode()
 
