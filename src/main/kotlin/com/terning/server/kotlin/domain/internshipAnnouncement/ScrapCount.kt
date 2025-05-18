@@ -7,20 +7,22 @@ class ScrapCount private constructor(
     val value: Int,
 ) {
     init {
-        require(value >= MIN_VALUE) { INVALID_SCRAP_COUNT_MESSAGE }
+        if (value < MIN_VALUE) {
+            throw InternshipException(InternshipErrorCode.INVALID_SCRAP_COUNT)
+        }
     }
 
     fun increase(): ScrapCount = ScrapCount(value + 1)
 
     fun decrease(): ScrapCount {
-        require(value > MIN_VALUE) { CANNOT_DECREASE_BELOW_ZERO_MESSAGE }
+        if (value == MIN_VALUE) {
+            throw InternshipException(InternshipErrorCode.SCRAP_COUNT_CANNOT_BE_DECREASED_BELOW_ZERO)
+        }
         return ScrapCount(value - 1)
     }
 
     companion object {
         private const val MIN_VALUE = 0
-        private const val INVALID_SCRAP_COUNT_MESSAGE = "스크랩 수는 음수일 수 없습니다."
-        private const val CANNOT_DECREASE_BELOW_ZERO_MESSAGE = "스크랩 수는 0보다 작아질 수 없습니다."
 
         fun from(): ScrapCount = ScrapCount(MIN_VALUE)
     }
