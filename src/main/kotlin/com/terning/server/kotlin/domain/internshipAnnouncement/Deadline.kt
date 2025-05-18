@@ -9,8 +9,8 @@ class Deadline private constructor(
 ) {
     companion object {
         fun from(value: LocalDate): Deadline {
-            require(value.isAfter(LocalDate.of(2025, 1, 1))) {
-                "마감일은 2025년 이후여야 합니다."
+            if (value.isAfter(LocalDate.of(2025, 1, 1)).not()) {
+                throw InternshipException(InternshipErrorCode.INVALID_DEADLINE)
             }
             return Deadline(value)
         }
