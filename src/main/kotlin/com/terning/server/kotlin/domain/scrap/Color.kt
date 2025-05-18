@@ -1,7 +1,7 @@
 package com.terning.server.kotlin.domain.scrap
 
 enum class Color(
-    val label: String,
+    val color: String,
     private val hexCode: String,
 ) {
     RED("red", "ED4E54"),
@@ -19,8 +19,8 @@ enum class Color(
     fun toHexString(): String = "#$hexCode"
 
     companion object {
-        fun from(label: String): Color =
-            entries.firstOrNull { it.label == label }
+        fun from(color: String): Color =
+            entries.firstOrNull { it.color == color }
                 ?: throw ScrapException(ScrapErrorCode.INVALID_COLOR)
     }
 }
