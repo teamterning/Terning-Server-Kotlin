@@ -1,17 +1,13 @@
 package com.terning.server.kotlin.domain.internshipAnnouncement
 
-import jakarta.persistence.AttributeOverride
-import jakarta.persistence.Column
 import jakarta.persistence.Embeddable
 import jakarta.persistence.Embedded
 
 @Embeddable
 class InternshipAnnouncementStartDate private constructor(
     @Embedded
-    @AttributeOverride(name = "value", column = Column(name = "start_year", nullable = false))
     val year: InternshipAnnouncementYear,
     @Embedded
-    @AttributeOverride(name = "value", column = Column(name = "start_month", nullable = false))
     val month: InternshipAnnouncementMonth,
 ) {
     companion object {

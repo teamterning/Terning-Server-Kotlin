@@ -1,6 +1,7 @@
 package com.terning.server.kotlin.domain.scrap
 
 import com.terning.server.kotlin.domain.common.BaseRootEntity
+import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipAnnouncement
 import com.terning.server.kotlin.domain.user.User
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -24,6 +25,9 @@ class Scrap private constructor(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", nullable = false)
     val user: User,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "announcement_id", nullable = false)
+    val internshipAnnouncement: InternshipAnnouncement,
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private var color: Color,
@@ -31,8 +35,14 @@ class Scrap private constructor(
     companion object {
         fun of(
             user: User,
+            internshipAnnouncement: InternshipAnnouncement,
             color: Color,
-        ): Scrap = Scrap(user = user, color = color)
+        ): Scrap =
+            Scrap(
+                user = user,
+                internshipAnnouncement = internshipAnnouncement,
+                color = color,
+            )
     }
 
     fun changeColor(to: Color) {
