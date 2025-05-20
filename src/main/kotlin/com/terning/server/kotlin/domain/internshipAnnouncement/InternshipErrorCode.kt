@@ -19,4 +19,5 @@ enum class InternshipErrorCode(
     INVALID_WORKING_PERIOD(HttpStatus.BAD_REQUEST, "근무 기간은 1개월 이상이어야 합니다."),
     INVALID_MONTH(HttpStatus.BAD_REQUEST, "월은 1~12 사이여야 합니다."),
     INVALID_YEAR(HttpStatus.BAD_REQUEST, "연도는 2025보다 커야 합니다."),
+    INVALID_COMPANY_LOGO_URL(HttpStatus.BAD_REQUEST, "올바른 이미지 URL이 아닙니다."),
 }
