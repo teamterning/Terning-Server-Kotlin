@@ -26,9 +26,9 @@ class Auth private constructor(
     @Column(length = 12)
     private var authType: AuthType,
     @Column(length = 255)
-    private var refreshToken: String?,
+    private var refreshToken: RefreshToken?,
 ) : BaseRootEntity() {
-    fun updateRefreshToken(newRefreshToken: String) {
+    fun updateRefreshToken(newRefreshToken: RefreshToken) {
         this.refreshToken = newRefreshToken
     }
 
