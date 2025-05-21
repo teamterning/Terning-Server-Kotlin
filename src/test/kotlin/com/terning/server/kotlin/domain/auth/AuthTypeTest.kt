@@ -11,7 +11,8 @@ class AuthTypeTest {
     @DisplayName("유효하지 않은 토큰은 예외가 발생한다.")
     fun throwAuthExceptionWhenTokenIsInvalid() {
         // when
-        val exception = assertThrows<AuthException> {
+        val exception =
+            assertThrows<AuthException> {
                 throw AuthException(AuthErrorCode.INVALID_TOKEN)
             }
 
