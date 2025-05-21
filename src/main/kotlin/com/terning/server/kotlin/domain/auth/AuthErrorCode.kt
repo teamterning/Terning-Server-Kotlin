@@ -13,3 +13,4 @@ enum class AuthErrorCode(
 
     fun getErrorMessage(): String = message
 }
+
