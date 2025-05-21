@@ -2,6 +2,7 @@ package com.terning.server.kotlin.domain.auth
 
 import com.terning.server.kotlin.domain.common.BaseRootEntity
 import com.terning.server.kotlin.domain.user.User
+import jakarta.persistence.AttributeOverride
 import jakarta.persistence.Column
 import jakarta.persistence.Embedded
 import jakarta.persistence.Entity
@@ -25,12 +26,14 @@ class Auth private constructor(
     @JoinColumn(name = "userId", nullable = false)
     val user: User,
     @Embedded
+    @AttributeOverride(name = "value", column = Column(name = "authId"))
     private var authId: AuthId,
     @Enumerated(EnumType.STRING)
     @Column(length = 12)
     private var authType: AuthType,
     @Embedded
-    private var refreshToken: RefreshToken?,
+    @AttributeOverride(name = "value", column = Column(name = "refreshToken"))
+    private var refreshToken: RefreshToken,
 ) : BaseRootEntity() {
     fun updateRefreshToken(newRefreshToken: RefreshToken) {
         this.refreshToken = newRefreshToken
@@ -38,7 +41,7 @@ class Auth private constructor(
 
     fun resetRefreshToken() {
         try {
-            this.refreshToken = null
+            this.refreshToken = RefreshToken(null)
         } catch (e: Exception) {
             throw AuthException(AuthErrorCode.FAILED_REFRESH_TOKEN_RESET)
         }
