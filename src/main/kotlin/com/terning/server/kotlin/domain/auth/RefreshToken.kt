@@ -6,5 +6,5 @@ import jakarta.persistence.Embeddable
 @Embeddable
 data class RefreshToken(
     @Column(length = 255)
-    val value: String,
+    val value: String?,
 )
