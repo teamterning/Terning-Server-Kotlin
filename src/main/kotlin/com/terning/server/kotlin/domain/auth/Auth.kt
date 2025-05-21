@@ -15,6 +15,7 @@ class Auth private constructor(
     val user: User,
     @Embedded
     private var authId: AuthId,
+    @Enumerated(EnumType.STRING)
     @Column(length = 12)
     private var authType: AuthType,
     @Embedded
