@@ -16,11 +16,14 @@ import jakarta.persistence.Table
 class User(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
+
     @Embedded
     private var name: UserName,
+
     @Enumerated(EnumType.STRING)
     @Column(name = "profile_image", length = 12, nullable = false)
     private var profileImage: ProfileImage,
+
     @Enumerated(EnumType.STRING)
     @Column(name = "user_state", length = 12, nullable = false)
     private var userState: UserState,
