@@ -15,4 +15,3 @@ enum class AuthErrorCode(
         private const val PREFIX = "[AUTH ERROR]"
     }
 }
-
