@@ -19,7 +19,10 @@ class GradeTest {
         type: String,
         expectedLabel: String,
     ) {
+        // when
         val grade = Grade.from(type)
+
+        // then
         assertEquals(expectedLabel, grade.label)
     }
 
@@ -27,6 +30,7 @@ class GradeTest {
     @CsvSource("invalid", "fresh", "null", "first")
     @DisplayName("잘못된 type 문자열을 넣었을 때, 예외를 발생시킨다.")
     fun `should throw exception when invalid type is provided`(invalidType: String) {
+        // expect
         assertThrows(FilterException::class.java) {
             Grade.from(invalidType)
         }
