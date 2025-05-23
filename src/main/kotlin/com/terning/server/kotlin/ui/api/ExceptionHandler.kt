@@ -2,8 +2,7 @@ package com.terning.server.kotlin.ui.api
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException
 import com.fasterxml.jackson.databind.exc.MismatchedInputException
-import com.terning.server.kotlin.domain.scrap.ScrapException
-import com.terning.server.kotlin.domain.user.UserException
+import com.terning.server.kotlin.domain.common.BaseException
 import jakarta.persistence.EntityNotFoundException
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -24,13 +23,18 @@ class ExceptionHandler : ResponseEntityExceptionHandler() {
         status: HttpStatusCode,
         request: WebRequest,
     ): ResponseEntity<Any>? {
-        logger.error("message", ex)
         val message =
             when (val exception = ex.cause) {
                 is MismatchedInputException -> "${exception.path.lastOrNull()?.fieldName ?: "UnknownField"}: 널이어서는 안됩니다"
                 is InvalidFormatException -> "${exception.path.lastOrNull()?.fieldName ?: "UnknownField"}: 올바른 형식이어야 합니다"
                 else -> exception?.message.orEmpty()
             }
+
+        logger.error(
+            "Handling ${ex::class.simpleName} with status ${HttpStatus.BAD_REQUEST}: $message",
+            ex,
+        )
+
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
             .body(ApiResponse.error(HttpStatus.BAD_REQUEST, message))
@@ -42,8 +46,13 @@ class ExceptionHandler : ResponseEntityExceptionHandler() {
         status: HttpStatusCode,
         request: WebRequest,
     ): ResponseEntity<Any>? {
-        logger.error("message", ex)
         val message = ex.messages()
+
+        logger.error(
+            "Handling ${ex::class.simpleName} with status ${HttpStatus.BAD_REQUEST}: $message",
+            ex,
+        )
+
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
             .body(ApiResponse.error(HttpStatus.BAD_REQUEST, message))
@@ -51,7 +60,10 @@ class ExceptionHandler : ResponseEntityExceptionHandler() {
 
     @ExceptionHandler(IllegalArgumentException::class, IllegalStateException::class)
     fun handleBadRequestException(exception: RuntimeException): ResponseEntity<ApiResponse<Unit>> {
-        logger.error("message", exception)
+        logger.error(
+            "Handling ${exception::class.simpleName} with status ${HttpStatus.BAD_REQUEST}: ${exception.message}",
+            exception,
+        )
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
             .body(ApiResponse.error(HttpStatus.BAD_REQUEST, exception.message ?: "잘못된 요청입니다."))
@@ -59,7 +71,10 @@ class ExceptionHandler : ResponseEntityExceptionHandler() {
 
     @ExceptionHandler(EntityNotFoundException::class)
     fun handleNotFoundException(exception: EntityNotFoundException): ResponseEntity<ApiResponse<Unit>> {
-        logger.error("message", exception)
+        logger.error(
+            "Handling ${exception::class.simpleName} with status ${HttpStatus.NOT_FOUND}: ${exception.message}",
+            exception,
+        )
         return ResponseEntity
             .status(HttpStatus.NOT_FOUND)
             .body(ApiResponse.error(HttpStatus.NOT_FOUND, exception.message ?: "데이터를 찾을 수 없습니다."))
@@ -67,23 +82,21 @@ class ExceptionHandler : ResponseEntityExceptionHandler() {
 
     @ExceptionHandler(Exception::class)
     fun handleGlobalException(exception: Exception): ResponseEntity<ApiResponse<Unit>> {
-        logger.error("message", exception)
+        logger.error(
+            "Handling ${exception::class.simpleName} with status ${HttpStatus.INTERNAL_SERVER_ERROR}: ${exception.message}",
+            exception,
+        )
         return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(ApiResponse.error(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류가 발생했습니다."))
     }
 
-    @ExceptionHandler(UserException::class)
-    fun handleUserException(exception: UserException): ResponseEntity<ApiResponse<Unit>> {
-        logger.error("UserException", exception)
-        return ResponseEntity
-            .status(exception.errorCode.status)
-            .body(ApiResponse.error(exception.errorCode.status, exception.errorCode.message))
-    }
-
-    @ExceptionHandler(ScrapException::class)
-    fun handleScrapException(exception: ScrapException): ResponseEntity<ApiResponse<Unit>> {
-        logger.error("ScrapException", exception)
+    @ExceptionHandler(BaseException::class)
+    fun handleBaseException(exception: BaseException): ResponseEntity<ApiResponse<Unit>> {
+        logger.error(
+            "Handling ${exception::class.simpleName} with status ${exception.errorCode.status}: ${exception.errorCode.message}",
+            exception,
+        )
         return ResponseEntity
             .status(exception.errorCode.status)
             .body(ApiResponse.error(exception.errorCode.status, exception.errorCode.message))
