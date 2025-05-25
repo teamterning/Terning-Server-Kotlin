@@ -1,5 +1,5 @@
 package com.terning.server.kotlin.domain.auth
 
-class AuthException(
-    val errorCode: AuthErrorCode,
-) : RuntimeException(errorCode.message)
+import com.terning.server.kotlin.domain.common.BaseException
+
+class AuthException(errorCode: AuthErrorCode) : BaseException(errorCode)
