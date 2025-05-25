@@ -105,7 +105,10 @@ class ExceptionHandler : ResponseEntityExceptionHandler() {
 
     @ExceptionHandler(AuthException::class)
     fun handleAuthException(exception: AuthException): ResponseEntity<ApiResponse<Unit>> {
-        logger.error("AuthException", exception)
+        logger.error(
+            "Handling ${exception::class.simpleName} with status ${exception.errorCode.status}: ${exception.errorCode.message}",
+            exception,
+        )
         return ResponseEntity
             .status(exception.errorCode.status)
             .body(ApiResponse.error(exception.errorCode.status, exception.errorCode.message))
