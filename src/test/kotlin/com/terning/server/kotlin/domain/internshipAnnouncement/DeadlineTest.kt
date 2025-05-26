@@ -1,6 +1,7 @@
 package com.terning.server.kotlin.domain.internshipAnnouncement
 
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
@@ -35,10 +36,10 @@ class DeadlineTest {
     @DisplayName("마감일이 2024년 1월 1일보다 이전이면 예외가 발생한다")
     fun `deadline before 2024-01-02 throws exception`() {
         val invalid = LocalDate.of(2024, 1, 1)
-        val result = runCatching { Deadline.from(invalid) }
-        assertThat(result.exceptionOrNull())
-            .isInstanceOf(IllegalArgumentException::class.java)
-            .hasMessage("마감일은 2024-01-01 이후여야 합니다.")
+
+        assertThatThrownBy { Deadline.from(invalid) }
+            .isInstanceOf(InternshipException::class.java)
+            .hasMessage(InternshipErrorCode.INVALID_DEADLINE.message)
     }
 
     @Test
