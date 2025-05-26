@@ -6,6 +6,8 @@ import jakarta.persistence.Embeddable
 class ScrapCount private constructor(
     val value: Int,
 ) {
+    protected constructor() : this(MIN_VALUE)
+
     init {
         require(value >= MIN_VALUE) { INVALID_SCRAP_COUNT_MESSAGE }
     }
