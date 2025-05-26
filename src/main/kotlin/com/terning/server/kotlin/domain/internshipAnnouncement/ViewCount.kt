@@ -7,7 +7,9 @@ class ViewCount private constructor(
     val value: Int,
 ) {
     init {
-        require(value >= MIN_VALUE) { INVALID_VIEW_COUNT_MESSAGE }
+        if (value < MIN_VALUE) {
+            throw InternshipException(InternshipErrorCode.INVALID_VIEW_COUNT)
+        }
     }
 
     fun increase(): ViewCount = ViewCount(value + 1)
@@ -20,7 +22,6 @@ class ViewCount private constructor(
 
     companion object {
         private const val MIN_VALUE = 0
-        private const val INVALID_VIEW_COUNT_MESSAGE = "조회수는 음수일 수 없습니다."
 
         fun from(): ViewCount = ViewCount(MIN_VALUE)
     }

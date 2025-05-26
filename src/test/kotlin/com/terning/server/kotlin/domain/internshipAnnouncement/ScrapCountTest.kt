@@ -50,7 +50,7 @@ class ScrapCountTest {
 
         // when & then
         val exception =
-            assertThrows<IllegalArgumentException> {
+            assertThrows<InternshipException> {
                 scrapCount.decrease()
             }
 
