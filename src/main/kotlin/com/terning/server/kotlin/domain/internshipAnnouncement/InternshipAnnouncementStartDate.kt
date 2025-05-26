@@ -8,29 +8,29 @@ import jakarta.persistence.Embedded
 @Embeddable
 class InternshipAnnouncementStartDate private constructor(
     @Embedded
-    @AttributeOverride(name = "value", column = Column(name = "start_year", nullable = false))
+    @AttributeOverride(name = "value", column = Column(name = "startYear", nullable = false))
     val year: InternshipAnnouncementYear,
+
     @Embedded
-    @AttributeOverride(name = "value", column = Column(name = "start_month", nullable = false))
+    @AttributeOverride(name = "value", column = Column(name = "startMonth", nullable = false))
     val month: InternshipAnnouncementMonth,
 ) {
-    companion object {
-        fun of(
-            year: InternshipAnnouncementYear,
-            month: InternshipAnnouncementMonth,
-        ): InternshipAnnouncementStartDate {
-            return InternshipAnnouncementStartDate(year, month)
-        }
-    }
 
-    override fun equals(other: Any?): Boolean {
-        return this === other || (
-            other is InternshipAnnouncementStartDate &&
-                this.year == other.year && this.month == other.month
-        )
-    }
+    override fun equals(other: Any?): Boolean =
+        this === other || (
+                other is InternshipAnnouncementStartDate &&
+                        this.year == other.year && this.month == other.month
+                )
 
     override fun hashCode(): Int = 31 * year.hashCode() + month.hashCode()
 
     override fun toString(): String = "${year.value}년 ${month.value}월"
+
+    companion object {
+        fun of(
+            year: InternshipAnnouncementYear,
+            month: InternshipAnnouncementMonth,
+        ): InternshipAnnouncementStartDate =
+            InternshipAnnouncementStartDate(year, month)
+    }
 }
