@@ -11,5 +11,7 @@ enum class InternshipErrorCode(
     INVALID_SCRAP_COUNT(HttpStatus.BAD_REQUEST, "스크랩 수는 음수일 수 없습니다."),
     SCRAP_COUNT_CANNOT_BE_DECREASED_BELOW_ZERO(HttpStatus.BAD_REQUEST, "스크랩 수는 0보다 작아질 수 없습니다."),
     INVALID_VIEW_COUNT(HttpStatus.BAD_REQUEST, "조회수는 음수일 수 없습니다."),
-    INVALID_COMPANY_CATEGORY(HttpStatus.BAD_REQUEST, "존재하지 않는 기업 유형입니다."),
+    INVALID_COMPANY_CATEGORY(HttpStatus.BAD_REQUEST, "올바르지 않은 기업 구분 값입니다."),
+    INVALID_COMPANY_NAME_EMPTY(HttpStatus.BAD_REQUEST, "기업명은 비어 있을 수 없습니다."),
+    INVALID_COMPANY_NAME_TOO_LONG(HttpStatus.BAD_REQUEST, "기업명은 64자 이하여야 합니다."),
 }
