@@ -17,7 +17,6 @@ jobs:
           distribution: 'graalvm-community'
           version: '23.1.0'
           java-version: '21'
-          components: 'native-image'
 
       - name: Gradle 캐시 설정
         uses: actions/cache@v3
