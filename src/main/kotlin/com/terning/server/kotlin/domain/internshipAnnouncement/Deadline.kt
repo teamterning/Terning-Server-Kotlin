@@ -7,14 +7,6 @@ import java.time.LocalDate
 class Deadline private constructor(
     val value: LocalDate,
 ) {
-    companion object {
-        fun from(value: LocalDate): Deadline {
-            if (value.isAfter(LocalDate.of(2025, 1, 1)).not()) {
-                throw InternshipException(InternshipErrorCode.INVALID_DEADLINE)
-            }
-            return Deadline(value)
-        }
-    }
 
     fun isOver(today: LocalDate = LocalDate.now()): Boolean {
         return value.isBefore(today)
@@ -25,4 +17,13 @@ class Deadline private constructor(
     override fun hashCode(): Int = value.hashCode()
 
     override fun toString(): String = value.toString()
+
+    companion object {
+        fun from(value: LocalDate): Deadline {
+            if (!value.isAfter(LocalDate.of(2025, 1, 1))) {
+                throw InternshipException(InternshipErrorCode.INVALID_DEADLINE)
+            }
+            return Deadline(value)
+        }
+    }
 }
