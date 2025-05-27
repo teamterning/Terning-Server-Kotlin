@@ -9,11 +9,13 @@ import jakarta.persistence.Enumerated
 @Embeddable
 class Company private constructor(
     @Embedded
+    @Column(name = "companyInfo")
     val name: CompanyName,
     @Enumerated(EnumType.STRING)
     @Column(name = "companyCategory")
     val category: CompanyCategory,
     @Embedded
+    @Column(name = "companyImage")
     val logoUrl: CompanyLogoUrl,
 ) {
     companion object {
@@ -40,5 +42,5 @@ class Company private constructor(
         return result
     }
 
-    override fun toString(): String = "${name.value} (${category.description})"
+    override fun toString(): String = "${name.value} (${category.displayName})"
 }
