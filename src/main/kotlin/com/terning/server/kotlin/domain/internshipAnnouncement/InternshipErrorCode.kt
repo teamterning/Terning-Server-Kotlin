@@ -16,4 +16,5 @@ enum class InternshipErrorCode(
     INVALID_COMPANY_NAME_TOO_LONG(HttpStatus.BAD_REQUEST, "기업명은 64자 이하여야 합니다."),
     INVALID_INTERNSHIP_TITLE_EMPTY(HttpStatus.BAD_REQUEST, "인턴십 제목은 비어 있을 수 없습니다."),
     INVALID_INTERNSHIP_TITLE_TOO_LONG(HttpStatus.BAD_REQUEST, "인턴십 제목은 64자 이하여야 합니다."),
+    INVALID_WORKING_PERIOD(HttpStatus.BAD_REQUEST, "근무 기간은 1개월 이상이어야 합니다."),
 }
