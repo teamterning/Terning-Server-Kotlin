@@ -22,7 +22,7 @@ class InternshipAnnouncementYear private constructor(
         fun from(value: Int): InternshipAnnouncementYear = InternshipAnnouncementYear(value)
 
         private fun validateYear(value: Int) {
-            if (value < MIN_VALID_YEAR) {
+            if (value <= MIN_VALID_YEAR) {
                 throw InternshipException(InternshipErrorCode.INVALID_YEAR)
             }
         }
