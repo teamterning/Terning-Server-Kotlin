@@ -14,15 +14,15 @@ class ViewCount private constructor(
 
     fun increase(): ViewCount = ViewCount(value + 1)
 
-    companion object {
-        private const val MIN_VALUE = 0
-
-        fun from(): ViewCount = ViewCount(MIN_VALUE)
-    }
-
     override fun equals(other: Any?): Boolean = other is ViewCount && value == other.value
 
     override fun hashCode(): Int = value.hashCode()
 
     override fun toString(): String = value.toString()
+
+    companion object {
+        private const val MIN_VALUE = 0
+
+        fun from(): ViewCount = ViewCount(MIN_VALUE)
+    }
 }

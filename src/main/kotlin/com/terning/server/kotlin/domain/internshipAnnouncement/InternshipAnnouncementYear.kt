@@ -10,8 +10,14 @@ class InternshipAnnouncementYear private constructor(
         validateYear(value)
     }
 
+    override fun equals(other: Any?): Boolean = this === other || (other is InternshipAnnouncementYear && value == other.value)
+
+    override fun hashCode(): Int = value
+
+    override fun toString(): String = value.toString()
+
     companion object {
-        private const val MIN_VALID_YEAR = 2025
+        private const val MIN_VALID_YEAR = 2024
 
         fun from(value: Int): InternshipAnnouncementYear = InternshipAnnouncementYear(value)
 
@@ -21,10 +27,4 @@ class InternshipAnnouncementYear private constructor(
             }
         }
     }
-
-    override fun equals(other: Any?): Boolean = this === other || (other is InternshipAnnouncementYear && value == other.value)
-
-    override fun hashCode(): Int = value
-
-    override fun toString(): String = value.toString()
 }
