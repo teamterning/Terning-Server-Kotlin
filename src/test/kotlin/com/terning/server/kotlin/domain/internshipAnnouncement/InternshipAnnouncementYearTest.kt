@@ -13,16 +13,16 @@ class InternshipAnnouncementYearTest {
         @Test
         @DisplayName("유효한 연도일 경우 인스턴스를 생성한다")
         fun createYearSuccessfully() {
-            val year = InternshipAnnouncementYear.from(2026)
-            assertThat(year.value).isEqualTo(2026)
+            val year = InternshipAnnouncementYear.from(2025)
+            assertThat(year.value).isEqualTo(2025)
         }
 
         @Test
-        @DisplayName("2025 이하일 경우 예외를 발생시킨다")
+        @DisplayName("2024 미만일 경우 예외를 발생시킨다")
         fun throwExceptionWhenInvalidYear() {
             val exception =
                 assertThrows<InternshipException> {
-                    InternshipAnnouncementYear.from(2025)
+                    InternshipAnnouncementYear.from(2024)
                 }
             assertThat(exception.errorCode).isEqualTo(InternshipErrorCode.INVALID_YEAR)
         }

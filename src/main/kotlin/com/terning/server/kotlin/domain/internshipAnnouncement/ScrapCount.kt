@@ -6,7 +6,13 @@ import jakarta.persistence.Embeddable
 class ScrapCount private constructor(
     val value: Int,
 ) {
+    protected constructor() : this(MIN_VALUE)
+
     init {
+        validateMinimum()
+    }
+
+    private fun validateMinimum() {
         if (value < MIN_VALUE) {
             throw InternshipException(InternshipErrorCode.INVALID_SCRAP_COUNT)
         }
@@ -21,15 +27,15 @@ class ScrapCount private constructor(
         return ScrapCount(value - 1)
     }
 
-    companion object {
-        private const val MIN_VALUE = 0
-
-        fun from(): ScrapCount = ScrapCount(MIN_VALUE)
-    }
-
     override fun equals(other: Any?): Boolean = other is ScrapCount && value == other.value
 
     override fun hashCode(): Int = value.hashCode()
 
     override fun toString(): String = value.toString()
+
+    companion object {
+        private const val MIN_VALUE = 0
+
+        fun from(): ScrapCount = ScrapCount(MIN_VALUE)
+    }
 }
