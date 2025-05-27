@@ -11,7 +11,7 @@ class InternshipAnnouncementUrlTest {
     @DisplayName("from 메서드는")
     inner class From {
         @Test
-        @DisplayName("http로 시작하는 유효한 URL이면 인스턴스를 생성한다")
+        @DisplayName("http 또는 https로 시작하는 유효한 URL이면 인스턴스를 생성한다")
         fun createAnnouncementUrlSuccessfully() {
             val url = "https://example.com/post/123"
             val announcementUrl = InternshipAnnouncementUrl.from(url)
@@ -21,16 +21,31 @@ class InternshipAnnouncementUrlTest {
         }
 
         @Test
-        @DisplayName("http로 시작하지 않으면 예외를 발생시킨다")
-        fun throwExceptionWhenInvalidUrl() {
-            val invalidUrl = "ftp://example.com/post/123"
+        @DisplayName("지원하지 않는 scheme이면 예외를 발생시킨다 (ftp 등)")
+        fun throwExceptionForUnsupportedScheme() {
+            val invalidSchemeUrl = "ftp://example.com/post/123"
 
             val exception =
                 assertThrows<InternshipException> {
-                    InternshipAnnouncementUrl.from(invalidUrl)
+                    InternshipAnnouncementUrl.from(invalidSchemeUrl)
                 }
 
-            assertThat(exception.errorCode).isEqualTo(InternshipErrorCode.INVALID_ANNOUNCEMENT_URL)
+            assertThat(exception.errorCode)
+                .isEqualTo(InternshipErrorCode.UNSUPPORTED_ANNOUNCEMENT_URL_SCHEME)
+        }
+
+        @Test
+        @DisplayName("URL 형식이 잘못된 경우 예외를 발생시킨다")
+        fun throwExceptionForMalformedUrl() {
+            val malformedUrl = "://invalid-url"
+
+            val exception =
+                assertThrows<InternshipException> {
+                    InternshipAnnouncementUrl.from(malformedUrl)
+                }
+
+            assertThat(exception.errorCode)
+                .isEqualTo(InternshipErrorCode.INVALID_ANNOUNCEMENT_URL_FORMAT)
         }
     }
 }
