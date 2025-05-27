@@ -21,4 +21,6 @@ enum class InternshipErrorCode(
     INVALID_YEAR(HttpStatus.BAD_REQUEST, "연도는 2024보다 커야 합니다."),
     INVALID_COMPANY_LOGO_URL_FORMAT(HttpStatus.BAD_REQUEST, "회사 로고 URL 형식이 잘못되었습니다."),
     UNSUPPORTED_COMPANY_LOGO_URL_SCHEME(HttpStatus.BAD_REQUEST, "지원하지 않는 URL scheme입니다. http 또는 https만 허용됩니다."),
+    INVALID_ANNOUNCEMENT_URL_FORMAT(HttpStatus.BAD_REQUEST, "공고 URL 형식이 잘못되었습니다."),
+    UNSUPPORTED_ANNOUNCEMENT_URL_SCHEME(HttpStatus.BAD_REQUEST, "지원하지 않는 공고 URL scheme입니다. http 또는 https만 허용됩니다."),
 }
