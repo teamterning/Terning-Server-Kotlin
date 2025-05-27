@@ -11,29 +11,26 @@ class Company private constructor(
     @Embedded
     @Column(name = "companyInfo")
     val name: CompanyName,
-
     @Enumerated(EnumType.STRING)
     @Column(name = "companyCategory")
     val category: CompanyCategory,
-
     @Embedded
     @Column(name = "companyImage")
     val logoUrl: CompanyLogoUrl,
 ) {
-
     protected constructor() : this(
         CompanyName.from("터닝"),
         CompanyCategory.OTHERS,
-        CompanyLogoUrl.from("http://default-logo.com")
+        CompanyLogoUrl.from("http://default-logo.com"),
     )
 
     override fun equals(other: Any?): Boolean =
         this === other || (
-                other is Company &&
-                        name == other.name &&
-                        category == other.category &&
-                        logoUrl == other.logoUrl
-                )
+            other is Company &&
+                name == other.name &&
+                category == other.category &&
+                logoUrl == other.logoUrl
+        )
 
     override fun hashCode(): Int {
         var result = name.hashCode()

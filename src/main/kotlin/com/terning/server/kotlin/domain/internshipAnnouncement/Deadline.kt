@@ -7,13 +7,11 @@ import java.time.LocalDate
 class Deadline private constructor(
     val value: LocalDate,
 ) {
-
     protected constructor() : this(LocalDate.of(2024, 1, 2))
 
     fun isOver(today: LocalDate = LocalDate.now()): Boolean = value.isBefore(today)
 
-    override fun equals(other: Any?): Boolean =
-        other is Deadline && value == other.value
+    override fun equals(other: Any?): Boolean = other is Deadline && value == other.value
 
     override fun hashCode(): Int = value.hashCode()
 

@@ -10,12 +10,10 @@ class InternshipAnnouncementStartDate private constructor(
     @Embedded
     @AttributeOverride(name = "value", column = Column(name = "startYear", nullable = false))
     val year: InternshipAnnouncementYear,
-
     @Embedded
     @AttributeOverride(name = "value", column = Column(name = "startMonth", nullable = false))
     val month: InternshipAnnouncementMonth,
 ) {
-
     protected constructor() : this(
         InternshipAnnouncementYear.from(2025),
         InternshipAnnouncementMonth.from(1),
@@ -23,9 +21,9 @@ class InternshipAnnouncementStartDate private constructor(
 
     override fun equals(other: Any?): Boolean =
         this === other || (
-                other is InternshipAnnouncementStartDate &&
-                        this.year == other.year && this.month == other.month
-                )
+            other is InternshipAnnouncementStartDate &&
+                this.year == other.year && this.month == other.month
+        )
 
     override fun hashCode(): Int = 31 * year.hashCode() + month.hashCode()
 

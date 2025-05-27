@@ -6,15 +6,13 @@ import jakarta.persistence.Embeddable
 class InternshipAnnouncementMonth private constructor(
     val value: Int,
 ) {
-
     protected constructor() : this(MIN_MONTH)
 
     init {
         validateMonth(value)
     }
 
-    override fun equals(other: Any?): Boolean =
-        this === other || (other is InternshipAnnouncementMonth && value == other.value)
+    override fun equals(other: Any?): Boolean = this === other || (other is InternshipAnnouncementMonth && value == other.value)
 
     override fun hashCode(): Int = value
 

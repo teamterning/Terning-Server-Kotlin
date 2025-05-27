@@ -6,15 +6,13 @@ import jakarta.persistence.Embeddable
 class FilterYear private constructor(
     val value: Int,
 ) {
-
     protected constructor() : this(2000)
 
     init {
         validateYear(value)
     }
 
-    override fun equals(other: Any?): Boolean =
-        this === other || (other is FilterYear && value == other.value)
+    override fun equals(other: Any?): Boolean = this === other || (other is FilterYear && value == other.value)
 
     override fun hashCode(): Int = value
 

@@ -5,9 +5,9 @@ import jakarta.persistence.AttributeOverride
 import jakarta.persistence.AttributeOverrides
 import jakarta.persistence.Column
 import jakarta.persistence.Embedded
-import jakarta.persistence.Enumerated
-import jakarta.persistence.EnumType
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
@@ -19,24 +19,19 @@ class Filter private constructor(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
-
     @Enumerated(EnumType.STRING)
     private var filterJobType: FilterJobType,
-
     @Enumerated(EnumType.STRING)
     private var filterGrade: FilterGrade,
-
     @Enumerated(EnumType.STRING)
     private var filterWorkingPeriod: FilterWorkingPeriod,
-
     @Embedded
     @AttributeOverrides(
         AttributeOverride(name = "filterYear.value", column = Column(name = "startYear", nullable = false)),
-        AttributeOverride(name = "filterMonth.value", column = Column(name = "startMonth", nullable = false))
+        AttributeOverride(name = "filterMonth.value", column = Column(name = "startMonth", nullable = false)),
     )
     private var filterStartDate: FilterStartDate,
 ) : BaseRootEntity() {
-
     fun update(
         newFilterJobType: FilterJobType,
         newFilterGrade: FilterGrade,
@@ -73,11 +68,12 @@ class Filter private constructor(
             filterGrade: FilterGrade,
             filterWorkingPeriod: FilterWorkingPeriod,
             filterStartDate: FilterStartDate,
-        ): Filter = Filter(
-            filterJobType = filterJobType,
-            filterGrade = filterGrade,
-            filterWorkingPeriod = filterWorkingPeriod,
-            filterStartDate = filterStartDate,
-        )
+        ): Filter =
+            Filter(
+                filterJobType = filterJobType,
+                filterGrade = filterGrade,
+                filterWorkingPeriod = filterWorkingPeriod,
+                filterStartDate = filterStartDate,
+            )
     }
 }

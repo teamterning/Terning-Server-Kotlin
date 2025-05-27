@@ -14,8 +14,7 @@ class ViewCount private constructor(
 
     fun increase(): ViewCount = ViewCount(value + 1)
 
-    override fun equals(other: Any?): Boolean =
-        other is ViewCount && value == other.value
+    override fun equals(other: Any?): Boolean = other is ViewCount && value == other.value
 
     override fun hashCode(): Int = value.hashCode()
 
