@@ -1,6 +1,6 @@
 package com.terning.server.kotlin.domain.filter
 
-enum class WorkingPeriod(
+enum class FilterWorkingPeriod(
     val period: String,
     val label: String,
 ) {
@@ -10,7 +10,7 @@ enum class WorkingPeriod(
     ;
 
     companion object {
-        fun from(period: String): WorkingPeriod =
+        fun from(period: String): FilterWorkingPeriod =
             entries.firstOrNull { it.period == period }
                 ?: throw FilterException(FilterErrorCode.INVALID_WORKING_PERIOD)
     }

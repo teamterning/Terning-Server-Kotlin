@@ -1,21 +1,16 @@
-package com.terning.server.kotlin.domain.internshipAnnouncement
-
+import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipErrorCode
+import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipException
 import jakarta.persistence.Embeddable
 
 @Embeddable
 class ScrapCount private constructor(
     val value: Int,
 ) {
+
     protected constructor() : this(MIN_VALUE)
 
     init {
         validateMinimum()
-    }
-
-    private fun validateMinimum() {
-        if (value < MIN_VALUE) {
-            throw InternshipException(InternshipErrorCode.INVALID_SCRAP_COUNT)
-        }
     }
 
     fun increase(): ScrapCount = ScrapCount(value + 1)
@@ -27,11 +22,18 @@ class ScrapCount private constructor(
         return ScrapCount(value - 1)
     }
 
-    override fun equals(other: Any?): Boolean = other is ScrapCount && value == other.value
+    override fun equals(other: Any?): Boolean =
+        other is ScrapCount && value == other.value
 
     override fun hashCode(): Int = value.hashCode()
 
     override fun toString(): String = value.toString()
+
+    private fun validateMinimum() {
+        if (value < MIN_VALUE) {
+            throw InternshipException(InternshipErrorCode.INVALID_SCRAP_COUNT)
+        }
+    }
 
     companion object {
         private const val MIN_VALUE = 0
@@ -39,3 +41,4 @@ class ScrapCount private constructor(
         fun from(): ScrapCount = ScrapCount(MIN_VALUE)
     }
 }
+

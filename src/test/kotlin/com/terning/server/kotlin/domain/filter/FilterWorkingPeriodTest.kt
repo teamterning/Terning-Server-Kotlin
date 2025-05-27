@@ -8,7 +8,7 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import org.junit.jupiter.params.provider.ValueSource
 
-class WorkingPeriodTest {
+class FilterWorkingPeriodTest {
     @Nested
     @DisplayName("from 메서드는")
     inner class From {
@@ -21,10 +21,10 @@ class WorkingPeriodTest {
         @DisplayName("유효한 period가 주어지면 해당 WorkingPeriod를 반환한다")
         fun validPeriodReturnsWorkingPeriod(
             period: String,
-            expected: WorkingPeriod,
+            expected: FilterWorkingPeriod,
         ) {
             // when
-            val result = WorkingPeriod.from(period)
+            val result = FilterWorkingPeriod.from(period)
 
             // then
             assertThat(result).isEqualTo(expected)
@@ -35,7 +35,7 @@ class WorkingPeriodTest {
         @DisplayName("유효하지 않은 period가 주어지면 FilterException을 던진다")
         fun invalidPeriodThrowsException(invalidPeriod: String) {
             // expect
-            assertThatThrownBy { WorkingPeriod.from(invalidPeriod) }
+            assertThatThrownBy { FilterWorkingPeriod.from(invalidPeriod) }
                 .isInstanceOfSatisfying(FilterException::class.java) { ex ->
                     assertThat(ex.errorCode).isEqualTo(FilterErrorCode.INVALID_WORKING_PERIOD)
                 }

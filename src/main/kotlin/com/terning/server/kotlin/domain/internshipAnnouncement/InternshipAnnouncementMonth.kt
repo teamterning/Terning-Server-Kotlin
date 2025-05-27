@@ -6,26 +6,30 @@ import jakarta.persistence.Embeddable
 class InternshipAnnouncementMonth private constructor(
     val value: Int,
 ) {
+
+    protected constructor() : this(MIN_MONTH)
+
     init {
         validateMonth(value)
     }
 
-    override fun equals(other: Any?): Boolean = this === other || (other is InternshipAnnouncementMonth && value == other.value)
+    override fun equals(other: Any?): Boolean =
+        this === other || (other is InternshipAnnouncementMonth && value == other.value)
 
     override fun hashCode(): Int = value
 
     override fun toString(): String = value.toString()
+
+    private fun validateMonth(value: Int) {
+        if (value !in MIN_MONTH..MAX_MONTH) {
+            throw InternshipException(InternshipErrorCode.INVALID_MONTH)
+        }
+    }
 
     companion object {
         private const val MIN_MONTH = 1
         private const val MAX_MONTH = 12
 
         fun from(value: Int): InternshipAnnouncementMonth = InternshipAnnouncementMonth(value)
-
-        private fun validateMonth(value: Int) {
-            if (value !in MIN_MONTH..MAX_MONTH) {
-                throw InternshipException(InternshipErrorCode.INVALID_MONTH)
-            }
-        }
     }
 }

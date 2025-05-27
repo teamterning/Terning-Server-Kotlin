@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-class InternshipWorkingPeriodTest {
+class InternshipFilterWorkingPeriodTest {
     @Nested
     @DisplayName("InternshipWorkingPeriod.from 메서드는")
     inner class From {

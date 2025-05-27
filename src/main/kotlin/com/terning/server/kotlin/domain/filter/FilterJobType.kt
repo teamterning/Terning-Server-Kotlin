@@ -3,7 +3,7 @@ package com.terning.server.kotlin.domain.filter
 import com.terning.server.kotlin.domain.scrap.ScrapErrorCode
 import com.terning.server.kotlin.domain.scrap.ScrapException
 
-enum class JobType(
+enum class FilterJobType(
     val type: String,
     val label: String,
 ) {
@@ -19,7 +19,7 @@ enum class JobType(
     ;
 
     companion object {
-        fun from(type: String): JobType =
+        fun from(type: String): FilterJobType =
             entries.firstOrNull { it.type.equals(type, ignoreCase = true) }
                 ?: throw ScrapException(ScrapErrorCode.INVALID_JOB_TYPE)
     }

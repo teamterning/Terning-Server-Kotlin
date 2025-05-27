@@ -1,7 +1,8 @@
 package com.terning.server.kotlin.domain.internshipAnnouncement
 
+import ScrapCount
 import com.terning.server.kotlin.domain.common.BaseRootEntity
-import com.terning.server.kotlin.domain.filter.JobType
+import com.terning.server.kotlin.domain.filter.FilterJobType
 import jakarta.persistence.AttributeOverride
 import jakarta.persistence.AttributeOverrides
 import jakarta.persistence.Column
@@ -52,7 +53,7 @@ class InternshipAnnouncement(
     val qualifications: String? = null,
     @Lob
     @Column(name = "jobType")
-    val jobType: JobType,
+    val filterJobType: FilterJobType,
     @Lob
     @Column(name = "detail")
     val detail: String? = null,

@@ -4,7 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
-class InternshipAnnouncementStartDateTest {
+class InternshipAnnouncementFilterStartDateTest {
     @Test
     @DisplayName("유효한 연도와 월이 주어지면 StartDate를 생성한다")
     fun createStartDateSuccessfully() {

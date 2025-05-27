@@ -6,27 +6,31 @@ import jakarta.persistence.Embeddable
 class InternshipWorkingPeriod private constructor(
     val months: Int,
 ) {
+
+    protected constructor() : this(MINIMUM_MONTHS)
+
     init {
         validatePositive(months)
     }
 
     fun toKoreanPeriod(): String = "${months}개월"
 
-    override fun equals(other: Any?): Boolean = this === other || (other is InternshipWorkingPeriod && months == other.months)
+    override fun equals(other: Any?): Boolean =
+        this === other || (other is InternshipWorkingPeriod && months == other.months)
 
     override fun hashCode(): Int = months
 
     override fun toString(): String = toKoreanPeriod()
 
+    private fun validatePositive(months: Int) {
+        if (months < MINIMUM_MONTHS) {
+            throw InternshipException(InternshipErrorCode.INVALID_WORKING_PERIOD)
+        }
+    }
+
     companion object {
         private const val MINIMUM_MONTHS = 1
 
         fun from(months: Int): InternshipWorkingPeriod = InternshipWorkingPeriod(months)
-
-        private fun validatePositive(months: Int) {
-            if (months < MINIMUM_MONTHS) {
-                throw InternshipException(InternshipErrorCode.INVALID_WORKING_PERIOD)
-            }
-        }
     }
 }

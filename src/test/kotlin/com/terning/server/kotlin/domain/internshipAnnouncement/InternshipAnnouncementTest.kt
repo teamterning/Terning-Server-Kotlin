@@ -1,6 +1,6 @@
 package com.terning.server.kotlin.domain.internshipAnnouncement
 
-import com.terning.server.kotlin.domain.filter.JobType
+import com.terning.server.kotlin.domain.filter.FilterJobType
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.DisplayName
@@ -79,7 +79,7 @@ class InternshipAnnouncementTest {
                     CompanyCategory.LARGE_AND_MEDIUM_COMPANIES,
                     CompanyLogoUrl.from("https://logo.com/kakao.png"),
                 ),
-            jobType = JobType.IT,
+            filterJobType = FilterJobType.IT,
             isGraduating = true,
         )
     }

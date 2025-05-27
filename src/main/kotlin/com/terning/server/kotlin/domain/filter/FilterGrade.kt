@@ -1,6 +1,6 @@
 package com.terning.server.kotlin.domain.filter
 
-enum class Grade(
+enum class FilterGrade(
     val type: String,
     val label: String,
 ) {
@@ -11,7 +11,7 @@ enum class Grade(
     ;
 
     companion object {
-        fun from(type: String): Grade =
+        fun from(type: String): FilterGrade =
             entries.firstOrNull { it.type.equals(type, ignoreCase = true) }
                 ?: throw FilterException(FilterErrorCode.INVALID_GRADE)
     }

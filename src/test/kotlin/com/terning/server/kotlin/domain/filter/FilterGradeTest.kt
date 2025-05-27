@@ -6,7 +6,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 
-class GradeTest {
+class FilterGradeTest {
     @ParameterizedTest(name = "입력: {0} → 기대 결과: {1}")
     @CsvSource(
         "freshman, 1학년",
@@ -20,10 +20,10 @@ class GradeTest {
         expectedLabel: String,
     ) {
         // when
-        val grade = Grade.from(type)
+        val filterGrade = FilterGrade.from(type)
 
         // then
-        assertEquals(expectedLabel, grade.label)
+        assertEquals(expectedLabel, filterGrade.label)
     }
 
     @ParameterizedTest
@@ -32,7 +32,7 @@ class GradeTest {
     fun `should throw exception when invalid type is provided`(invalidType: String) {
         // expect
         assertThrows(FilterException::class.java) {
-            Grade.from(invalidType)
+            FilterGrade.from(invalidType)
         }
     }
 }
