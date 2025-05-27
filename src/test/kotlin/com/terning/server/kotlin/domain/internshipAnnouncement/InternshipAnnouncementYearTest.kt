@@ -18,7 +18,7 @@ class InternshipAnnouncementYearTest {
         }
 
         @Test
-        @DisplayName("2024 이하일 경우 예외를 발생시킨다")
+        @DisplayName("2024 미만일 경우 예외를 발생시킨다")
         fun throwExceptionWhenInvalidYear() {
             val exception =
                 assertThrows<InternshipException> {

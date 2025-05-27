@@ -11,7 +11,7 @@ class CompanyLogoUrlTest {
     @DisplayName("from 메서드는")
     inner class From {
         @Test
-        @DisplayName("http로 시작하는 유효한 URL이면 인스턴스를 생성한다")
+        @DisplayName("http 또는 https로 시작하는 유효한 URL이면 인스턴스를 생성한다")
         fun createLogoUrlSuccessfully() {
             val url = "https://example.com/logo.png"
             val logoUrl = CompanyLogoUrl.from(url)
@@ -21,16 +21,31 @@ class CompanyLogoUrlTest {
         }
 
         @Test
-        @DisplayName("http로 시작하지 않으면 예외를 발생시킨다")
-        fun throwExceptionWhenInvalidUrl() {
-            val invalidUrl = "ftp://example.com/logo.png"
+        @DisplayName("지원하지 않는 scheme이면 예외를 발생시킨다 (ftp 등)")
+        fun throwExceptionForUnsupportedScheme() {
+            val invalidSchemeUrl = "ftp://example.com/logo.png"
 
             val exception =
                 assertThrows<InternshipException> {
-                    CompanyLogoUrl.from(invalidUrl)
+                    CompanyLogoUrl.from(invalidSchemeUrl)
                 }
 
-            assertThat(exception.errorCode).isEqualTo(InternshipErrorCode.INVALID_COMPANY_LOGO_URL)
+            assertThat(exception.errorCode)
+                .isEqualTo(InternshipErrorCode.UNSUPPORTED_COMPANY_LOGO_URL_SCHEME)
+        }
+
+        @Test
+        @DisplayName("URL 형식이 잘못된 경우 예외를 발생시킨다")
+        fun throwExceptionForMalformedUrl() {
+            val malformedUrl = "://not-a-valid-url"
+
+            val exception =
+                assertThrows<InternshipException> {
+                    CompanyLogoUrl.from(malformedUrl)
+                }
+
+            assertThat(exception.errorCode)
+                .isEqualTo(InternshipErrorCode.INVALID_COMPANY_LOGO_URL_FORMAT)
         }
     }
 }
