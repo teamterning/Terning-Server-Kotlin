@@ -42,5 +42,5 @@ class Company private constructor(
         return result
     }
 
-    override fun toString(): String = "${name.value} (${category.description})"
+    override fun toString(): String = "${name.value} (${category.displayName})"
 }
