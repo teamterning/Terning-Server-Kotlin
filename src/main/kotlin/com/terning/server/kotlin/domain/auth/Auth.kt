@@ -22,15 +22,19 @@ class Auth private constructor(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", nullable = false)
     val user: User,
+
     @Embedded
     @AttributeOverride(name = "value", column = Column(name = "authId"))
     private var authId: AuthId,
+
     @Enumerated(EnumType.STRING)
     @Column(length = 12)
     private var authType: AuthType,
+
     @Embedded
     @AttributeOverride(name = "value", column = Column(name = "refreshToken"))
     private var refreshToken: RefreshToken,
