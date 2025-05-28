@@ -1,6 +1,17 @@
 package com.terning.server.kotlin.domain.internshipAnnouncement
 
-import com.terning.server.kotlin.domain.filter.JobType
+import com.terning.server.kotlin.domain.filter.vo.FilterJobType
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.Company
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.CompanyCategory
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.CompanyLogoUrl
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.CompanyName
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipAnnouncementDeadline
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipAnnouncementMonth
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipAnnouncementStartDate
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipAnnouncementUrl
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipAnnouncementYear
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipTitle
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipWorkingPeriod
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.DisplayName
@@ -18,7 +29,7 @@ class InternshipAnnouncementTest {
         announcement.increaseViewCount()
 
         // then
-        assertThat(announcement.viewCount.value).isEqualTo(1)
+        assertThat(announcement.internshipAnnouncementViewCount.value).isEqualTo(1)
     }
 
     @Test
@@ -31,7 +42,7 @@ class InternshipAnnouncementTest {
         announcement.increaseScrapCount()
 
         // then
-        assertThat(announcement.scrapCount.value).isEqualTo(1)
+        assertThat(announcement.internshipAnnouncementScrapCount.value).isEqualTo(1)
     }
 
     @Test
@@ -47,7 +58,7 @@ class InternshipAnnouncementTest {
         announcement.decreaseScrapCount()
 
         // then
-        assertThat(announcement.scrapCount.value).isEqualTo(0)
+        assertThat(announcement.internshipAnnouncementScrapCount.value).isEqualTo(0)
     }
 
     @Test
@@ -65,7 +76,7 @@ class InternshipAnnouncementTest {
     private fun createSampleAnnouncement(): InternshipAnnouncement {
         return InternshipAnnouncement(
             title = InternshipTitle.from("카카오 인턴 모집"),
-            deadline = Deadline.from(LocalDate.now().plusDays(7)),
+            internshipAnnouncementDeadline = InternshipAnnouncementDeadline.from(LocalDate.now().plusDays(7)),
             workingPeriod = InternshipWorkingPeriod.from(3),
             startDate =
                 InternshipAnnouncementStartDate.of(
@@ -79,7 +90,7 @@ class InternshipAnnouncementTest {
                     CompanyCategory.LARGE_AND_MEDIUM_COMPANIES,
                     CompanyLogoUrl.from("https://logo.com/kakao.png"),
                 ),
-            jobType = JobType.IT,
+            filterJobType = FilterJobType.IT,
             isGraduating = true,
         )
     }
