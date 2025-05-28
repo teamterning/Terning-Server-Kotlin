@@ -1,6 +1,7 @@
-package com.terning.server.kotlin.domain.internshipAnnouncement
+package com.terning.server.kotlin.domain.internshipAnnouncement.vo
 
-import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipTitle
+import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipErrorCode
+import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipException
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested

@@ -1,4 +1,4 @@
-package com.terning.server.kotlin.domain.filter
+package com.terning.server.kotlin.domain.filter.vo
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName

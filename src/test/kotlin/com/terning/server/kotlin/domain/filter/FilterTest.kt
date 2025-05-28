@@ -1,5 +1,6 @@
 package com.terning.server.kotlin.domain.filter
 
+import com.terning.server.kotlin.domain.filter.vo.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test

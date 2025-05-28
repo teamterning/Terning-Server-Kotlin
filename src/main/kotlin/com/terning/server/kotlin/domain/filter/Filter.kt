@@ -1,6 +1,10 @@
 package com.terning.server.kotlin.domain.filter
 
 import com.terning.server.kotlin.domain.common.BaseRootEntity
+import com.terning.server.kotlin.domain.filter.vo.FilterGrade
+import com.terning.server.kotlin.domain.filter.vo.FilterJobType
+import com.terning.server.kotlin.domain.filter.vo.FilterStartDate
+import com.terning.server.kotlin.domain.filter.vo.FilterWorkingPeriod
 import jakarta.persistence.AttributeOverride
 import jakarta.persistence.AttributeOverrides
 import jakarta.persistence.Column

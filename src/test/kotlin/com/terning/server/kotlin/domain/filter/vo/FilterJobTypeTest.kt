@@ -1,4 +1,4 @@
-package com.terning.server.kotlin.domain.filter
+package com.terning.server.kotlin.domain.filter.vo
 
 import com.terning.server.kotlin.domain.scrap.ScrapException
 import org.junit.jupiter.api.Assertions.assertEquals

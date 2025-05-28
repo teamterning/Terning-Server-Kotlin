@@ -1,7 +1,8 @@
 package com.terning.server.kotlin.domain.internshipAnnouncement
 
 import com.terning.server.kotlin.domain.common.BaseRootEntity
-import com.terning.server.kotlin.domain.filter.FilterJobType
+import com.terning.server.kotlin.domain.filter.vo.FilterJobType
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.*
 import jakarta.persistence.AttributeOverride
 import jakarta.persistence.AttributeOverrides
 import jakarta.persistence.Column
