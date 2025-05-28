@@ -1,7 +1,17 @@
 package com.terning.server.kotlin.domain.internshipAnnouncement
 
 import com.terning.server.kotlin.domain.filter.vo.FilterJobType
-import com.terning.server.kotlin.domain.internshipAnnouncement.vo.*
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.Company
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.CompanyCategory
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.CompanyLogoUrl
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.CompanyName
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipAnnouncementDeadline
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipAnnouncementMonth
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipAnnouncementStartDate
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipAnnouncementUrl
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipAnnouncementYear
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipTitle
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipWorkingPeriod
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.DisplayName

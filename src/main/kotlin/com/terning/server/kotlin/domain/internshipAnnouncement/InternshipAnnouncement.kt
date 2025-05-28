@@ -2,7 +2,14 @@ package com.terning.server.kotlin.domain.internshipAnnouncement
 
 import com.terning.server.kotlin.domain.common.BaseRootEntity
 import com.terning.server.kotlin.domain.filter.vo.FilterJobType
-import com.terning.server.kotlin.domain.internshipAnnouncement.vo.*
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.Company
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipAnnouncementDeadline
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipAnnouncementScrapCount
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipAnnouncementStartDate
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipAnnouncementUrl
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipAnnouncementViewCount
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipTitle
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipWorkingPeriod
 import jakarta.persistence.AttributeOverride
 import jakarta.persistence.AttributeOverrides
 import jakarta.persistence.Column
