@@ -1,0 +1,6 @@
+root = true
+
+[*]
+
+# ktlint_[standard/experimental]_[rule_name]=disabled
+ktlint_standard_no-blank-line-in-list=disabled
