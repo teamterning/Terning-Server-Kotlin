@@ -6,12 +6,12 @@ import jakarta.persistence.Embeddable
 class InternshipTitle private constructor(
     val value: String,
 ) {
-    protected constructor() : this("")
-
     init {
         validateNotBlank(value)
         validateMaxLength(value)
     }
+
+    protected constructor() : this("")
 
     override fun equals(other: Any?): Boolean = this === other || (other is InternshipTitle && value == other.value)
 

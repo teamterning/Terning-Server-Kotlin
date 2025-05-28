@@ -6,12 +6,13 @@ import jakarta.persistence.Embeddable
 class CompanyName private constructor(
     val value: String,
 ) {
-    protected constructor() : this("터닝")
 
     init {
         validateNotBlank(value)
         validateMaxLength(value)
     }
+
+    protected constructor() : this(DEFAULT_COMPANY_NAME)
 
     override fun equals(other: Any?): Boolean = this === other || (other is CompanyName && value == other.value)
 
@@ -33,6 +34,7 @@ class CompanyName private constructor(
 
     companion object {
         private const val MAX_LENGTH = 64
+        private const val DEFAULT_COMPANY_NAME = "터닝"
 
         fun from(value: String): CompanyName = CompanyName(value)
     }

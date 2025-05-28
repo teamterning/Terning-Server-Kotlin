@@ -4,25 +4,25 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
-class ViewCountTest {
+class InternshipAnnouncementViewCountTest {
     @Test
     @DisplayName("from()을 호출하면 값이 0인 ViewCount가 생성된다")
     fun `initial view count is zero`() {
         // when
-        val viewCount = ViewCount.from()
+        val internshipAnnouncementViewCount = InternshipAnnouncementViewCount.from()
 
         // then
-        assertThat(viewCount.value).isZero()
+        assertThat(internshipAnnouncementViewCount.value).isZero()
     }
 
     @Test
     @DisplayName("increase()를 호출하면 값이 1 증가된 ViewCount가 반환된다")
     fun `increase returns new instance with incremented value`() {
         // given
-        val viewCount = ViewCount.from()
+        val internshipAnnouncementViewCount = InternshipAnnouncementViewCount.from()
 
         // when
-        val increased = viewCount.increase()
+        val increased = internshipAnnouncementViewCount.increase()
 
         // then
         assertThat(increased.value).isEqualTo(1)

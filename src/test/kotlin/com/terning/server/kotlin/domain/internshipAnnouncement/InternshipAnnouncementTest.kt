@@ -18,7 +18,7 @@ class InternshipAnnouncementTest {
         announcement.increaseViewCount()
 
         // then
-        assertThat(announcement.viewCount.value).isEqualTo(1)
+        assertThat(announcement.internshipAnnouncementViewCount.value).isEqualTo(1)
     }
 
     @Test
@@ -31,7 +31,7 @@ class InternshipAnnouncementTest {
         announcement.increaseScrapCount()
 
         // then
-        assertThat(announcement.scrapCount.value).isEqualTo(1)
+        assertThat(announcement.internshipAnnouncementScrapCount.value).isEqualTo(1)
     }
 
     @Test
@@ -47,7 +47,7 @@ class InternshipAnnouncementTest {
         announcement.decreaseScrapCount()
 
         // then
-        assertThat(announcement.scrapCount.value).isEqualTo(0)
+        assertThat(announcement.internshipAnnouncementScrapCount.value).isEqualTo(0)
     }
 
     @Test
@@ -65,7 +65,7 @@ class InternshipAnnouncementTest {
     private fun createSampleAnnouncement(): InternshipAnnouncement {
         return InternshipAnnouncement(
             title = InternshipTitle.from("카카오 인턴 모집"),
-            deadline = Deadline.from(LocalDate.now().plusDays(7)),
+            internshipAnnouncementDeadline = InternshipAnnouncementDeadline.from(LocalDate.now().plusDays(7)),
             workingPeriod = InternshipWorkingPeriod.from(3),
             startDate =
                 InternshipAnnouncementStartDate.of(

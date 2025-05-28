@@ -6,11 +6,11 @@ import jakarta.persistence.Embeddable
 class InternshipWorkingPeriod private constructor(
     val months: Int,
 ) {
-    protected constructor() : this(MINIMUM_MONTHS)
-
     init {
         validatePositive(months)
     }
+
+    protected constructor() : this(MINIMUM_MONTHS)
 
     fun toKoreanPeriod(): String = "${months}개월"
 

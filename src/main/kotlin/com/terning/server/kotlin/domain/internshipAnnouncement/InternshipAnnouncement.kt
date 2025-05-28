@@ -1,6 +1,5 @@
 package com.terning.server.kotlin.domain.internshipAnnouncement
 
-import ScrapCount
 import com.terning.server.kotlin.domain.common.BaseRootEntity
 import com.terning.server.kotlin.domain.filter.FilterJobType
 import jakarta.persistence.AttributeOverride
@@ -12,6 +11,7 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Lob
+import org.hibernate.Hibernate
 
 @Entity
 class InternshipAnnouncement(
@@ -23,7 +23,7 @@ class InternshipAnnouncement(
     val title: InternshipTitle,
     @Embedded
     @AttributeOverride(name = "value", column = Column(name = "deadline", nullable = false))
-    val deadline: Deadline,
+    val internshipAnnouncementDeadline: InternshipAnnouncementDeadline,
     @Embedded
     @AttributeOverride(name = "value", column = Column(name = "workingPeriod"))
     val workingPeriod: InternshipWorkingPeriod,
@@ -35,10 +35,10 @@ class InternshipAnnouncement(
     val startDate: InternshipAnnouncementStartDate,
     @Embedded
     @AttributeOverride(name = "value", column = Column(name = "viewCount", nullable = false))
-    var viewCount: ViewCount = ViewCount.from(),
+    var internshipAnnouncementViewCount: InternshipAnnouncementViewCount = InternshipAnnouncementViewCount.from(),
     @Embedded
     @AttributeOverride(name = "value", column = Column(name = "ScrapCount", nullable = false))
-    var scrapCount: ScrapCount = ScrapCount.from(),
+    var internshipAnnouncementScrapCount: InternshipAnnouncementScrapCount = InternshipAnnouncementScrapCount.from(),
     @Embedded
     @AttributeOverride(name = "value", column = Column(name = "url", length = 256))
     val url: InternshipAnnouncementUrl,
@@ -61,23 +61,24 @@ class InternshipAnnouncement(
     val isGraduating: Boolean = false,
 ) : BaseRootEntity() {
     fun increaseViewCount() {
-        viewCount = viewCount.increase()
+        internshipAnnouncementViewCount = internshipAnnouncementViewCount.increase()
     }
 
     fun increaseScrapCount() {
-        scrapCount = scrapCount.increase()
+        internshipAnnouncementScrapCount = internshipAnnouncementScrapCount.increase()
     }
 
     fun decreaseScrapCount() {
-        scrapCount = scrapCount.decrease()
+        internshipAnnouncementScrapCount = internshipAnnouncementScrapCount.decrease()
     }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other !is InternshipAnnouncement) return false
-        if (id == null || other.id == null) return false
-        return id == other.id
+        if (other == null || Hibernate.getClass(this) != Hibernate.getClass(other)) return false
+        other as InternshipAnnouncement
+        return id != null && id == other.id
     }
 
     override fun hashCode(): Int = id?.hashCode() ?: 0
+
 }

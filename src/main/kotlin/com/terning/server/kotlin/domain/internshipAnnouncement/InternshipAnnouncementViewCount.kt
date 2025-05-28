@@ -3,18 +3,18 @@ package com.terning.server.kotlin.domain.internshipAnnouncement
 import jakarta.persistence.Embeddable
 
 @Embeddable
-class ViewCount private constructor(
+class InternshipAnnouncementViewCount private constructor(
     val value: Int,
 ) {
-    protected constructor() : this(MIN_VALUE)
-
     init {
         validateMinimum(value)
     }
 
-    fun increase(): ViewCount = ViewCount(value + 1)
+    protected constructor() : this(MIN_VALUE)
 
-    override fun equals(other: Any?): Boolean = other is ViewCount && value == other.value
+    fun increase(): InternshipAnnouncementViewCount = InternshipAnnouncementViewCount(value + 1)
+
+    override fun equals(other: Any?): Boolean = other is InternshipAnnouncementViewCount && value == other.value
 
     override fun hashCode(): Int = value.hashCode()
 
@@ -29,6 +29,6 @@ class ViewCount private constructor(
     companion object {
         private const val MIN_VALUE = 0
 
-        fun from(): ViewCount = ViewCount(MIN_VALUE)
+        fun from(): InternshipAnnouncementViewCount = InternshipAnnouncementViewCount(MIN_VALUE)
     }
 }

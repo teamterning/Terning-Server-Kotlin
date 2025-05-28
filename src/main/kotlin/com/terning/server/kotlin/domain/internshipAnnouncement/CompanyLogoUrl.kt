@@ -8,11 +8,11 @@ import java.net.URISyntaxException
 class CompanyLogoUrl private constructor(
     val value: String,
 ) {
-    protected constructor() : this("http://default-logo-url.com")
-
     init {
         validateUrl(value)
     }
+
+    protected constructor() : this(DEFAULT_LOGO_URL)
 
     override fun equals(other: Any?): Boolean = this === other || (other is CompanyLogoUrl && value == other.value)
 
@@ -42,6 +42,7 @@ class CompanyLogoUrl private constructor(
 
     companion object {
         private val ALLOWED_SCHEMES = setOf("http", "https")
+        private const val DEFAULT_LOGO_URL = "http://default-logo-url.com"
 
         fun from(value: String): CompanyLogoUrl = CompanyLogoUrl(value)
     }
