@@ -2,6 +2,7 @@ package com.terning.server.kotlin.domain.scrap
 
 import com.terning.server.kotlin.domain.common.BaseRootEntity
 import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipAnnouncement
+import com.terning.server.kotlin.domain.scrap.vo.Color
 import com.terning.server.kotlin.domain.user.User
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

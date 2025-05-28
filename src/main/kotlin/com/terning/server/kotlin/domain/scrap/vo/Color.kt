@@ -1,4 +1,7 @@
-package com.terning.server.kotlin.domain.scrap
+package com.terning.server.kotlin.domain.scrap.vo
+
+import com.terning.server.kotlin.domain.scrap.ScrapErrorCode
+import com.terning.server.kotlin.domain.scrap.ScrapException
 
 enum class Color(
     val color: String,

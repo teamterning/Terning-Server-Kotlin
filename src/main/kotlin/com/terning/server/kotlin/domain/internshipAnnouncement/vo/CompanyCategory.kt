@@ -1,4 +1,7 @@
-package com.terning.server.kotlin.domain.internshipAnnouncement
+package com.terning.server.kotlin.domain.internshipAnnouncement.vo
+
+import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipErrorCode
+import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipException
 
 enum class CompanyCategory(
     val displayName: String,

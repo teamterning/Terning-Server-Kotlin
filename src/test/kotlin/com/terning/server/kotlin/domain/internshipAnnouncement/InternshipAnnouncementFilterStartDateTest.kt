@@ -1,5 +1,8 @@
 package com.terning.server.kotlin.domain.internshipAnnouncement
 
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipAnnouncementMonth
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipAnnouncementStartDate
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipAnnouncementYear
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test

@@ -1,4 +1,4 @@
-package com.terning.server.kotlin.domain.internshipAnnouncement
+package com.terning.server.kotlin.domain.internshipAnnouncement.vo
 
 import jakarta.persistence.Column
 import jakarta.persistence.Embeddable
