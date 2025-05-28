@@ -6,7 +6,6 @@ import jakarta.persistence.Embeddable
 class CompanyName private constructor(
     val value: String,
 ) {
-
     init {
         validateNotBlank(value)
         validateMaxLength(value)

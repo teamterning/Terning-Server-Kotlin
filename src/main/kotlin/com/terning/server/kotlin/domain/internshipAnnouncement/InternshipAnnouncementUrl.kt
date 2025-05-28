@@ -14,8 +14,7 @@ class InternshipAnnouncementUrl private constructor(
 
     protected constructor() : this(DEFAULT_URL)
 
-    override fun equals(other: Any?): Boolean =
-        this === other || (other is InternshipAnnouncementUrl && value == other.value)
+    override fun equals(other: Any?): Boolean = this === other || (other is InternshipAnnouncementUrl && value == other.value)
 
     override fun hashCode(): Int = value.hashCode()
 

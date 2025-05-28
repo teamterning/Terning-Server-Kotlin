@@ -80,5 +80,4 @@ class InternshipAnnouncement(
     }
 
     override fun hashCode(): Int = id?.hashCode() ?: 0
-
 }
