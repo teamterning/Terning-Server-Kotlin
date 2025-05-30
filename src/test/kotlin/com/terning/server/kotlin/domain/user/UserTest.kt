@@ -1,5 +1,8 @@
 package com.terning.server.kotlin.domain.user
 
+import com.terning.server.kotlin.domain.user.vo.ProfileImage
+import com.terning.server.kotlin.domain.user.vo.UserName
+import com.terning.server.kotlin.domain.user.vo.UserState
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested

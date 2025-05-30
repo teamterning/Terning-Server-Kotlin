@@ -1,7 +1,7 @@
 package com.terning.server.kotlin.domain.internshipAnnouncement.vo
 
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipErrorCode
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipException
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementErrorCode
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementException
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -23,10 +23,10 @@ class InternshipAnnouncementFilterYearTest {
         @DisplayName("2024 미만일 경우 예외를 발생시킨다")
         fun throwExceptionWhenInvalidYear() {
             val exception =
-                assertThrows<InternshipException> {
+                assertThrows<InternshipAnnouncementException> {
                     InternshipAnnouncementYear.from(2024)
                 }
-            assertThat(exception.errorCode).isEqualTo(InternshipErrorCode.INVALID_YEAR)
+            assertThat(exception.errorCode).isEqualTo(InternshipAnnouncementErrorCode.INVALID_YEAR)
         }
     }
 }
