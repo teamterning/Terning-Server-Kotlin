@@ -1,7 +1,7 @@
 package com.terning.server.kotlin.domain.filter.vo
 
-import com.terning.server.kotlin.domain.filter.FilterErrorCode
-import com.terning.server.kotlin.domain.filter.FilterException
+import com.terning.server.kotlin.domain.filter.exception.FilterErrorCode
+import com.terning.server.kotlin.domain.filter.exception.FilterException
 import jakarta.persistence.Embeddable
 
 @Embeddable
@@ -11,8 +11,6 @@ class FilterYear private constructor(
     init {
         validateYear(value)
     }
-
-    protected constructor() : this(2000)
 
     override fun equals(other: Any?): Boolean = this === other || (other is FilterYear && value == other.value)
 
