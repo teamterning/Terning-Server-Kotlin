@@ -1,11 +1,9 @@
-package com.terning.server.kotlin.domain.user
+package com.terning.server.kotlin.domain.user.vo
 
-import jakarta.persistence.Column
 import jakarta.persistence.Embeddable
 
 @Embeddable
 class UserName(
-    @Column(name = "user_name", length = MAX_LENGTH, nullable = false)
     val value: String,
 ) {
     init {
@@ -24,6 +22,6 @@ class UserName(
         private const val MAX_LENGTH = 12
 
         private const val ERROR_EMPTY = "이름은 공백일 수 없습니다."
-        private const val ERROR_LENGTH = "이름은 ${MIN_LENGTH}~${MAX_LENGTH}자여야 합니다."
+        private const val ERROR_LENGTH = "이름은 $MIN_LENGTH~${MAX_LENGTH}자여야 합니다."
     }
 }
