@@ -26,45 +26,57 @@ class InternshipAnnouncement(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
+
     @Embedded
     @AttributeOverride(name = "value", column = Column(name = "title", nullable = false, length = 64))
     val title: InternshipTitle,
+
     @Embedded
     @AttributeOverride(name = "value", column = Column(name = "deadline", nullable = false))
     val internshipAnnouncementDeadline: InternshipAnnouncementDeadline,
+
     @Embedded
     @AttributeOverride(name = "value", column = Column(name = "workingPeriod"))
     val workingPeriod: InternshipWorkingPeriod,
+
     @Embedded
     @AttributeOverrides(
         AttributeOverride(name = "year.value", column = Column(name = "startYear", nullable = false)),
         AttributeOverride(name = "month.value", column = Column(name = "startMonth", nullable = false)),
     )
     val startDate: InternshipAnnouncementStartDate,
+
     @Embedded
     @AttributeOverride(name = "value", column = Column(name = "viewCount", nullable = false))
     var internshipAnnouncementViewCount: InternshipAnnouncementViewCount = InternshipAnnouncementViewCount.from(),
+
     @Embedded
     @AttributeOverride(name = "value", column = Column(name = "ScrapCount", nullable = false))
     var internshipAnnouncementScrapCount: InternshipAnnouncementScrapCount = InternshipAnnouncementScrapCount.from(),
+
     @Embedded
     @AttributeOverride(name = "value", column = Column(name = "url", length = 256))
     val url: InternshipAnnouncementUrl,
+
     @Embedded
     @AttributeOverrides(
         AttributeOverride(name = "name.value", column = Column(name = "companyInfo")),
         AttributeOverride(name = "logoUrl.value", column = Column(name = "companyImage")),
     )
     val company: Company,
+
     @Lob
     @Column(name = "qualifications")
     val qualifications: String? = null,
+
     @Lob
     @Column(name = "jobType")
     val filterJobType: FilterJobType,
+
     @Lob
     @Column(name = "detail")
     val detail: String? = null,
+
     @Column(name = "isGraduating", nullable = false)
     val isGraduating: Boolean = false,
 ) : BaseRootEntity() {
