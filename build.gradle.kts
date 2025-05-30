@@ -3,11 +3,13 @@ import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 plugins {
     kotlin("jvm") version "1.9.25"
     kotlin("plugin.spring") version "1.9.25"
+    kotlin("plugin.jpa") version "1.9.25"
+    kotlin("plugin.allopen") version "1.9.25"
+    kotlin("plugin.noarg") version "1.9.25"
     id("org.springframework.boot") version "3.4.4"
     id("io.spring.dependency-management") version "1.1.7"
     id("org.hibernate.orm") version "6.6.11.Final"
     id("org.graalvm.buildtools.native") version "0.10.6"
-    kotlin("plugin.jpa") version "1.9.25"
     id("org.jlleitschuh.gradle.ktlint").version("12.1.0")
 }
 
@@ -60,6 +62,12 @@ allOpen {
     annotation("jakarta.persistence.Entity")
     annotation("jakarta.persistence.MappedSuperclass")
     annotation("jakarta.persistence.Embeddable")
+}
+
+noArg {
+    annotation("jakarta.persistence.Entity")
+    annotation("jakarta.persistence.Embeddable")
+    annotation("jakarta.persistence.MappedSuperclass")
 }
 
 tasks.withType<Test> {
