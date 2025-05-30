@@ -1,7 +1,7 @@
 package com.terning.server.kotlin.domain.internshipAnnouncement.vo
 
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipErrorCode
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipException
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementErrorCode
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementException
 import jakarta.persistence.Embeddable
 
 @Embeddable
@@ -12,8 +12,6 @@ class InternshipAnnouncementYear private constructor(
         validateYear(value)
     }
 
-    protected constructor() : this(MIN_VALID_YEAR + 1)
-
     override fun equals(other: Any?): Boolean = this === other || (other is InternshipAnnouncementYear && value == other.value)
 
     override fun hashCode(): Int = value
@@ -22,7 +20,7 @@ class InternshipAnnouncementYear private constructor(
 
     private fun validateYear(value: Int) {
         if (value <= MIN_VALID_YEAR) {
-            throw InternshipException(InternshipErrorCode.INVALID_YEAR)
+            throw InternshipAnnouncementException(InternshipAnnouncementErrorCode.INVALID_YEAR)
         }
     }
 
