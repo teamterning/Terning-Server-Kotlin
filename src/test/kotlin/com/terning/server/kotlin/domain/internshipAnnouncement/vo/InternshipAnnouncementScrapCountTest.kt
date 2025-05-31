@@ -1,6 +1,6 @@
 package com.terning.server.kotlin.domain.internshipAnnouncement.vo
 
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipException
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementException
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -51,7 +51,7 @@ class InternshipAnnouncementScrapCountTest {
 
         // when & then
         val exception =
-            assertThrows<InternshipException> {
+            assertThrows<InternshipAnnouncementException> {
                 internshipAnnouncementScrapCount.decrease()
             }
 

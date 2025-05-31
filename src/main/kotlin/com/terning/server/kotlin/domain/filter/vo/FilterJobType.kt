@@ -1,7 +1,7 @@
 package com.terning.server.kotlin.domain.filter.vo
 
-import com.terning.server.kotlin.domain.scrap.ScrapErrorCode
-import com.terning.server.kotlin.domain.scrap.ScrapException
+import com.terning.server.kotlin.domain.scrap.exception.ScrapErrorCode
+import com.terning.server.kotlin.domain.scrap.exception.ScrapException
 
 enum class FilterJobType(
     val type: String,

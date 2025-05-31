@@ -1,7 +1,7 @@
 package com.terning.server.kotlin.domain.internshipAnnouncement.vo
 
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipErrorCode
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipException
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementErrorCode
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementException
 import jakarta.persistence.Embeddable
 import java.time.LocalDate
 
@@ -9,8 +9,6 @@ import java.time.LocalDate
 class InternshipAnnouncementDeadline private constructor(
     val value: LocalDate,
 ) {
-    protected constructor() : this(LocalDate.of(2024, 1, 2))
-
     fun isOver(today: LocalDate = LocalDate.now()): Boolean = value.isBefore(today)
 
     override fun equals(other: Any?): Boolean = other is InternshipAnnouncementDeadline && value == other.value
@@ -21,7 +19,7 @@ class InternshipAnnouncementDeadline private constructor(
 
     private fun validateDeadline(value: LocalDate) {
         if (!value.isAfter(MIN_DEADLINE_DATE)) {
-            throw InternshipException(InternshipErrorCode.INVALID_DEADLINE)
+            throw InternshipAnnouncementException(InternshipAnnouncementErrorCode.INVALID_DEADLINE)
         }
     }
 

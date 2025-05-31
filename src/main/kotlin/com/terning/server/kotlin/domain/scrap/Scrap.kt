@@ -23,29 +23,19 @@ class Scrap private constructor(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", nullable = false)
     val user: User,
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "announcement_id", nullable = false)
     val internshipAnnouncement: InternshipAnnouncement,
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private var color: Color,
 ) : BaseRootEntity() {
-    companion object {
-        fun of(
-            user: User,
-            internshipAnnouncement: InternshipAnnouncement,
-            color: Color,
-        ): Scrap =
-            Scrap(
-                user = user,
-                internshipAnnouncement = internshipAnnouncement,
-                color = color,
-            )
-    }
-
     fun changeColor(to: Color) {
         this.color = to
     }
@@ -61,4 +51,17 @@ class Scrap private constructor(
     }
 
     override fun hashCode(): Int = id?.hashCode() ?: 0
+
+    companion object {
+        fun of(
+            user: User,
+            internshipAnnouncement: InternshipAnnouncement,
+            color: Color,
+        ): Scrap =
+            Scrap(
+                user = user,
+                internshipAnnouncement = internshipAnnouncement,
+                color = color,
+            )
+    }
 }

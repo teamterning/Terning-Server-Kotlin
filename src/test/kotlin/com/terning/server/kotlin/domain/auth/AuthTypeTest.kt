@@ -1,5 +1,7 @@
 package com.terning.server.kotlin.domain.auth
 
+import com.terning.server.kotlin.domain.auth.exception.AuthErrorCode
+import com.terning.server.kotlin.domain.auth.exception.AuthException
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test

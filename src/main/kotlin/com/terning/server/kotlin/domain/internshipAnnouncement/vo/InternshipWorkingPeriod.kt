@@ -1,7 +1,7 @@
 package com.terning.server.kotlin.domain.internshipAnnouncement.vo
 
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipErrorCode
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipException
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementErrorCode
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementException
 import jakarta.persistence.Embeddable
 
 @Embeddable
@@ -11,8 +11,6 @@ class InternshipWorkingPeriod private constructor(
     init {
         validatePositive(months)
     }
-
-    protected constructor() : this(MINIMUM_MONTHS)
 
     fun toKoreanPeriod(): String = "${months}개월"
 
@@ -24,7 +22,7 @@ class InternshipWorkingPeriod private constructor(
 
     private fun validatePositive(months: Int) {
         if (months < MINIMUM_MONTHS) {
-            throw InternshipException(InternshipErrorCode.INVALID_WORKING_PERIOD)
+            throw InternshipAnnouncementException(InternshipAnnouncementErrorCode.INVALID_WORKING_PERIOD)
         }
     }
 

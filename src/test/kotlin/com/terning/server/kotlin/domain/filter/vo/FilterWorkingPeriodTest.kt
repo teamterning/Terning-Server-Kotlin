@@ -1,7 +1,7 @@
 package com.terning.server.kotlin.domain.filter.vo
 
-import com.terning.server.kotlin.domain.filter.FilterErrorCode
-import com.terning.server.kotlin.domain.filter.FilterException
+import com.terning.server.kotlin.domain.filter.exception.FilterErrorCode
+import com.terning.server.kotlin.domain.filter.exception.FilterException
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName

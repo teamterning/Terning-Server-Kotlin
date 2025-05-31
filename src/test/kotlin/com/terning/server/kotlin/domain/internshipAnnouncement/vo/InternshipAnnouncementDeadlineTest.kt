@@ -1,7 +1,7 @@
 package com.terning.server.kotlin.domain.internshipAnnouncement.vo
 
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipErrorCode
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipException
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementErrorCode
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementException
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName
@@ -40,8 +40,8 @@ class InternshipAnnouncementDeadlineTest {
         val invalid = LocalDate.of(2024, 1, 1)
 
         assertThatThrownBy { InternshipAnnouncementDeadline.from(invalid) }
-            .isInstanceOf(InternshipException::class.java)
-            .hasMessage(InternshipErrorCode.INVALID_DEADLINE.message)
+            .isInstanceOf(InternshipAnnouncementException::class.java)
+            .hasMessage(InternshipAnnouncementErrorCode.INVALID_DEADLINE.message)
     }
 
     @Test

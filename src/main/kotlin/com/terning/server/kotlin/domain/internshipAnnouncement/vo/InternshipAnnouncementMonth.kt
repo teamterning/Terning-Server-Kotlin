@@ -1,7 +1,7 @@
 package com.terning.server.kotlin.domain.internshipAnnouncement.vo
 
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipErrorCode
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipException
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementErrorCode
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementException
 import jakarta.persistence.Embeddable
 
 @Embeddable
@@ -12,8 +12,6 @@ class InternshipAnnouncementMonth private constructor(
         validateMonth(value)
     }
 
-    protected constructor() : this(MIN_MONTH)
-
     override fun equals(other: Any?): Boolean = this === other || (other is InternshipAnnouncementMonth && value == other.value)
 
     override fun hashCode(): Int = value
@@ -22,7 +20,7 @@ class InternshipAnnouncementMonth private constructor(
 
     private fun validateMonth(value: Int) {
         if (value !in MIN_MONTH..MAX_MONTH) {
-            throw InternshipException(InternshipErrorCode.INVALID_MONTH)
+            throw InternshipAnnouncementException(InternshipAnnouncementErrorCode.INVALID_MONTH)
         }
     }
 

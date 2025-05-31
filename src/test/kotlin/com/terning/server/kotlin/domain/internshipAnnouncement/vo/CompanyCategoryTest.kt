@@ -1,7 +1,7 @@
 package com.terning.server.kotlin.domain.internshipAnnouncement.vo
 
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipErrorCode
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipException
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementErrorCode
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementException
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.assertThrows
@@ -34,9 +34,9 @@ class CompanyCategoryTest {
     @ValueSource(strings = ["", "대기업", "터닝", "UNKNOWN", "스타트업스"])
     fun `throw exception when displayName is invalid`(invalidName: String) {
         val exception =
-            assertThrows<InternshipException> {
+            assertThrows<InternshipAnnouncementException> {
                 CompanyCategory.from(invalidName)
             }
-        assertThat(exception.errorCode).isEqualTo(InternshipErrorCode.INVALID_COMPANY_CATEGORY)
+        assertThat(exception.errorCode).isEqualTo(InternshipAnnouncementErrorCode.INVALID_COMPANY_CATEGORY)
     }
 }

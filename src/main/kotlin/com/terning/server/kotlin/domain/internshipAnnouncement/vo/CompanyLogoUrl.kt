@@ -1,7 +1,7 @@
 package com.terning.server.kotlin.domain.internshipAnnouncement.vo
 
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipErrorCode
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipException
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementErrorCode
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementException
 import jakarta.persistence.Embeddable
 import java.net.URI
 import java.net.URISyntaxException
@@ -13,8 +13,6 @@ class CompanyLogoUrl private constructor(
     init {
         validateUrl(value)
     }
-
-    protected constructor() : this(DEFAULT_LOGO_URL)
 
     override fun equals(other: Any?): Boolean = this === other || (other is CompanyLogoUrl && value == other.value)
 
@@ -31,14 +29,14 @@ class CompanyLogoUrl private constructor(
         return try {
             URI(value)
         } catch (e: URISyntaxException) {
-            throw InternshipException(InternshipErrorCode.INVALID_COMPANY_LOGO_URL_FORMAT)
+            throw InternshipAnnouncementException(InternshipAnnouncementErrorCode.INVALID_COMPANY_LOGO_URL_FORMAT)
         }
     }
 
     private fun validateScheme(uri: URI) {
         val scheme = uri.scheme?.lowercase()
         if (scheme !in ALLOWED_SCHEMES) {
-            throw InternshipException(InternshipErrorCode.UNSUPPORTED_COMPANY_LOGO_URL_SCHEME)
+            throw InternshipAnnouncementException(InternshipAnnouncementErrorCode.UNSUPPORTED_COMPANY_LOGO_URL_SCHEME)
         }
     }
 

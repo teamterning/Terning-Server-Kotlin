@@ -1,7 +1,7 @@
 package com.terning.server.kotlin.domain.internshipAnnouncement.vo
 
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipErrorCode
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipException
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementErrorCode
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementException
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -33,11 +33,11 @@ class InternshipTitleTest {
 
             // when & then
             val exception =
-                assertThrows<InternshipException> {
+                assertThrows<InternshipAnnouncementException> {
                     InternshipTitle.from(blank)
                 }
 
-            assertThat(exception.errorCode).isEqualTo(InternshipErrorCode.INVALID_INTERNSHIP_TITLE_EMPTY)
+            assertThat(exception.errorCode).isEqualTo(InternshipAnnouncementErrorCode.INVALID_INTERNSHIP_TITLE_EMPTY)
         }
 
         @Test
@@ -48,11 +48,11 @@ class InternshipTitleTest {
 
             // when & then
             val exception =
-                assertThrows<InternshipException> {
+                assertThrows<InternshipAnnouncementException> {
                     InternshipTitle.from(tooLong)
                 }
 
-            assertThat(exception.errorCode).isEqualTo(InternshipErrorCode.INVALID_INTERNSHIP_TITLE_TOO_LONG)
+            assertThat(exception.errorCode).isEqualTo(InternshipAnnouncementErrorCode.INVALID_INTERNSHIP_TITLE_TOO_LONG)
         }
     }
 }

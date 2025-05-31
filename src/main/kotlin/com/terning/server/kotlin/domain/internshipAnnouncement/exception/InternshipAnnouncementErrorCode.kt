@@ -1,9 +1,9 @@
-package com.terning.server.kotlin.domain.internshipAnnouncement
+package com.terning.server.kotlin.domain.internshipAnnouncement.exception
 
 import com.terning.server.kotlin.domain.common.BaseErrorCode
 import org.springframework.http.HttpStatus
 
-enum class InternshipErrorCode(
+enum class InternshipAnnouncementErrorCode(
     override val status: HttpStatus,
     override val message: String,
 ) : BaseErrorCode {

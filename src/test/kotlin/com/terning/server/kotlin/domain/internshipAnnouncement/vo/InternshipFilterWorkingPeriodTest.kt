@@ -1,7 +1,7 @@
 package com.terning.server.kotlin.domain.internshipAnnouncement.vo
 
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipErrorCode
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipException
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementErrorCode
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementException
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -29,11 +29,11 @@ class InternshipFilterWorkingPeriodTest {
         @DisplayName("0 이하의 개월 수를 입력하면 예외를 던진다")
         fun `throw exception when months is zero or negative`() {
             val exception =
-                assertThrows<InternshipException> {
+                assertThrows<InternshipAnnouncementException> {
                     InternshipWorkingPeriod.from(0)
                 }
 
-            assertThat(exception.errorCode).isEqualTo(InternshipErrorCode.INVALID_WORKING_PERIOD)
+            assertThat(exception.errorCode).isEqualTo(InternshipAnnouncementErrorCode.INVALID_WORKING_PERIOD)
         }
     }
 

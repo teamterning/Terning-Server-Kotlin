@@ -1,6 +1,6 @@
 package com.terning.server.kotlin.domain.filter.vo
 
-import com.terning.server.kotlin.domain.scrap.ScrapException
+import com.terning.server.kotlin.domain.scrap.exception.ScrapException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.DisplayName

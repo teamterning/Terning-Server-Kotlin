@@ -1,5 +1,6 @@
 package com.terning.server.kotlin.domain.user
 
+import com.terning.server.kotlin.domain.user.vo.UserName
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName

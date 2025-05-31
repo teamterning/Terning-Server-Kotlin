@@ -1,6 +1,7 @@
 package com.terning.server.kotlin.domain.internshipAnnouncement
 
 import com.terning.server.kotlin.domain.filter.vo.FilterJobType
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementException
 import com.terning.server.kotlin.domain.internshipAnnouncement.vo.Company
 import com.terning.server.kotlin.domain.internshipAnnouncement.vo.CompanyCategory
 import com.terning.server.kotlin.domain.internshipAnnouncement.vo.CompanyLogoUrl
@@ -68,7 +69,7 @@ class InternshipAnnouncementTest {
         val announcement = createSampleAnnouncement()
 
         // expect
-        assertThrows(InternshipException::class.java) {
+        assertThrows(InternshipAnnouncementException::class.java) {
             announcement.decreaseScrapCount()
         }
     }

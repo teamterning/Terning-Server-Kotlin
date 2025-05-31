@@ -1,5 +1,7 @@
 package com.terning.server.kotlin.domain.banner
 
+import com.terning.server.kotlin.domain.banner.vo.ImageUrl
+import com.terning.server.kotlin.domain.banner.vo.Link
 import com.terning.server.kotlin.domain.common.BaseRootEntity
 import jakarta.persistence.AttributeOverride
 import jakarta.persistence.Column
@@ -16,12 +18,15 @@ class Banner(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
+
     @Embedded
-    @AttributeOverride(name = "value", column = Column(name = "imageUrl"))
+    @AttributeOverride(name = "value", column = Column(name = "imageUrl", length = 255))
     var imageUrl: ImageUrl,
+
     @Embedded
-    @AttributeOverride(name = "value", column = Column(name = "link"))
+    @AttributeOverride(name = "value", column = Column(name = "link", length = 255))
     var link: Link,
-    @Column
+
+    @Column(name = "priority")
     private var priority: Int,
 ) : BaseRootEntity()

@@ -10,8 +10,6 @@ class FilterMonth private constructor(
         validateRange(value)
     }
 
-    protected constructor() : this(MIN_MONTH)
-
     override fun equals(other: Any?): Boolean = this === other || (other is FilterMonth && value == other.value)
 
     override fun hashCode(): Int = value

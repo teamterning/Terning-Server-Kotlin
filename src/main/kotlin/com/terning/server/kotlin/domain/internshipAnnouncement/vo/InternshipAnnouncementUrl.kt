@@ -1,7 +1,7 @@
 package com.terning.server.kotlin.domain.internshipAnnouncement.vo
 
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipErrorCode
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipException
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementErrorCode
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementException
 import jakarta.persistence.Embeddable
 import java.net.URI
 import java.net.URISyntaxException
@@ -14,8 +14,6 @@ class InternshipAnnouncementUrl private constructor(
         validateUrl(value)
     }
 
-    protected constructor() : this(DEFAULT_URL)
-
     override fun equals(other: Any?): Boolean = this === other || (other is InternshipAnnouncementUrl && value == other.value)
 
     override fun hashCode(): Int = value.hashCode()
@@ -27,10 +25,10 @@ class InternshipAnnouncementUrl private constructor(
             val uri = URI(value)
             val scheme = uri.scheme?.lowercase()
             if (scheme !in ALLOWED_SCHEMES) {
-                throw InternshipException(InternshipErrorCode.UNSUPPORTED_ANNOUNCEMENT_URL_SCHEME)
+                throw InternshipAnnouncementException(InternshipAnnouncementErrorCode.UNSUPPORTED_ANNOUNCEMENT_URL_SCHEME)
             }
         } catch (e: URISyntaxException) {
-            throw InternshipException(InternshipErrorCode.INVALID_ANNOUNCEMENT_URL_FORMAT)
+            throw InternshipAnnouncementException(InternshipAnnouncementErrorCode.INVALID_ANNOUNCEMENT_URL_FORMAT)
         }
     }
 

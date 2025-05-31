@@ -1,5 +1,10 @@
 package com.terning.server.kotlin.domain.auth
 
+import com.terning.server.kotlin.domain.auth.exception.AuthErrorCode
+import com.terning.server.kotlin.domain.auth.exception.AuthException
+import com.terning.server.kotlin.domain.auth.vo.AuthId
+import com.terning.server.kotlin.domain.auth.vo.AuthType
+import com.terning.server.kotlin.domain.auth.vo.RefreshToken
 import com.terning.server.kotlin.domain.common.BaseRootEntity
 import com.terning.server.kotlin.domain.user.User
 import jakarta.persistence.AttributeOverride
@@ -22,17 +27,21 @@ class Auth private constructor(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", nullable = false)
     val user: User,
+
     @Embedded
-    @AttributeOverride(name = "value", column = Column(name = "authId"))
+    @AttributeOverride(name = "value", column = Column(name = "authId", length = 255))
     private var authId: AuthId,
+
     @Enumerated(EnumType.STRING)
     @Column(length = 12)
     private var authType: AuthType,
+
     @Embedded
-    @AttributeOverride(name = "value", column = Column(name = "refreshToken"))
+    @AttributeOverride(name = "value", column = Column(name = "refreshToken", length = 255))
     private var refreshToken: RefreshToken,
 ) : BaseRootEntity() {
     fun updateRefreshToken(newRefreshToken: RefreshToken) {
