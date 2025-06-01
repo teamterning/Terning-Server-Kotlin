@@ -1,7 +1,7 @@
 package com.terning.server.kotlin.domain.internshipAnnouncement.vo
 
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipErrorCode
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipException
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementErrorCode
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementException
 
 enum class CompanyCategory(
     val displayName: String,
@@ -18,6 +18,6 @@ enum class CompanyCategory(
     companion object {
         fun from(displayName: String): CompanyCategory =
             entries.firstOrNull { it.displayName == displayName }
-                ?: throw InternshipException(InternshipErrorCode.INVALID_COMPANY_CATEGORY)
+                ?: throw InternshipAnnouncementException(InternshipAnnouncementErrorCode.INVALID_COMPANY_CATEGORY)
     }
 }

@@ -1,7 +1,7 @@
 package com.terning.server.kotlin.domain.scrap.vo
 
-import com.terning.server.kotlin.domain.scrap.ScrapErrorCode
-import com.terning.server.kotlin.domain.scrap.ScrapException
+import com.terning.server.kotlin.domain.scrap.exception.ScrapErrorCode
+import com.terning.server.kotlin.domain.scrap.exception.ScrapException
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName

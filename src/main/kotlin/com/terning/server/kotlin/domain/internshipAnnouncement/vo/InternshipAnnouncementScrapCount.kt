@@ -1,7 +1,7 @@
 package com.terning.server.kotlin.domain.internshipAnnouncement.vo
 
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipErrorCode
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipException
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementErrorCode
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementException
 import jakarta.persistence.Embeddable
 
 @Embeddable
@@ -12,13 +12,11 @@ class InternshipAnnouncementScrapCount private constructor(
         validateMinimum()
     }
 
-    protected constructor() : this(MIN_VALUE)
-
     fun increase(): InternshipAnnouncementScrapCount = InternshipAnnouncementScrapCount(value + 1)
 
     fun decrease(): InternshipAnnouncementScrapCount {
         if (value == MIN_VALUE) {
-            throw InternshipException(InternshipErrorCode.SCRAP_COUNT_CANNOT_BE_DECREASED_BELOW_ZERO)
+            throw InternshipAnnouncementException(InternshipAnnouncementErrorCode.SCRAP_COUNT_CANNOT_BE_DECREASED_BELOW_ZERO)
         }
         return InternshipAnnouncementScrapCount(value - 1)
     }
@@ -31,7 +29,7 @@ class InternshipAnnouncementScrapCount private constructor(
 
     private fun validateMinimum() {
         if (value < MIN_VALUE) {
-            throw InternshipException(InternshipErrorCode.INVALID_SCRAP_COUNT)
+            throw InternshipAnnouncementException(InternshipAnnouncementErrorCode.INVALID_SCRAP_COUNT)
         }
     }
 

@@ -1,4 +1,4 @@
-package com.terning.server.kotlin.domain.user
+package com.terning.server.kotlin.domain.user.exception
 
 import com.terning.server.kotlin.domain.common.BaseException
 

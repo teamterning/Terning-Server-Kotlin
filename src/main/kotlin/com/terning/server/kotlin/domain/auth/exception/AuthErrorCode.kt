@@ -1,4 +1,4 @@
-package com.terning.server.kotlin.domain.auth
+package com.terning.server.kotlin.domain.auth.exception
 
 import com.terning.server.kotlin.domain.common.BaseErrorCode
 import org.springframework.http.HttpStatus

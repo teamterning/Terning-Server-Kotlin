@@ -1,7 +1,7 @@
 package com.terning.server.kotlin.domain.internshipAnnouncement.vo
 
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipErrorCode
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipException
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementErrorCode
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementException
 import jakarta.persistence.Embeddable
 
 @Embeddable
@@ -11,8 +11,6 @@ class InternshipAnnouncementViewCount private constructor(
     init {
         validateMinimum(value)
     }
-
-    protected constructor() : this(MIN_VALUE)
 
     fun increase(): InternshipAnnouncementViewCount = InternshipAnnouncementViewCount(value + 1)
 
@@ -24,7 +22,7 @@ class InternshipAnnouncementViewCount private constructor(
 
     private fun validateMinimum(value: Int) {
         if (value < MIN_VALUE) {
-            throw InternshipException(InternshipErrorCode.INVALID_VIEW_COUNT)
+            throw InternshipAnnouncementException(InternshipAnnouncementErrorCode.INVALID_VIEW_COUNT)
         }
     }
 

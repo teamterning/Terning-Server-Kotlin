@@ -10,15 +10,11 @@ class InternshipAnnouncementStartDate private constructor(
     @Embedded
     @AttributeOverride(name = "value", column = Column(name = "startYear", nullable = false))
     val year: InternshipAnnouncementYear,
+
     @Embedded
     @AttributeOverride(name = "value", column = Column(name = "startMonth", nullable = false))
     val month: InternshipAnnouncementMonth,
 ) {
-    protected constructor() : this(
-        InternshipAnnouncementYear.from(2025),
-        InternshipAnnouncementMonth.from(1),
-    )
-
     override fun equals(other: Any?): Boolean =
         this === other || (
             other is InternshipAnnouncementStartDate &&

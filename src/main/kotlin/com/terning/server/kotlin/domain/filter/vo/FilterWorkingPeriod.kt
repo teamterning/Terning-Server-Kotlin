@@ -1,7 +1,7 @@
 package com.terning.server.kotlin.domain.filter.vo
 
-import com.terning.server.kotlin.domain.filter.FilterErrorCode
-import com.terning.server.kotlin.domain.filter.FilterException
+import com.terning.server.kotlin.domain.filter.exception.FilterErrorCode
+import com.terning.server.kotlin.domain.filter.exception.FilterException
 
 enum class FilterWorkingPeriod(
     val period: String,

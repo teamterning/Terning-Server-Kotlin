@@ -1,7 +1,7 @@
 package com.terning.server.kotlin.domain.internshipAnnouncement.vo
 
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipErrorCode
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipException
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementErrorCode
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementException
 import jakarta.persistence.Embeddable
 
 @Embeddable
@@ -13,8 +13,6 @@ class InternshipTitle private constructor(
         validateMaxLength(value)
     }
 
-    protected constructor() : this("")
-
     override fun equals(other: Any?): Boolean = this === other || (other is InternshipTitle && value == other.value)
 
     override fun hashCode(): Int = value.hashCode()
@@ -23,13 +21,13 @@ class InternshipTitle private constructor(
 
     private fun validateNotBlank(value: String) {
         if (value.isBlank()) {
-            throw InternshipException(InternshipErrorCode.INVALID_INTERNSHIP_TITLE_EMPTY)
+            throw InternshipAnnouncementException(InternshipAnnouncementErrorCode.INVALID_INTERNSHIP_TITLE_EMPTY)
         }
     }
 
     private fun validateMaxLength(value: String) {
         if (value.length > MAX_LENGTH) {
-            throw InternshipException(InternshipErrorCode.INVALID_INTERNSHIP_TITLE_TOO_LONG)
+            throw InternshipAnnouncementException(InternshipAnnouncementErrorCode.INVALID_INTERNSHIP_TITLE_TOO_LONG)
         }
     }
 

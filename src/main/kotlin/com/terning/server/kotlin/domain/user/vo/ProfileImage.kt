@@ -1,4 +1,4 @@
-package com.terning.server.kotlin.domain.user
+package com.terning.server.kotlin.domain.user.vo
 
 enum class ProfileImage(val value: String) {
     BASIC("basic"),

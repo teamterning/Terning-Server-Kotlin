@@ -23,12 +23,16 @@ class Filter private constructor(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
+
     @Enumerated(EnumType.STRING)
     private var filterJobType: FilterJobType,
+
     @Enumerated(EnumType.STRING)
     private var filterGrade: FilterGrade,
+
     @Enumerated(EnumType.STRING)
     private var filterWorkingPeriod: FilterWorkingPeriod,
+
     @Embedded
     @AttributeOverrides(
         AttributeOverride(name = "filterYear.value", column = Column(name = "startYear", nullable = false)),

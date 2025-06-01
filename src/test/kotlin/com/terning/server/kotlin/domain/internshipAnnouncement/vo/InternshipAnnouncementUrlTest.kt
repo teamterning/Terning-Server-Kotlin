@@ -1,7 +1,7 @@
 package com.terning.server.kotlin.domain.internshipAnnouncement.vo
 
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipErrorCode
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipException
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementErrorCode
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementException
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -28,12 +28,12 @@ class InternshipAnnouncementUrlTest {
             val invalidSchemeUrl = "ftp://example.com/post/123"
 
             val exception =
-                assertThrows<InternshipException> {
+                assertThrows<InternshipAnnouncementException> {
                     InternshipAnnouncementUrl.from(invalidSchemeUrl)
                 }
 
             assertThat(exception.errorCode)
-                .isEqualTo(InternshipErrorCode.UNSUPPORTED_ANNOUNCEMENT_URL_SCHEME)
+                .isEqualTo(InternshipAnnouncementErrorCode.UNSUPPORTED_ANNOUNCEMENT_URL_SCHEME)
         }
 
         @Test
@@ -42,12 +42,12 @@ class InternshipAnnouncementUrlTest {
             val malformedUrl = "://invalid-url"
 
             val exception =
-                assertThrows<InternshipException> {
+                assertThrows<InternshipAnnouncementException> {
                     InternshipAnnouncementUrl.from(malformedUrl)
                 }
 
             assertThat(exception.errorCode)
-                .isEqualTo(InternshipErrorCode.INVALID_ANNOUNCEMENT_URL_FORMAT)
+                .isEqualTo(InternshipAnnouncementErrorCode.INVALID_ANNOUNCEMENT_URL_FORMAT)
         }
     }
 }

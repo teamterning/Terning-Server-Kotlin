@@ -1,6 +1,10 @@
 package com.terning.server.kotlin.domain.user
 
 import com.terning.server.kotlin.domain.common.BaseRootEntity
+import com.terning.server.kotlin.domain.user.vo.ProfileImage
+import com.terning.server.kotlin.domain.user.vo.UserName
+import com.terning.server.kotlin.domain.user.vo.UserState
+import jakarta.persistence.AttributeOverride
 import jakarta.persistence.Column
 import jakarta.persistence.Embedded
 import jakarta.persistence.Entity
@@ -14,18 +18,23 @@ import jakarta.persistence.Table
 @Entity
 @Table(name = "users")
 class User(
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0L,
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long? = null,
 
     @Embedded
+    @AttributeOverride(
+        name = "value",
+        column = Column(name = "name", length = 12, nullable = false),
+    )
     private var name: UserName,
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "profile_image", length = 12, nullable = false)
+    @Column(name = "profileImage", length = 12, nullable = false)
     private var profileImage: ProfileImage,
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "user_state", length = 12, nullable = false)
+    @Column(name = "state", length = 12, nullable = false)
     private var userState: UserState,
 ) : BaseRootEntity() {
     fun name(): String = name.value
