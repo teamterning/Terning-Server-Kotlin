@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import com.terning.server.kotlin.application.ScrapService
 import com.terning.server.kotlin.application.scrap.ScrapRequest
+import com.terning.server.kotlin.application.scrap.ScrapUpdateRequest
 import io.mockk.every
 import io.mockk.just
 import io.mockk.runs
@@ -15,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
 
 @WebMvcTest(ScrapController::class)
@@ -30,10 +32,12 @@ class ScrapControllerTest {
     private lateinit var objectMapper: ObjectMapper
 
     private lateinit var scrapRequest: ScrapRequest
+    private lateinit var scrapUpdateRequest: ScrapUpdateRequest
 
     @BeforeEach
     fun setUp() {
         scrapRequest = ScrapRequest(color = "BLUE")
+        scrapUpdateRequest = ScrapUpdateRequest(color = "RED")
     }
 
     @Test
@@ -48,6 +52,21 @@ class ScrapControllerTest {
             content = objectMapper.writeValueAsString(scrapRequest)
         }.andExpect {
             status { isCreated() }
+        }
+    }
+
+    @Test
+    @DisplayName("스크랩 색상을 업데이트한다")
+    fun updateScrap() {
+        val internshipAnnouncementId = 1L
+        val userId = 1L
+        every { scrapService.updateScrap(userId, internshipAnnouncementId, scrapUpdateRequest) } just runs
+
+        mockMvc.patch("/api/v1/scraps/$internshipAnnouncementId") {
+            contentType = MediaType.APPLICATION_JSON
+            content = objectMapper.writeValueAsString(scrapUpdateRequest)
+        }.andExpect {
+            status { isOk() }
         }
     }
 }
