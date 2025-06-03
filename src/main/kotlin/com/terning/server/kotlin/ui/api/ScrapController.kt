@@ -69,14 +69,12 @@ class ScrapController(
 
         scrapService.cancelScrap(userId, internshipAnnouncementId)
 
-        return ResponseEntity
-            .status(HttpStatus.NO_CONTENT)
-            .body(
-                ApiResponse.success(
-                    status = HttpStatus.NO_CONTENT,
-                    message = "스크랩 취소에 성공했습니다",
-                    result = Unit,
-                ),
+        return ResponseEntity.ok(
+            ApiResponse.success(
+                status = HttpStatus.OK,
+                message = "스크랩 취소에 성공했습니다",
+                result = Unit,
             )
+        )
     }
 }
