@@ -81,7 +81,7 @@ class ScrapControllerTest {
         mockMvc.delete("/api/v1/scraps/$internshipAnnouncementId") {
             contentType = MediaType.APPLICATION_JSON
         }.andExpect {
-            status { isNoContent() }
+            status { isOk() }
         }
     }
 }
