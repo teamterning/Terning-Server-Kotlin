@@ -140,4 +140,63 @@ class ScrapServiceTest {
             verify { scrapRepository.save(scrap) }
         }
     }
+
+    @Nested
+    @DisplayName("스크랩 취소")
+    inner class CancelScrapTest {
+        @Test
+        @DisplayName("스크랩이 존재하지 않으면 예외가 발생한다")
+        fun cancelFailsIfScrapNotFound() {
+            every {
+                scrapRepository.findByInternshipAnnouncementIdAndUserId(userId, announcementId)
+            } returns null
+
+            val exception =
+                assertThrows(ScrapException::class.java) {
+                    scrapService.cancelScrap(userId, announcementId)
+                }
+
+            assertEquals(ScrapErrorCode.SCRAP_NOT_FOUND, exception.errorCode)
+        }
+
+        @Test
+        @DisplayName("공고가 존재하지 않으면 예외가 발생한다")
+        fun cancelFailsIfAnnouncementNotFound() {
+            val scrap = mockk<Scrap>()
+
+            every {
+                scrapRepository.findByInternshipAnnouncementIdAndUserId(userId, announcementId)
+            } returns scrap
+            every {
+                internshipAnnouncementRepository.findById(announcementId)
+            } returns Optional.empty()
+
+            val exception =
+                assertThrows(ScrapException::class.java) {
+                    scrapService.cancelScrap(userId, announcementId)
+                }
+
+            assertEquals(ScrapErrorCode.INTERN_SHIP_ANNOUNCEMENT_NOT_FOUND, exception.errorCode)
+        }
+
+        @Test
+        @DisplayName("스크랩 취소에 성공한다")
+        fun cancelSucceeds() {
+            val scrap = mockk<Scrap>()
+            val announcement = mockk<InternshipAnnouncement>(relaxed = true)
+
+            every {
+                scrapRepository.findByInternshipAnnouncementIdAndUserId(userId, announcementId)
+            } returns scrap
+            every {
+                internshipAnnouncementRepository.findById(announcementId)
+            } returns Optional.of(announcement)
+            every { scrapRepository.delete(scrap) } returns Unit
+
+            scrapService.cancelScrap(userId, announcementId)
+
+            verify { announcement.decreaseScrapCount() }
+            verify { scrapRepository.delete(scrap) }
+        }
+    }
 }
