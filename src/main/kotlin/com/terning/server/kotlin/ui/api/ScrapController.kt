@@ -74,7 +74,7 @@ class ScrapController(
                 status = HttpStatus.OK,
                 message = "스크랩 취소에 성공했습니다",
                 result = Unit,
-            )
+            ),
         )
     }
 }
