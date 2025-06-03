@@ -40,11 +40,11 @@ class ScrapController(
 
     @PatchMapping("/{internshipAnnouncementId}")
     fun updateScrap(
-        // @AuthenticationPrincipal userId: Long,
+        // TODO: @AuthenticationPrincipal userId: Long,
         @PathVariable internshipAnnouncementId: Long,
         @RequestBody scrapUpdateRequest: ScrapUpdateRequest,
     ): ResponseEntity<ApiResponse<Unit>> {
-        val userId: Long = 1 // 임시 userId
+        val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
 
         scrapService.updateScrap(userId, internshipAnnouncementId, scrapUpdateRequest)
 
