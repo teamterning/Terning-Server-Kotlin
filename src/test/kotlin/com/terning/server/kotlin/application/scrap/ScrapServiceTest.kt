@@ -7,6 +7,7 @@ import com.terning.server.kotlin.domain.scrap.Scrap
 import com.terning.server.kotlin.domain.scrap.ScrapRepository
 import com.terning.server.kotlin.domain.scrap.exception.ScrapErrorCode
 import com.terning.server.kotlin.domain.scrap.exception.ScrapException
+import com.terning.server.kotlin.domain.scrap.vo.Color
 import com.terning.server.kotlin.domain.user.User
 import com.terning.server.kotlin.domain.user.UserRepository
 import io.mockk.every
@@ -94,6 +95,6 @@ class ScrapServiceTest {
 
         verify { announcement.increaseScrapCount() }
 
-        assertEquals("#4AA9F2", scrapSlot.captured.hexColor())
+        assertEquals(Color.BLUE.toHexString(), scrapSlot.captured.hexColor())
     }
 }
