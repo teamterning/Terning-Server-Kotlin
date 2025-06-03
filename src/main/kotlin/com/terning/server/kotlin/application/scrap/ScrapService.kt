@@ -59,4 +59,21 @@ class ScrapService(
 
         scrapRepository.save(scrap)
     }
+
+    @Transactional
+    fun cancelScrap(
+        userId: Long,
+        internshipAnnouncementId: Long,
+    ) {
+        val scrap =
+            scrapRepository.findByInternshipAnnouncementIdAndUserId(userId, internshipAnnouncementId)
+                ?: throw ScrapException(ScrapErrorCode.SCRAP_NOT_FOUND)
+
+        val announcement =
+            internshipAnnouncementRepository.findById(internshipAnnouncementId)
+                .orElseThrow { ScrapException(ScrapErrorCode.INTERN_SHIP_ANNOUNCEMENT_NOT_FOUND) }
+
+        announcement.decreaseScrapCount()
+        scrapRepository.delete(scrap)
+    }
 }
