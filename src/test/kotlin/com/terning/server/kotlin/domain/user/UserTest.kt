@@ -77,9 +77,9 @@ class UserTest {
         profile: ProfileImage = ProfileImage.BASIC,
         userState: UserState = UserState.ACTIVE,
     ): User {
-        return User(
-            name = UserName(name),
-            profileImage = profile,
+        return User.of(
+            name = name,
+            profile = profile.value,
             userState = userState,
         )
     }
