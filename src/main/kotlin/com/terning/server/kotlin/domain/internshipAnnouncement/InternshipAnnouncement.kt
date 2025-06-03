@@ -100,4 +100,32 @@ class InternshipAnnouncement(
     }
 
     override fun hashCode(): Int = id?.hashCode() ?: 0
+
+    companion object {
+        fun of(
+            title: InternshipTitle,
+            deadline: InternshipAnnouncementDeadline,
+            workingPeriod: InternshipWorkingPeriod,
+            startDate: InternshipAnnouncementStartDate,
+            url: InternshipAnnouncementUrl,
+            company: Company,
+            jobType: FilterJobType,
+            qualifications: String? = null,
+            detail: String? = null,
+            isGraduating: Boolean = false,
+        ): InternshipAnnouncement {
+            return InternshipAnnouncement(
+                title = title,
+                internshipAnnouncementDeadline = deadline,
+                workingPeriod = workingPeriod,
+                startDate = startDate,
+                url = url,
+                company = company,
+                filterJobType = jobType,
+                qualifications = qualifications,
+                detail = detail,
+                isGraduating = isGraduating,
+            )
+        }
+    }
 }

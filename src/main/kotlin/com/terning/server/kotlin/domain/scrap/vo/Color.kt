@@ -23,7 +23,7 @@ enum class Color(
 
     companion object {
         fun from(color: String): Color =
-            entries.firstOrNull { it.color == color }
+            entries.firstOrNull { it.color.equals(color, ignoreCase = true) }
                 ?: throw ScrapException(ScrapErrorCode.INVALID_COLOR)
     }
 }

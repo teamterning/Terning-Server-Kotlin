@@ -55,4 +55,20 @@ class Auth private constructor(
             throw AuthException(AuthErrorCode.FAILED_REFRESH_TOKEN_RESET)
         }
     }
+
+    companion object {
+        fun of(
+            user: User,
+            authId: AuthId,
+            authType: AuthType,
+            refreshToken: RefreshToken,
+        ): Auth {
+            return Auth(
+                user = user,
+                authId = authId,
+                authType = authType,
+                refreshToken = refreshToken,
+            )
+        }
+    }
 }

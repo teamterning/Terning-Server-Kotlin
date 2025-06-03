@@ -17,7 +17,7 @@ import jakarta.persistence.Table
 
 @Entity
 @Table(name = "users")
-class User(
+class User private constructor(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
@@ -64,4 +64,18 @@ class User(
     }
 
     fun isActive(): Boolean = userState == UserState.ACTIVE
+
+    companion object {
+        fun of(
+            name: String,
+            profile: String,
+            userState: UserState = UserState.ACTIVE,
+        ): User {
+            return User(
+                name = UserName.from(name),
+                profileImage = ProfileImage.from(profile),
+                userState = userState,
+            )
+        }
+    }
 }
