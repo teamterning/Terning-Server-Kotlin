@@ -25,7 +25,7 @@ class ScrapService(
         internshipAnnouncementId: Long,
         scrapRequest: ScrapRequest,
     ) {
-        if (scrapRepository.existsByInternshipAnnouncementIdAndUserId(userId, internshipAnnouncementId)) {
+        if (scrapRepository.existsByUserIdAndInternshipAnnouncementId(userId, internshipAnnouncementId)) {
             throw ScrapException(ScrapErrorCode.EXISTS_SCRAP_ALREADY)
         }
 
@@ -51,7 +51,7 @@ class ScrapService(
         scrapUpdateRequest: ScrapUpdateRequest,
     ) {
         val scrap =
-            scrapRepository.findByInternshipAnnouncementIdAndUserId(userId, internshipAnnouncementId)
+            scrapRepository.findByUserIdAndInternshipAnnouncementId(userId, internshipAnnouncementId)
                 ?: throw ScrapException(ScrapErrorCode.SCRAP_NOT_FOUND)
 
         val color = Color.from(scrapUpdateRequest.color)
@@ -66,7 +66,7 @@ class ScrapService(
         internshipAnnouncementId: Long,
     ) {
         val scrap =
-            scrapRepository.findByInternshipAnnouncementIdAndUserId(userId, internshipAnnouncementId)
+            scrapRepository.findByUserIdAndInternshipAnnouncementId(userId, internshipAnnouncementId)
                 ?: throw ScrapException(ScrapErrorCode.SCRAP_NOT_FOUND)
 
         val announcement =
