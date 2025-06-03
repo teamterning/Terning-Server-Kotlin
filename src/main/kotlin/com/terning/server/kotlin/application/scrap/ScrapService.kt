@@ -37,7 +37,11 @@ class ScrapService(
                 .orElseThrow { ScrapException(ScrapErrorCode.USER_NOT_FOUND) }
 
         val color = Color.from(request.color)
-        val scrap = Scrap.of(user, announcement, color)
+        val scrap = Scrap.of(
+            user = user,
+            internshipAnnouncement = announcement,
+            color = color,
+        )
 
         scrapRepository.save(scrap)
         announcement.increaseScrapCount()
