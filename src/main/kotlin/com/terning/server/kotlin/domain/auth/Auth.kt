@@ -29,7 +29,7 @@ class Auth private constructor(
     val id: Long? = null,
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     val user: User,
 
     @Embedded
@@ -53,6 +53,22 @@ class Auth private constructor(
             this.refreshToken = RefreshToken(null)
         } catch (e: Exception) {
             throw AuthException(AuthErrorCode.FAILED_REFRESH_TOKEN_RESET)
+        }
+    }
+
+    companion object {
+        fun of(
+            user: User,
+            authId: AuthId,
+            authType: AuthType,
+            refreshToken: RefreshToken,
+        ): Auth {
+            return Auth(
+                user = user,
+                authId = authId,
+                authType = authType,
+                refreshToken = refreshToken,
+            )
         }
     }
 }
