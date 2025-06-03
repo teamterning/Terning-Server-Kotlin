@@ -19,11 +19,11 @@ class ScrapController(
 ) {
     @PostMapping("/{internshipAnnouncementId}")
     fun scrap(
-        // @AuthenticationPrincipal userId: Long,
+        // TODO: @AuthenticationPrincipal userId: Long,
         @PathVariable internshipAnnouncementId: Long,
         @RequestBody scrapRequest: ScrapRequest,
     ): ResponseEntity<ApiResponse<Unit>> {
-        val userId: Long = 1 // 임시 userId
+        val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
 
         scrapService.scrap(userId, internshipAnnouncementId, scrapRequest)
 
