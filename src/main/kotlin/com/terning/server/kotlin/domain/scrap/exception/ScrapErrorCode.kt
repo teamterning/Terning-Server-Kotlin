@@ -13,4 +13,7 @@ enum class ScrapErrorCode(
     EXISTS_SCRAP_ALREADY(HttpStatus.BAD_REQUEST, "이미 스크랩한 공고입니다."),
     INTERN_SHIP_ANNOUNCEMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 인턴 공고는 존재하지 않습니다"),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 유저는 존재하지 않습니다"),
+
+    SCRAP_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 스크랩은 존재하지 않습니다"),
+    COLOR_UNSUPPORTED(HttpStatus.BAD_REQUEST, "지원하지 않는 색상입니다."),
 }
