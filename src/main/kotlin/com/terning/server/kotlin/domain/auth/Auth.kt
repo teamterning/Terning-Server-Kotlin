@@ -29,7 +29,7 @@ class Auth private constructor(
     val id: Long? = null,
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "userId", nullable = false)
     val user: User,
 
     @Embedded
