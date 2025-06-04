@@ -36,11 +36,12 @@ class Scrap private constructor(
     @Column(nullable = false)
     private var color: Color,
 ) : BaseRootEntity() {
-    fun changeColor(to: Color) {
-        this.color = to
-    }
-
     fun hexColor(): String = color.toHexString()
+
+    fun updateColor(newColor: Color) {
+        if (this.color == newColor) return
+        this.color = newColor
+    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

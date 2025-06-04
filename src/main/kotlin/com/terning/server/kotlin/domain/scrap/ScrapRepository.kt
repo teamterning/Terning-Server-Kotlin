@@ -7,4 +7,9 @@ interface ScrapRepository : JpaRepository<Scrap, Long> {
         userId: Long,
         internshipAnnouncementId: Long,
     ): Boolean
+
+    fun findByInternshipAnnouncementIdAndUserId(
+        userId: Long,
+        internshipAnnouncementId: Long,
+    ): Scrap?
 }

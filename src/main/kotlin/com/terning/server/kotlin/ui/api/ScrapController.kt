@@ -2,8 +2,10 @@ package com.terning.server.kotlin.ui.api
 
 import com.terning.server.kotlin.application.ScrapService
 import com.terning.server.kotlin.application.scrap.ScrapRequest
+import com.terning.server.kotlin.application.scrap.ScrapUpdateRequest
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -31,6 +33,27 @@ class ScrapController(
                 ApiResponse.success(
                     status = HttpStatus.CREATED,
                     message = "스크랩 추가에 성공했습니다",
+                    result = Unit,
+                ),
+            )
+    }
+
+    @PatchMapping("/{internshipAnnouncementId}")
+    fun updateScrap(
+        // TODO: @AuthenticationPrincipal userId: Long,
+        @PathVariable internshipAnnouncementId: Long,
+        @RequestBody scrapUpdateRequest: ScrapUpdateRequest,
+    ): ResponseEntity<ApiResponse<Unit>> {
+        val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
+
+        scrapService.updateScrap(userId, internshipAnnouncementId, scrapUpdateRequest)
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(
+                ApiResponse.success(
+                    status = HttpStatus.OK,
+                    message = "스크랩 수정에 성공했습니다",
                     result = Unit,
                 ),
             )
