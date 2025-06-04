@@ -16,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
 
@@ -65,6 +66,20 @@ class ScrapControllerTest {
         mockMvc.patch("/api/v1/scraps/$internshipAnnouncementId") {
             contentType = MediaType.APPLICATION_JSON
             content = objectMapper.writeValueAsString(scrapUpdateRequest)
+        }.andExpect {
+            status { isOk() }
+        }
+    }
+
+    @Test
+    @DisplayName("스크랩을 취소한다")
+    fun cancelScrap() {
+        val internshipAnnouncementId = 1L
+        val userId = 1L
+        every { scrapService.cancelScrap(userId, internshipAnnouncementId) } just runs
+
+        mockMvc.delete("/api/v1/scraps/$internshipAnnouncementId") {
+            contentType = MediaType.APPLICATION_JSON
         }.andExpect {
             status { isOk() }
         }

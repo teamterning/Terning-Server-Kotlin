@@ -5,6 +5,7 @@ import com.terning.server.kotlin.application.scrap.ScrapRequest
 import com.terning.server.kotlin.application.scrap.ScrapUpdateRequest
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -57,5 +58,23 @@ class ScrapController(
                     result = Unit,
                 ),
             )
+    }
+
+    @DeleteMapping("/{internshipAnnouncementId}")
+    fun cancelScrap(
+        // @AuthenticationPrincipal userId: Long,
+        @PathVariable internshipAnnouncementId: Long,
+    ): ResponseEntity<ApiResponse<Unit>> {
+        val userId: Long = 1 // 임시 userId
+
+        scrapService.cancelScrap(userId, internshipAnnouncementId)
+
+        return ResponseEntity.ok(
+            ApiResponse.success(
+                status = HttpStatus.OK,
+                message = "스크랩 취소에 성공했습니다",
+                result = Unit,
+            ),
+        )
     }
 }

@@ -45,7 +45,7 @@ class ScrapServiceTest {
         @Test
         @DisplayName("이미 스크랩한 경우 예외가 발생한다")
         fun scrapFailsIfAlreadyScrapped() {
-            every { scrapRepository.existsByInternshipAnnouncementIdAndUserId(userId, announcementId) } returns true
+            every { scrapRepository.existsByUserIdAndInternshipAnnouncementId(userId, announcementId) } returns true
 
             val exception =
                 assertThrows(ScrapException::class.java) {
@@ -58,7 +58,7 @@ class ScrapServiceTest {
         @Test
         @DisplayName("공고를 찾을 수 없으면 예외가 발생한다")
         fun scrapFailsIfAnnouncementNotFound() {
-            every { scrapRepository.existsByInternshipAnnouncementIdAndUserId(userId, announcementId) } returns false
+            every { scrapRepository.existsByUserIdAndInternshipAnnouncementId(userId, announcementId) } returns false
             every { internshipAnnouncementRepository.findById(announcementId) } returns Optional.empty()
 
             val exception =
@@ -72,7 +72,7 @@ class ScrapServiceTest {
         @Test
         @DisplayName("사용자를 찾을 수 없으면 예외가 발생한다")
         fun scrapFailsIfUserNotFound() {
-            every { scrapRepository.existsByInternshipAnnouncementIdAndUserId(userId, announcementId) } returns false
+            every { scrapRepository.existsByUserIdAndInternshipAnnouncementId(userId, announcementId) } returns false
             every { internshipAnnouncementRepository.findById(announcementId) } returns Optional.of(mockk())
             every { userRepository.findById(userId) } returns Optional.empty()
 
@@ -91,7 +91,7 @@ class ScrapServiceTest {
             val announcement = mockk<InternshipAnnouncement>(relaxed = true)
             val scrapSlot = slot<Scrap>()
 
-            every { scrapRepository.existsByInternshipAnnouncementIdAndUserId(userId, announcementId) } returns false
+            every { scrapRepository.existsByUserIdAndInternshipAnnouncementId(userId, announcementId) } returns false
             every { internshipAnnouncementRepository.findById(announcementId) } returns Optional.of(announcement)
             every { userRepository.findById(userId) } returns Optional.of(user)
             every { scrapRepository.save(capture(scrapSlot)) } returns mockk()
@@ -112,7 +112,7 @@ class ScrapServiceTest {
         @DisplayName("스크랩이 존재하지 않으면 예외가 발생한다")
         fun updateFailsIfScrapNotFound() {
             every {
-                scrapRepository.findByInternshipAnnouncementIdAndUserId(userId, announcementId)
+                scrapRepository.findByUserIdAndInternshipAnnouncementId(userId, announcementId)
             } returns null
 
             val exception =
@@ -129,7 +129,7 @@ class ScrapServiceTest {
             val scrap = mockk<Scrap>(relaxed = true)
 
             every {
-                scrapRepository.findByInternshipAnnouncementIdAndUserId(userId, announcementId)
+                scrapRepository.findByUserIdAndInternshipAnnouncementId(userId, announcementId)
             } returns scrap
             every { scrap.updateColor(Color.RED) } returns Unit
             every { scrapRepository.save(scrap) } returns scrap
@@ -138,6 +138,65 @@ class ScrapServiceTest {
 
             verify { scrap.updateColor(Color.RED) }
             verify { scrapRepository.save(scrap) }
+        }
+    }
+
+    @Nested
+    @DisplayName("스크랩 취소")
+    inner class CancelScrapTest {
+        @Test
+        @DisplayName("스크랩이 존재하지 않으면 예외가 발생한다")
+        fun cancelFailsIfScrapNotFound() {
+            every {
+                scrapRepository.findByUserIdAndInternshipAnnouncementId(userId, announcementId)
+            } returns null
+
+            val exception =
+                assertThrows(ScrapException::class.java) {
+                    scrapService.cancelScrap(userId, announcementId)
+                }
+
+            assertEquals(ScrapErrorCode.SCRAP_NOT_FOUND, exception.errorCode)
+        }
+
+        @Test
+        @DisplayName("공고가 존재하지 않으면 예외가 발생한다")
+        fun cancelFailsIfAnnouncementNotFound() {
+            val scrap = mockk<Scrap>()
+
+            every {
+                scrapRepository.findByUserIdAndInternshipAnnouncementId(userId, announcementId)
+            } returns scrap
+            every {
+                internshipAnnouncementRepository.findById(announcementId)
+            } returns Optional.empty()
+
+            val exception =
+                assertThrows(ScrapException::class.java) {
+                    scrapService.cancelScrap(userId, announcementId)
+                }
+
+            assertEquals(ScrapErrorCode.INTERN_SHIP_ANNOUNCEMENT_NOT_FOUND, exception.errorCode)
+        }
+
+        @Test
+        @DisplayName("스크랩 취소에 성공한다")
+        fun cancelSucceeds() {
+            val scrap = mockk<Scrap>()
+            val announcement = mockk<InternshipAnnouncement>(relaxed = true)
+
+            every {
+                scrapRepository.findByUserIdAndInternshipAnnouncementId(userId, announcementId)
+            } returns scrap
+            every {
+                internshipAnnouncementRepository.findById(announcementId)
+            } returns Optional.of(announcement)
+            every { scrapRepository.delete(scrap) } returns Unit
+
+            scrapService.cancelScrap(userId, announcementId)
+
+            verify { announcement.decreaseScrapCount() }
+            verify { scrapRepository.delete(scrap) }
         }
     }
 }
