@@ -56,6 +56,8 @@ class Auth private constructor(
         }
     }
 
+    fun authType(): AuthType = authType
+
     companion object {
         fun of(
             user: User,
