@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Test
 import java.util.*
 
 class ProfileServiceTest {
-
     private val authRepository: AuthRepository = mockk()
 
     private lateinit var profileService: ProfileService
@@ -34,15 +33,16 @@ class ProfileServiceTest {
     fun getProfileInformation() {
         // given
         val user = User.of(name = "유빈", profile = "BASIC")
-        val auth = Auth.of(
-            user = user,
-            authId = AuthId("123"),
-            authType = AuthType.KAKAO,
-            refreshToken = RefreshToken("refreshToken")
-        )
+        val auth =
+            Auth.of(
+                user = user,
+                authId = AuthId("123"),
+                authType = AuthType.KAKAO,
+                refreshToken = RefreshToken("refreshToken"),
+            )
         val userId = 1L
 
-        every { authRepository.findByUserId(userId)}  returns Optional.of(auth)
+        every { authRepository.findByUserId(userId) } returns Optional.of(auth)
 
         // when
         val result = profileService.getProfile(userId)
@@ -58,12 +58,13 @@ class ProfileServiceTest {
     fun getProfileFailsIfUserNotFound() {
         // given
         val userId = 1L
-        every {authRepository.findByUserId(userId)} returns Optional.empty()
+        every { authRepository.findByUserId(userId) } returns Optional.empty()
 
         // then
-        val exception = assertThrows(AuthException::class.java) {
-            profileService.getProfile(userId)
-        }
+        val exception =
+            assertThrows(AuthException::class.java) {
+                profileService.getProfile(userId)
+            }
 
         assertThat(exception.errorCode).isEqualTo(AuthErrorCode.NOT_FOUND_USER_EXCEPTION)
     }
