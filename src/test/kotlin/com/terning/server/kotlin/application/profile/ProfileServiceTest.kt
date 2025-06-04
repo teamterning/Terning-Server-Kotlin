@@ -9,18 +9,18 @@ import com.terning.server.kotlin.domain.auth.vo.AuthType
 import com.terning.server.kotlin.domain.auth.vo.RefreshToken
 import com.terning.server.kotlin.domain.user.User
 import com.terning.server.kotlin.domain.user.vo.ProfileImage
+import io.mockk.every
+import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import org.mockito.BDDMockito.given
-import org.mockito.Mockito.mock
 import java.util.*
 
 class ProfileServiceTest {
 
-    private val authRepository : AuthRepository = mock()
+    private val authRepository: AuthRepository = mockk()
 
     private lateinit var profileService: ProfileService
 
@@ -41,7 +41,8 @@ class ProfileServiceTest {
             refreshToken = RefreshToken("refreshToken")
         )
         val userId = 1L
-        given(authRepository.findByUserId(userId)).willReturn(Optional.of(auth))
+
+        every { authRepository.findByUserId(userId)}  returns Optional.of(auth)
 
         // when
         val result = profileService.getProfile(userId)
@@ -57,7 +58,7 @@ class ProfileServiceTest {
     fun getProfileFailsIfUserNotFound() {
         // given
         val userId = 1L
-        given(authRepository.findByUserId(userId)).willReturn(Optional.empty())
+        every {authRepository.findByUserId(userId)} returns Optional.empty()
 
         // then
         val exception = assertThrows(AuthException::class.java) {
