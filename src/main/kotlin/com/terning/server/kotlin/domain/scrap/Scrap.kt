@@ -2,8 +2,6 @@ package com.terning.server.kotlin.domain.scrap
 
 import com.terning.server.kotlin.domain.common.BaseRootEntity
 import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipAnnouncement
-import com.terning.server.kotlin.domain.scrap.exception.ScrapErrorCode
-import com.terning.server.kotlin.domain.scrap.exception.ScrapException
 import com.terning.server.kotlin.domain.scrap.vo.Color
 import com.terning.server.kotlin.domain.user.User
 import jakarta.persistence.Column
@@ -41,9 +39,7 @@ class Scrap private constructor(
     fun hexColor(): String = color.toHexString()
 
     fun updateColor(newColor: Color) {
-        if (this.color == newColor) {
-            throw ScrapException(ScrapErrorCode.COLOR_UNSUPPORTED)
-        }
+        if (this.color == newColor) return
         this.color = newColor
     }
 
