@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-@Transactional(readOnly = false)
+@Transactional(readOnly = true)
 class ScrapService(
     private val scrapRepository: ScrapRepository,
     private val userRepository: UserRepository,
@@ -38,7 +38,12 @@ class ScrapService(
                 .orElseThrow { ScrapException(ScrapErrorCode.USER_NOT_FOUND) }
 
         val color = Color.from(scrapRequest.color)
-        val scrap = Scrap.of(user, announcement, color)
+        val scrap =
+            Scrap.of(
+                user = user,
+                internshipAnnouncement = announcement,
+                color = color,
+            )
 
         scrapRepository.save(scrap)
         announcement.increaseScrapCount()

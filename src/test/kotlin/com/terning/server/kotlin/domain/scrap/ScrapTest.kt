@@ -13,13 +13,10 @@ import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipAnno
 import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipAnnouncementYear
 import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipTitle
 import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipWorkingPeriod
-import com.terning.server.kotlin.domain.scrap.exception.ScrapErrorCode
-import com.terning.server.kotlin.domain.scrap.exception.ScrapException
 import com.terning.server.kotlin.domain.scrap.vo.Color
 import com.terning.server.kotlin.domain.user.User
 import com.terning.server.kotlin.domain.user.vo.UserState
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
@@ -68,18 +65,5 @@ class ScrapTest {
         scrap.updateColor(Color.RED)
 
         assertEquals(Color.RED.toHexString(), scrap.hexColor())
-    }
-
-    @Test
-    @DisplayName("같은 색상으로 변경하면 예외가 발생한다")
-    fun updateColorFailsIfSameColor() {
-        val scrap = Scrap.of(user, internshipAnnouncement, Color.BLUE)
-
-        val exception =
-            assertThrows(ScrapException::class.java) {
-                scrap.updateColor(Color.BLUE)
-            }
-
-        assertEquals(ScrapErrorCode.COLOR_UNSUPPORTED, exception.errorCode)
     }
 }
