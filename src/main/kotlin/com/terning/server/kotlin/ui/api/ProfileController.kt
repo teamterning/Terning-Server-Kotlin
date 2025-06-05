@@ -19,7 +19,7 @@ class ProfileController(
     ): ResponseEntity<ApiResponse<ProfileResponse>> {
         val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
 
-        val response = profileService.getProfile(userId)
+        val response = profileService.getUserProfile(userId)
 
         return ResponseEntity
             .status(HttpStatus.CREATED)
@@ -27,12 +27,7 @@ class ProfileController(
                 ApiResponse.success(
                     status = HttpStatus.OK,
                     message = "마이페이지 > 프로필 정보 불러오기를 성공했습니다",
-                    result =
-                        ProfileResponse(
-                            name = response.name,
-                            profileImage = response.profileImage,
-                            authType = response.authType,
-                        ),
+                    result = response,
                 ),
             )
     }
