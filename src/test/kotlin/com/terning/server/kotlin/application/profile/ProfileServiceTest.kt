@@ -8,6 +8,7 @@ import com.terning.server.kotlin.domain.auth.vo.AuthId
 import com.terning.server.kotlin.domain.auth.vo.AuthType
 import com.terning.server.kotlin.domain.auth.vo.RefreshToken
 import com.terning.server.kotlin.domain.user.User
+import com.terning.server.kotlin.domain.user.UserRepository
 import com.terning.server.kotlin.domain.user.vo.ProfileImage
 import io.mockk.every
 import io.mockk.mockk
@@ -20,12 +21,17 @@ import java.util.Optional
 
 class ProfileServiceTest {
     private val authRepository: AuthRepository = mockk()
+    private val userRepository: UserRepository = mockk()
 
     private lateinit var profileService: ProfileService
 
     @BeforeEach
     fun setUp() {
-        profileService = ProfileService(authRepository)
+        profileService =
+            ProfileService(
+                authRepository = authRepository,
+                userRepository = userRepository,
+            )
     }
 
     @Test
@@ -42,10 +48,10 @@ class ProfileServiceTest {
             )
         val userId = 1L
 
-        every { authRepository.findByUserId(userId) } returns Optional.of(auth)
+        every { authRepository.findById(userId) } returns Optional.of(auth)
 
         // when
-        val result = profileService.getProfile(userId)
+        val result = profileService.getUserProfile(userId)
 
         // then
         assertThat(result.name).isEqualTo("유빈")
@@ -58,12 +64,12 @@ class ProfileServiceTest {
     fun getProfileFailsIfUserNotFound() {
         // given
         val userId = 1L
-        every { authRepository.findByUserId(userId) } returns Optional.empty()
+        every { authRepository.findById(userId) } returns Optional.empty()
 
         // then
         val exception =
             assertThrows(AuthException::class.java) {
-                profileService.getProfile(userId)
+                profileService.getUserProfile(userId)
             }
 
         assertThat(exception.errorCode).isEqualTo(AuthErrorCode.NOT_FOUND_USER_EXCEPTION)

@@ -23,7 +23,7 @@ class ProfileService(
             }
 
         val auth =
-            authRepository.findByUserId(userId).orElseThrow {
+            authRepository.findById(userId).orElseThrow {
                 AuthException(AuthErrorCode.NOT_FOUND_USER_EXCEPTION)
             }
 
