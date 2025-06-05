@@ -1,6 +1,6 @@
 package com.terning.server.kotlin.domain.auth.vo
 
-enum class AuthType {
-    KAKAO,
-    APPLE,
+enum class AuthType(val value: String) {
+    KAKAO("KAKAO"),
+    APPLE("APPLE"),
 }
