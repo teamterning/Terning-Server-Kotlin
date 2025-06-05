@@ -2,13 +2,13 @@ package com.terning.server.kotlin.application.profile
 
 import com.terning.server.kotlin.domain.auth.Auth
 import com.terning.server.kotlin.domain.auth.AuthRepository
-import com.terning.server.kotlin.domain.auth.exception.AuthErrorCode
-import com.terning.server.kotlin.domain.auth.exception.AuthException
 import com.terning.server.kotlin.domain.auth.vo.AuthId
 import com.terning.server.kotlin.domain.auth.vo.AuthType
 import com.terning.server.kotlin.domain.auth.vo.RefreshToken
 import com.terning.server.kotlin.domain.user.User
 import com.terning.server.kotlin.domain.user.UserRepository
+import com.terning.server.kotlin.domain.user.exception.UserErrorCode
+import com.terning.server.kotlin.domain.user.exception.UserException
 import com.terning.server.kotlin.domain.user.vo.ProfileImage
 import io.mockk.every
 import io.mockk.mockk
@@ -48,6 +48,7 @@ class ProfileServiceTest {
             )
         val userId = 1L
 
+        every { userRepository.findById(userId) } returns Optional.of(user)
         every { authRepository.findById(userId) } returns Optional.of(auth)
 
         // when
@@ -55,8 +56,8 @@ class ProfileServiceTest {
 
         // then
         assertThat(result.name).isEqualTo("유빈")
-        assertThat(result.profileImage).isEqualTo(ProfileImage.BASIC)
-        assertThat(result.authType).isEqualTo(AuthType.KAKAO)
+        assertThat(result.profileImage).isEqualTo(ProfileImage.BASIC.value)
+        assertThat(result.authType).isEqualTo(AuthType.KAKAO.value)
     }
 
     @Test
@@ -64,14 +65,14 @@ class ProfileServiceTest {
     fun getProfileFailsIfUserNotFound() {
         // given
         val userId = 1L
-        every { authRepository.findById(userId) } returns Optional.empty()
+        every { userRepository.findById(userId) } returns Optional.empty()
 
         // then
         val exception =
-            assertThrows(AuthException::class.java) {
+            assertThrows(UserException::class.java) {
                 profileService.getUserProfile(userId)
             }
 
-        assertThat(exception.errorCode).isEqualTo(AuthErrorCode.NOT_FOUND_USER_EXCEPTION)
+        assertThat(exception.errorCode).isEqualTo(UserErrorCode.NOT_FOUND_USER_EXCEPTION)
     }
 }
