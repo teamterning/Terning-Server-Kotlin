@@ -22,7 +22,7 @@ class UserName(
         private const val MAX_LENGTH = 12
 
         private const val ERROR_EMPTY = "이름은 공백일 수 없습니다."
-        private const val ERROR_LENGTH = "이름은 $MIN_LENGTH~${MAX_LENGTH}자여야 합니다."
+        const val ERROR_LENGTH = "이름은 $MIN_LENGTH~${MAX_LENGTH}자여야 합니다."
 
         fun from(value: String): UserName = UserName(value)
     }

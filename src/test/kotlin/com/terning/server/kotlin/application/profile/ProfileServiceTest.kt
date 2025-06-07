@@ -118,6 +118,6 @@ class ProfileServiceTest {
                 profileService.updateUserProfile(userId, profileRequest)
             }
 
-        assertThat(exception.message).contains("이름은 1~12자여야 합니다.")
+        assertThat(exception.message).contains(UserName.ERROR_LENGTH)
     }
 }
