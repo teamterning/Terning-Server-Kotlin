@@ -7,6 +7,8 @@ import com.terning.server.kotlin.application.profile.ProfileResponse
 import com.terning.server.kotlin.application.profile.ProfileService
 import com.terning.server.kotlin.ui.api.ProfileController
 import io.mockk.every
+import io.mockk.just
+import io.mockk.runs
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -16,6 +18,7 @@ import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.patch
 
 @WebMvcTest(ProfileController::class)
 @ActiveProfiles("test")
@@ -50,16 +53,41 @@ class ProfileControllerTest {
     @Test
     @DisplayName("유저 정보를 가져온다")
     fun getProfile() {
+        // given
         val userId = 1L
         every { profileService.getUserProfile(userId = userId) } returns profileResponse
 
+        // when
         mockMvc.get("/api/v1/mypage/profile") {
             contentType = MediaType.APPLICATION_JSON
         }.andExpect {
+            // then
             status { isCreated() }
             jsonPath("$.result.name") { value("이유빈") }
             jsonPath("$.result.profileImage") { value("BASIC") }
             jsonPath("$.result.authType") { value("KAKAO") }
+        }
+    }
+
+    @Test
+    @DisplayName("유저 정보를 수정한다")
+    fun updateProfile() {
+        // given
+        val userId = 1L
+        every {
+            profileService.updateUserProfile(
+                userId = userId,
+                profileRequest = profileRequest,
+            )
+        } just runs
+
+        // when
+        mockMvc.patch("/api/v1/mypage/profile") {
+            contentType = MediaType.APPLICATION_JSON
+            content = objectMapper.writeValueAsString(profileRequest)
+        }.andExpect {
+            // then
+            status { isOk() }
         }
     }
 }
