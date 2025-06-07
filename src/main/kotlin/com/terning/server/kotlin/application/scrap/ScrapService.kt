@@ -1,4 +1,4 @@
-package com.terning.server.kotlin.application
+package com.terning.server.kotlin.application.scrap
 
 import com.terning.server.kotlin.application.scrap.ScrapRequest
 import com.terning.server.kotlin.application.scrap.ScrapUpdateRequest

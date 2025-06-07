@@ -2,7 +2,7 @@ package com.terning.server.kotlin.ui.api.scrap
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
-import com.terning.server.kotlin.application.ScrapService
+import com.terning.server.kotlin.application.scrap.ScrapService
 import com.terning.server.kotlin.application.scrap.ScrapRequest
 import com.terning.server.kotlin.application.scrap.ScrapUpdateRequest
 import com.terning.server.kotlin.ui.api.ScrapController
