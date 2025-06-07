@@ -101,25 +101,20 @@ class ScrapService(
                 end = endDate,
             )
 
-        val groupedByDeadline = LinkedHashMap<LocalDate, MutableList<MonthlyScrapDeadLineSummary>>()
-
-        for (scrap in scraps) {
-            val deadline = scrap.internshipAnnouncement.internshipAnnouncementDeadline.value
-            val scrapId = scrap.id ?: throw ScrapException(ScrapErrorCode.SCRAP_ID_NULL)
-            val summary =
-                MonthlyScrapDeadLineSummary(
-                    scrapId = scrapId,
-                    title = scrap.internshipAnnouncement.title.value,
-                    color = scrap.hexColor(),
-                )
-            groupedByDeadline.computeIfAbsent(deadline) { mutableListOf() }.add(summary)
-        }
+        val groupedByDeadline = scraps.groupBy { it.internshipAnnouncement.internshipAnnouncementDeadline.value }
 
         val monthlyGroups =
-            groupedByDeadline.map { (deadline, summaries) ->
+            groupedByDeadline.map { (deadline, groupedScraps) ->
                 MonthlyScrapDeadlineGroup(
                     deadline = deadline.toString(),
-                    scraps = summaries,
+                    scraps =
+                        groupedScraps.map { scrap ->
+                            MonthlyScrapDeadLineSummary(
+                                scrapId = scrap.id ?: throw ScrapException(ScrapErrorCode.SCRAP_ID_NULL),
+                                title = scrap.internshipAnnouncement.title.value,
+                                color = scrap.hexColor(),
+                            )
+                        },
                 )
             }
 
