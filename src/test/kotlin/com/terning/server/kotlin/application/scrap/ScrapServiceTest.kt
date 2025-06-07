@@ -1,9 +1,11 @@
 package com.terning.server.kotlin.application
 
-import com.terning.server.kotlin.application.scrap.ScrapRequest
-import com.terning.server.kotlin.application.scrap.ScrapUpdateRequest
+import com.terning.server.kotlin.application.scrap.dto.ScrapRequest
+import com.terning.server.kotlin.application.scrap.dto.ScrapUpdateRequest
 import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipAnnouncement
 import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipAnnouncementRepository
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipAnnouncementDeadline
+import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipTitle
 import com.terning.server.kotlin.domain.scrap.Scrap
 import com.terning.server.kotlin.domain.scrap.ScrapRepository
 import com.terning.server.kotlin.domain.scrap.exception.ScrapErrorCode
@@ -21,6 +23,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import java.time.LocalDate
 import java.util.Optional
 
 class ScrapServiceTest {
@@ -197,6 +200,83 @@ class ScrapServiceTest {
 
             verify { announcement.decreaseScrapCount() }
             verify { scrapRepository.delete(scrap) }
+        }
+    }
+
+    @Nested
+    @DisplayName("월간 스크랩 마감일 조회")
+    inner class MonthlyScrapDeadlineTest {
+        @Test
+        @DisplayName("마감일 기준으로 그룹핑된 스크랩을 반환한다")
+        fun returnsGroupedScrapsByDeadline() {
+            val deadline = LocalDate.of(2025, 6, 30)
+            val scrapId = 1L
+
+            val title = mockk<InternshipTitle>()
+            every { title.value } returns "테스트 공고"
+
+            val internshipAnnouncementDeadline =
+                mockk<InternshipAnnouncementDeadline>()
+            every { internshipAnnouncementDeadline.value } returns deadline
+
+            val internshipAnnouncement = mockk<InternshipAnnouncement>()
+            every { internshipAnnouncement.title } returns title
+            every { internshipAnnouncement.internshipAnnouncementDeadline } returns internshipAnnouncementDeadline
+
+            val scrap = mockk<Scrap>()
+            every { scrap.id } returns scrapId
+            every { scrap.internshipAnnouncement } returns internshipAnnouncement
+            every { scrap.hexColor() } returns "#4AA9F2"
+
+            every {
+                scrapRepository.findScrapsByUserIdAndDeadlineBetweenOrderByDeadline(
+                    userId = userId,
+                    start = LocalDate.of(2025, 6, 1),
+                    end = LocalDate.of(2025, 6, 30),
+                )
+            } returns listOf(scrap)
+
+            val response = scrapService.monthlyScrapDeadlines(userId, 2025, 6)
+
+            assertEquals(1, response.monthlyScrapDeadline.size)
+            val group = response.monthlyScrapDeadline.first()
+            assertEquals("2025-06-30", group.deadline)
+            assertEquals(1, group.scraps.size)
+            assertEquals(scrapId, group.scraps.first().scrapId)
+            assertEquals("테스트 공고", group.scraps.first().title)
+            assertEquals("#4AA9F2", group.scraps.first().color)
+        }
+
+        @Test
+        @DisplayName("스크랩 ID가 null이면 예외가 발생한다")
+        fun throwsExceptionWhenScrapIdIsNull() {
+            val deadline = LocalDate.of(2025, 6, 30)
+
+            val title = mockk<InternshipTitle>()
+            every { title.value } returns "테스트 공고"
+
+            val announcementDeadline =
+                mockk<InternshipAnnouncementDeadline>()
+            every { announcementDeadline.value } returns deadline
+
+            val internshipAnnouncement = mockk<InternshipAnnouncement>()
+            every { internshipAnnouncement.title } returns title
+            every { internshipAnnouncement.internshipAnnouncementDeadline } returns announcementDeadline
+
+            val scrap = mockk<Scrap>()
+            every { scrap.id } returns null
+            every { scrap.internshipAnnouncement } returns internshipAnnouncement
+
+            every {
+                scrapRepository.findScrapsByUserIdAndDeadlineBetweenOrderByDeadline(any(), any(), any())
+            } returns listOf(scrap)
+
+            val exception =
+                assertThrows(ScrapException::class.java) {
+                    scrapService.monthlyScrapDeadlines(userId, 2025, 6)
+                }
+
+            assertEquals(ScrapErrorCode.SCRAP_ID_NULL, exception.errorCode)
         }
     }
 }
