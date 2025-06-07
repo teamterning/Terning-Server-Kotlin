@@ -1,6 +1,6 @@
 package com.terning.server.kotlin.application.filter
 
-data class FilterResponse (
+data class FilterResponse(
     val jobType: String,
     val grade: String,
     val workingPeriod: String,
