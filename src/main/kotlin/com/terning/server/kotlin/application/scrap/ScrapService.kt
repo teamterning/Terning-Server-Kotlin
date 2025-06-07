@@ -1,7 +1,5 @@
-package com.terning.server.kotlin.application
+package com.terning.server.kotlin.application.scrap
 
-import com.terning.server.kotlin.application.scrap.ScrapRequest
-import com.terning.server.kotlin.application.scrap.ScrapUpdateRequest
 import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipAnnouncementRepository
 import com.terning.server.kotlin.domain.scrap.Scrap
 import com.terning.server.kotlin.domain.scrap.ScrapRepository

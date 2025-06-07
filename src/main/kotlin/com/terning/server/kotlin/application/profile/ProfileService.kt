@@ -6,6 +6,8 @@ import com.terning.server.kotlin.domain.auth.exception.AuthException
 import com.terning.server.kotlin.domain.user.UserRepository
 import com.terning.server.kotlin.domain.user.exception.UserErrorCode
 import com.terning.server.kotlin.domain.user.exception.UserException
+import com.terning.server.kotlin.domain.user.vo.ProfileImage
+import com.terning.server.kotlin.domain.user.vo.UserName
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -31,6 +33,25 @@ class ProfileService(
             name = user.name(),
             profileImage = user.profileImage().value,
             authType = auth.authType().value,
+        )
+    }
+
+    @Transactional
+    fun updateUserProfile(
+        userId: Long,
+        profileRequest: ProfileRequest,
+    ) {
+        val user =
+            userRepository.findById(userId).orElseThrow {
+                UserException(UserErrorCode.NOT_FOUND_USER_EXCEPTION)
+            }
+
+        val name = UserName.from(profileRequest.name)
+        val profileImage = ProfileImage.from(profileRequest.profileImage)
+
+        user.updateProfile(
+            newName = name,
+            newProfileImage = profileImage,
         )
     }
 }

@@ -10,8 +10,10 @@ import com.terning.server.kotlin.domain.user.UserRepository
 import com.terning.server.kotlin.domain.user.exception.UserErrorCode
 import com.terning.server.kotlin.domain.user.exception.UserException
 import com.terning.server.kotlin.domain.user.vo.ProfileImage
+import com.terning.server.kotlin.domain.user.vo.UserName
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
@@ -74,5 +76,48 @@ class ProfileServiceTest {
             }
 
         assertThat(exception.errorCode).isEqualTo(UserErrorCode.NOT_FOUND_USER_EXCEPTION)
+    }
+
+    @Test
+    @DisplayName("사용자가 입력한 정보로 프로필 수정이 된다")
+    fun updateProfileSucceeds() {
+        // given
+        val userId = 1L
+        val profileRequest = ProfileRequest(name = "이유빈", profileImage = "LUCKY")
+
+        val user = mockk<User>(relaxed = true)
+
+        every { userRepository.findById(userId) } returns Optional.of(user)
+
+        // when
+        profileService.updateUserProfile(userId, profileRequest)
+
+        // then
+        verify {
+            user.updateProfile(
+                newName = UserName.from("이유빈"),
+                newProfileImage = ProfileImage.from("LUCKY"),
+            )
+        }
+    }
+
+    @Test
+    @DisplayName("13자 이상의 이름이 들어오면 프로필 수정 오류가 발생한다")
+    fun updateProfileFailsIfNameTooLong() {
+        // given
+        val userId = 1L
+        val longName = "동해물과백두산이마르고닳도록"
+        val profileRequest = ProfileRequest(name = longName, profileImage = "BASIC")
+        val user = mockk<User>()
+
+        every { userRepository.findById(userId) } returns Optional.of(user)
+
+        // then
+        val exception =
+            assertThrows(IllegalArgumentException::class.java) {
+                profileService.updateUserProfile(userId, profileRequest)
+            }
+
+        assertThat(exception.message).contains(UserName.ERROR_LENGTH)
     }
 }

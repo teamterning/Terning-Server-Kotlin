@@ -1,7 +1,7 @@
 package com.terning.server.kotlin.ui.api
 
-import com.terning.server.kotlin.application.ScrapService
 import com.terning.server.kotlin.application.scrap.ScrapRequest
+import com.terning.server.kotlin.application.scrap.ScrapService
 import com.terning.server.kotlin.application.scrap.ScrapUpdateRequest
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
