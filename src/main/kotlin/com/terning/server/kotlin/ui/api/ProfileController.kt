@@ -42,7 +42,10 @@ class ProfileController(
     ): ResponseEntity<ApiResponse<Unit>> {
         val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
 
-        profileService.updateUserProfile()
+        profileService.updateUserProfile(
+            userId = userId,
+            profileRequest = profileRequest,
+        )
 
         return ResponseEntity.ok(
             ApiResponse.success(
