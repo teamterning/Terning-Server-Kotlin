@@ -13,13 +13,13 @@ import com.terning.server.kotlin.domain.user.vo.ProfileImage
 import com.terning.server.kotlin.domain.user.vo.UserName
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import java.util.Optional
-import io.mockk.verify
 
 class ProfileServiceTest {
     private val authRepository: AuthRepository = mockk()
@@ -113,11 +113,11 @@ class ProfileServiceTest {
         every { userRepository.findById(userId) } returns Optional.of(user)
 
         // then
-        val exception = assertThrows(IllegalArgumentException::class.java) {
-            profileService.updateUserProfile(userId, profileRequest)
-        }
+        val exception =
+            assertThrows(IllegalArgumentException::class.java) {
+                profileService.updateUserProfile(userId, profileRequest)
+            }
 
         assertThat(exception.message).contains("이름은 1~12자여야 합니다.")
     }
-
 }
