@@ -3,9 +3,9 @@ package com.terning.server.kotlin.ui.api
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import com.terning.server.kotlin.application.ScrapService
-import com.terning.server.kotlin.application.scrap.dto.MonthlyScrapDeadLineSummary
 import com.terning.server.kotlin.application.scrap.dto.MonthlyScrapDeadlineGroup
 import com.terning.server.kotlin.application.scrap.dto.MonthlyScrapDeadlineResponse
+import com.terning.server.kotlin.application.scrap.dto.MonthlyScrapDeadlineSummary
 import com.terning.server.kotlin.application.scrap.dto.ScrapRequest
 import com.terning.server.kotlin.application.scrap.dto.ScrapUpdateRequest
 import io.mockk.every
@@ -54,7 +54,7 @@ class ScrapControllerTest {
         val month = 6
 
         val summary =
-            MonthlyScrapDeadLineSummary(
+            MonthlyScrapDeadlineSummary(
                 scrapId = 1L,
                 title = "테스트 공고",
                 color = "#4AA9F2",

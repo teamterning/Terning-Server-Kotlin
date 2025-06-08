@@ -1,8 +1,8 @@
 package com.terning.server.kotlin.application
 
-import com.terning.server.kotlin.application.scrap.dto.MonthlyScrapDeadLineSummary
 import com.terning.server.kotlin.application.scrap.dto.MonthlyScrapDeadlineGroup
 import com.terning.server.kotlin.application.scrap.dto.MonthlyScrapDeadlineResponse
+import com.terning.server.kotlin.application.scrap.dto.MonthlyScrapDeadlineSummary
 import com.terning.server.kotlin.application.scrap.dto.ScrapRequest
 import com.terning.server.kotlin.application.scrap.dto.ScrapUpdateRequest
 import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipAnnouncementRepository
@@ -109,7 +109,7 @@ class ScrapService(
                     deadline = deadline.toString(),
                     scraps =
                         groupedScraps.map { scrap ->
-                            MonthlyScrapDeadLineSummary(
+                            MonthlyScrapDeadlineSummary(
                                 scrapId = scrap.id ?: throw ScrapException(ScrapErrorCode.SCRAP_ID_NULL),
                                 title = scrap.internshipAnnouncement.title.value,
                                 color = scrap.hexColor(),
@@ -117,7 +117,6 @@ class ScrapService(
                         },
                 )
             }
-
         return MonthlyScrapDeadlineResponse(monthlyScrapDeadline = monthlyGroups)
     }
 }
