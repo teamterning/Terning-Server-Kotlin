@@ -1,6 +1,7 @@
 package com.terning.server.kotlin.ui.api
 
 import com.terning.server.kotlin.application.ScrapService
+import com.terning.server.kotlin.application.scrap.dto.DetailedMonthlyScrapResponse
 import com.terning.server.kotlin.application.scrap.dto.MonthlyScrapDeadlineResponse
 import com.terning.server.kotlin.application.scrap.dto.ScrapRequest
 import com.terning.server.kotlin.application.scrap.dto.ScrapUpdateRequest
@@ -21,6 +22,25 @@ import org.springframework.web.bind.annotation.RestController
 class ScrapController(
     private val scrapService: ScrapService,
 ) {
+    @GetMapping("/calendar/monthly-list")
+    fun monthlyScrapsAsList(
+        // TODO: @AuthenticationPrincipal userId: Long,
+        @RequestParam("year") year: Int,
+        @RequestParam("month") month: Int,
+    ): ResponseEntity<ApiResponse<DetailedMonthlyScrapResponse>> {
+        val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
+
+        val response = scrapService.detailedMonthlyScraps(userId, year, month)
+
+        return ResponseEntity.ok(
+            ApiResponse.success(
+                status = HttpStatus.OK,
+                message = "캘린더 > (월간) 스크랩 된 공고 정보 (리스트) 불러오기를 성공했습니다",
+                result = response,
+            ),
+        )
+    }
+
     @GetMapping("/calendar/monthly-default")
     fun monthlyScraps(
         // TODO: @AuthenticationPrincipal userId: Long,
