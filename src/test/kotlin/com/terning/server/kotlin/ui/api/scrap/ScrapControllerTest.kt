@@ -52,6 +52,52 @@ class ScrapControllerTest {
     }
 
     @Test
+    @DisplayName("일간 스크랩 데이터를 조회한다")
+    fun getDailyScraps() {
+        // given
+        val userId = 1L
+        val date = LocalDate.of(2025, 6, 8)
+        val clock =
+            Clock.fixed(
+                date.atStartOfDay(ZoneId.systemDefault()).toInstant(),
+                ZoneId.systemDefault(),
+            )
+
+        val scrap =
+            DetailedScrap.from(
+                announcementId = 1L,
+                companyImageUrl = "https://test.image/logo.png",
+                title = "일간 인턴 모집",
+                workingPeriod = "2개월",
+                isScrapped = true,
+                hexColor = "#ABCDEF",
+                deadline = date,
+                startYear = 2025,
+                startMonth = 6,
+                clock = clock,
+            )
+
+        every { scrapService.dailyScraps(userId, date) } returns listOf(scrap)
+
+        // when & then
+        mockMvc.get("/api/v1/calendar/daily") {
+            param("date", "2025-06-08")
+        }.andExpect {
+            status { isOk() }
+            jsonPath("$.status") { value(200) }
+            jsonPath("$.result[0].announcementId") { value(1) }
+            jsonPath("$.result[0].companyImageUrl") { value("https://test.image/logo.png") }
+            jsonPath("$.result[0].title") { value("일간 인턴 모집") }
+            jsonPath("$.result[0].workingPeriod") { value("2개월") }
+            jsonPath("$.result[0].isScrapped") { value(true) }
+            jsonPath("$.result[0].hexColor") { value("#ABCDEF") }
+            jsonPath("$.result[0].startYearMonth") { value("2025년 6월") }
+            jsonPath("$.result[0].deadlineText") { value("2025년 6월 8일") }
+            jsonPath("$.result[0].formattedDeadline") { value("D-DAY") }
+        }
+    }
+
+    @Test
     @DisplayName("월간 스크랩 데이터를 리스트 형태로 조회한다")
     fun getDetailedMonthlyScraps() {
         // given
