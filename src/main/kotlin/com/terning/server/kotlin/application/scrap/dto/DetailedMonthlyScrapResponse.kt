@@ -22,19 +22,44 @@ data class DetailedScrap(
     val deadline: LocalDate,
     val startYear: Int,
     val startMonth: Int,
+    val formattedDeadline: String,
 ) {
-    val formattedDeadline: String = formatToDday(deadline)
     val deadlineText: String = "${deadline.year}년 ${deadline.monthValue}월 ${deadline.dayOfMonth}일"
     val startYearMonth: String = "${startYear}년 ${startMonth}월"
 
     companion object {
-        private fun formatToDday(deadline: LocalDate): String {
-            val today = LocalDate.now()
-            return when {
-                deadline.isEqual(today) -> "D-DAY"
-                deadline.isBefore(today) -> "지원마감"
-                else -> "D-${ChronoUnit.DAYS.between(today, deadline)}"
-            }
+        fun from(
+            announcementId: Long,
+            companyImageUrl: String,
+            title: String,
+            workingPeriod: String,
+            isScrapped: Boolean,
+            hexColor: String,
+            deadline: LocalDate,
+            startYear: Int,
+            startMonth: Int,
+            clock: java.time.Clock,
+        ): DetailedScrap {
+            val today = LocalDate.now(clock)
+            val formattedDeadline =
+                when {
+                    deadline.isEqual(today) -> "D-DAY"
+                    deadline.isBefore(today) -> "지원마감"
+                    else -> "D-${ChronoUnit.DAYS.between(today, deadline)}"
+                }
+
+            return DetailedScrap(
+                announcementId,
+                companyImageUrl,
+                title,
+                workingPeriod,
+                isScrapped,
+                hexColor,
+                deadline,
+                startYear,
+                startMonth,
+                formattedDeadline,
+            )
         }
     }
 }
