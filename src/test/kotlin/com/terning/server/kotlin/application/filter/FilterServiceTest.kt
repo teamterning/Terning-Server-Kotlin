@@ -2,14 +2,9 @@ package com.terning.server.kotlin.application.filter
 
 import com.terning.server.kotlin.domain.filter.Filter
 import com.terning.server.kotlin.domain.filter.FilterRepository
-import com.terning.server.kotlin.domain.filter.exception.FilterErrorCode
-import com.terning.server.kotlin.domain.filter.exception.FilterException
-import com.terning.server.kotlin.domain.filter.vo.FilterGrade
-import com.terning.server.kotlin.domain.filter.vo.FilterJobType
-import com.terning.server.kotlin.domain.filter.vo.FilterMonth
-import com.terning.server.kotlin.domain.filter.vo.FilterStartDate
-import com.terning.server.kotlin.domain.filter.vo.FilterWorkingPeriod
-import com.terning.server.kotlin.domain.filter.vo.FilterYear
+import com.terning.server.kotlin.domain.filter.vo.*
+import com.terning.server.kotlin.domain.user.exception.UserErrorCode
+import com.terning.server.kotlin.domain.user.exception.UserException
 import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
@@ -38,11 +33,11 @@ class FilterServiceTest {
 
         // then
         val exception =
-            assertThrows(FilterException::class.java) {
+            assertThrows(UserException::class.java) {
                 filterService.getUserFilter(userId)
             }
 
-        assertThat(exception.errorCode).isEqualTo(FilterErrorCode.NOT_FOUND_USER_EXCEPTION)
+        assertThat(exception.errorCode).isEqualTo(UserErrorCode.NOT_FOUND_USER_EXCEPTION)
     }
 
     @Test
