@@ -70,12 +70,11 @@ class User private constructor(
             name: String,
             profile: String,
             userState: UserState = UserState.ACTIVE,
-        ): User {
-            return User(
+        ): User =
+            User(
                 name = UserName.from(name),
                 profileImage = ProfileImage.from(profile),
                 userState = userState,
             )
-        }
     }
 }
