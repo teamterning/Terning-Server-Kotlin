@@ -33,8 +33,8 @@ class FilterControllerTest {
                 jobType = "it",
                 grade = "senior",
                 workingPeriod = "short",
-                startYear = 2025,
-                startMonth = 6,
+                startYear = 2024,
+                startMonth = 12,
             )
     }
 
@@ -54,8 +54,8 @@ class FilterControllerTest {
             jsonPath("$.result.jobType") { value("it") }
             jsonPath("$.result.grade") { value("senior") }
             jsonPath("$.result.workingPeriod") { value("short") }
-            jsonPath("$.result.startYear") { value(2025) }
-            jsonPath("$.result.startMonth") { value(6) }
+            jsonPath("$.result.startYear") { value(2024) }
+            jsonPath("$.result.startMonth") { value(12) }
         }
     }
 }
