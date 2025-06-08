@@ -1,11 +1,13 @@
-package com.terning.server.kotlin.ui.api.scrap
+package com.terning.server.kotlin.ui.api
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
-import com.terning.server.kotlin.application.scrap.ScrapRequest
-import com.terning.server.kotlin.application.scrap.ScrapService
-import com.terning.server.kotlin.application.scrap.ScrapUpdateRequest
-import com.terning.server.kotlin.ui.api.ScrapController
+import com.terning.server.kotlin.application.ScrapService
+import com.terning.server.kotlin.application.scrap.dto.MonthlyScrapDeadlineGroup
+import com.terning.server.kotlin.application.scrap.dto.MonthlyScrapDeadlineResponse
+import com.terning.server.kotlin.application.scrap.dto.MonthlyScrapDeadlineSummary
+import com.terning.server.kotlin.application.scrap.dto.ScrapRequest
+import com.terning.server.kotlin.application.scrap.dto.ScrapUpdateRequest
 import io.mockk.every
 import io.mockk.just
 import io.mockk.runs
@@ -18,6 +20,7 @@ import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.delete
+import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
 
@@ -40,6 +43,46 @@ class ScrapControllerTest {
     fun setUp() {
         scrapRequest = ScrapRequest(color = "BLUE")
         scrapUpdateRequest = ScrapUpdateRequest(color = "RED")
+    }
+
+    @Test
+    @DisplayName("월간 스크랩 데이터를 조회한다")
+    fun getMonthlyScraps() {
+        // given
+        val userId = 1L
+        val year = 2025
+        val month = 6
+
+        val summary =
+            MonthlyScrapDeadlineSummary(
+                scrapId = 1L,
+                title = "테스트 공고",
+                color = "#4AA9F2",
+            )
+        val group =
+            MonthlyScrapDeadlineGroup(
+                deadline = "2025-06-30",
+                scraps = listOf(summary),
+            )
+        val response =
+            MonthlyScrapDeadlineResponse(
+                monthlyScrapDeadline = listOf(group),
+            )
+
+        every { scrapService.monthlyScrapDeadlines(userId, year, month) } returns response
+
+        // when & then
+        mockMvc.get("/api/v1/calendar/monthly-default") {
+            param("year", year.toString())
+            param("month", month.toString())
+        }.andExpect {
+            status { isOk() }
+            jsonPath("$.status") { value(200) }
+            jsonPath("$.result.monthlyScrapDeadline[0].deadline") { value("2025-06-30") }
+            jsonPath("$.result.monthlyScrapDeadline[0].scraps[0].scrapId") { value(1) }
+            jsonPath("$.result.monthlyScrapDeadline[0].scraps[0].title") { value("테스트 공고") }
+            jsonPath("$.result.monthlyScrapDeadline[0].scraps[0].color") { value("#4AA9F2") }
+        }
     }
 
     @Test

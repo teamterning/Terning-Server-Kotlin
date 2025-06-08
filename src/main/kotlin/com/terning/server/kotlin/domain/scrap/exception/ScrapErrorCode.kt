@@ -15,4 +15,6 @@ enum class ScrapErrorCode(
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 유저는 존재하지 않습니다"),
 
     SCRAP_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 스크랩은 존재하지 않습니다"),
+
+    SCRAP_ID_NULL(HttpStatus.INTERNAL_SERVER_ERROR, "스크랩 ID가 존재하지 않습니다."),
 }
