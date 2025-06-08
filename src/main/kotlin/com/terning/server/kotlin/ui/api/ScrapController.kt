@@ -2,9 +2,11 @@ package com.terning.server.kotlin.ui.api
 
 import com.terning.server.kotlin.application.ScrapService
 import com.terning.server.kotlin.application.scrap.dto.DetailedMonthlyScrapResponse
+import com.terning.server.kotlin.application.scrap.dto.DetailedScrap
 import com.terning.server.kotlin.application.scrap.dto.MonthlyScrapDeadlineResponse
 import com.terning.server.kotlin.application.scrap.dto.ScrapRequest
 import com.terning.server.kotlin.application.scrap.dto.ScrapUpdateRequest
+import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -16,12 +18,31 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.time.LocalDate
 
 @RestController
 @RequestMapping("/api/v1")
 class ScrapController(
     private val scrapService: ScrapService,
 ) {
+    @GetMapping("/calendar/daily")
+    fun dailyScraps(
+        // TODO: @AuthenticationPrincipal userId: Long,
+        @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) date: LocalDate,
+    ): ResponseEntity<ApiResponse<List<DetailedScrap>>> {
+        val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 교체
+
+        val dailyScraps = scrapService.dailyScraps(userId, date)
+
+        return ResponseEntity.ok(
+            ApiResponse.success(
+                status = HttpStatus.OK,
+                message = "캘린더 > (일간) 스크랩 된 공고 정보 불러오기를 성공했습니다",
+                result = dailyScraps,
+            ),
+        )
+    }
+
     @GetMapping("/calendar/monthly-list")
     fun monthlyScrapsAsList(
         // TODO: @AuthenticationPrincipal userId: Long,
