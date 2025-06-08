@@ -3,6 +3,9 @@ package com.terning.server.kotlin.ui.api
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import com.terning.server.kotlin.application.ScrapService
+import com.terning.server.kotlin.application.scrap.dto.DetailedMonthlyScrapResponse
+import com.terning.server.kotlin.application.scrap.dto.DetailedScrap
+import com.terning.server.kotlin.application.scrap.dto.DetailedScrapGroup
 import com.terning.server.kotlin.application.scrap.dto.MonthlyScrapDeadlineGroup
 import com.terning.server.kotlin.application.scrap.dto.MonthlyScrapDeadlineResponse
 import com.terning.server.kotlin.application.scrap.dto.MonthlyScrapDeadlineSummary
@@ -23,6 +26,9 @@ import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
+import java.time.Clock
+import java.time.LocalDate
+import java.time.ZoneId
 
 @WebMvcTest(ScrapController::class)
 @ActiveProfiles("test")
@@ -43,6 +49,64 @@ class ScrapControllerTest {
     fun setUp() {
         scrapRequest = ScrapRequest(color = "BLUE")
         scrapUpdateRequest = ScrapUpdateRequest(color = "RED")
+    }
+
+    @Test
+    @DisplayName("월간 스크랩 데이터를 리스트 형태로 조회한다")
+    fun getDetailedMonthlyScraps() {
+        // given
+        val userId = 1L
+        val year = 2025
+        val month = 6
+        val clock =
+            Clock.fixed(
+                LocalDate.of(2025, 6, 25).atStartOfDay(ZoneId.systemDefault()).toInstant(),
+                ZoneId.systemDefault(),
+            )
+
+        val detailedResponse =
+            DetailedMonthlyScrapResponse(
+                dailyGroups =
+                    listOf(
+                        DetailedScrapGroup(
+                            deadline = "2025-06-30",
+                            scraps =
+                                listOf(
+                                    DetailedScrap.from(
+                                        announcementId = 1L,
+                                        companyImageUrl = "https://test.image/logo.png",
+                                        title = "백엔드 인턴 모집",
+                                        workingPeriod = "3개월",
+                                        isScrapped = true,
+                                        hexColor = "#123456",
+                                        deadline = LocalDate.of(2025, 6, 30),
+                                        startYear = 2025,
+                                        startMonth = 7,
+                                        clock = clock,
+                                    ),
+                                ),
+                        ),
+                    ),
+            )
+
+        every { scrapService.detailedMonthlyScraps(userId, year, month) } returns detailedResponse
+
+        // when & then
+        mockMvc.get("/api/v1/calendar/monthly-list") {
+            param("year", year.toString())
+            param("month", month.toString())
+        }.andExpect {
+            status { isOk() }
+            jsonPath("$.status") { value(200) }
+            jsonPath("$.result.dailyGroups[0].deadline") { value("2025-06-30") }
+            jsonPath("$.result.dailyGroups[0].scraps[0].announcementId") { value(1) }
+            jsonPath("$.result.dailyGroups[0].scraps[0].companyImageUrl") { value("https://test.image/logo.png") }
+            jsonPath("$.result.dailyGroups[0].scraps[0].title") { value("백엔드 인턴 모집") }
+            jsonPath("$.result.dailyGroups[0].scraps[0].workingPeriod") { value("3개월") }
+            jsonPath("$.result.dailyGroups[0].scraps[0].deadlineText") { value("2025년 6월 30일") }
+            jsonPath("$.result.dailyGroups[0].scraps[0].startYearMonth") { value("2025년 7월") }
+            jsonPath("$.result.dailyGroups[0].scraps[0].formattedDeadline") { value("D-5") }
+        }
     }
 
     @Test
