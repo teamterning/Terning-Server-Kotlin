@@ -1,5 +1,8 @@
 package com.terning.server.kotlin.application
 
+import com.terning.server.kotlin.application.scrap.dto.DetailedMonthlyScrapResponse
+import com.terning.server.kotlin.application.scrap.dto.DetailedScrap
+import com.terning.server.kotlin.application.scrap.dto.DetailedScrapGroup
 import com.terning.server.kotlin.application.scrap.dto.MonthlyScrapDeadlineGroup
 import com.terning.server.kotlin.application.scrap.dto.MonthlyScrapDeadlineResponse
 import com.terning.server.kotlin.application.scrap.dto.MonthlyScrapDeadlineSummary
@@ -118,5 +121,51 @@ class ScrapService(
                 )
             }
         return MonthlyScrapDeadlineResponse(monthlyScrapDeadline = monthlyGroups)
+    }
+
+    fun detailedMonthlyScraps(
+        userId: Long,
+        year: Int,
+        month: Int,
+    ): DetailedMonthlyScrapResponse {
+        val startDate = LocalDate.of(year, month, 1)
+        val endDate = startDate.plusMonths(1).minusDays(1)
+
+        val scraps =
+            scrapRepository.findScrapsByUserIdAndDeadlineBetweenOrderByDeadline(
+                userId = userId,
+                start = startDate,
+                end = endDate,
+            )
+
+        val dailyGroups =
+            scraps
+                .groupBy { it.internshipAnnouncement.internshipAnnouncementDeadline.value }
+                .toSortedMap()
+                .map { (deadline, dailyScraps) ->
+                    DetailedScrapGroup(
+                        deadline = deadline.toString(),
+                        scraps =
+                            dailyScraps.map { scrap ->
+                                val announcement = scrap.internshipAnnouncement
+
+                                DetailedScrap(
+                                    announcementId =
+                                        announcement.id
+                                            ?: throw ScrapException(ScrapErrorCode.SCRAP_ID_NULL),
+                                    companyImageUrl = announcement.company.logoUrl.value,
+                                    title = announcement.title.value,
+                                    workingPeriod = announcement.workingPeriod.toString(),
+                                    isScrapped = true,
+                                    hexColor = scrap.hexColor(),
+                                    deadline = deadline,
+                                    startYear = announcement.startDate.year.value,
+                                    startMonth = announcement.startDate.month.value,
+                                )
+                            },
+                    )
+                }
+
+        return DetailedMonthlyScrapResponse(dailyGroups = dailyGroups)
     }
 }
