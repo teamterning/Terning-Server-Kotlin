@@ -354,4 +354,73 @@ class ScrapServiceTest {
             assertEquals(ScrapErrorCode.SCRAP_ID_NULL, exception.errorCode)
         }
     }
+
+    @Nested
+    @DisplayName("일간 스크랩 조회")
+    inner class DailyScrapTest {
+        @Test
+        @DisplayName("지정한 날짜에 해당하는 스크랩 정보를 반환한다")
+        fun returnsDailyScraps() {
+            val date = LocalDate.of(2025, 6, 8)
+
+            val announcement = mockk<InternshipAnnouncement>()
+            every { announcement.id } returns 1L
+            every { announcement.company.logoUrl.value } returns "http://image.url/logo.png"
+            every { announcement.title.value } returns "일간 공고"
+            every { announcement.workingPeriod.toString() } returns "2개월"
+            every { announcement.internshipAnnouncementDeadline.value } returns date
+            every { announcement.startDate.year.value } returns 2025
+            every { announcement.startDate.month.value } returns 6
+
+            val scrap = mockk<Scrap>()
+            every { scrap.internshipAnnouncement } returns announcement
+            every { scrap.hexColor() } returns "#ABCDEF"
+
+            every {
+                scrapRepository.findScrapsByUserIdAndDeadlineOrderByDeadline(userId, date)
+            } returns listOf(scrap)
+
+            val result = scrapService.dailyScraps(userId, date)
+
+            assertEquals(1, result.size)
+            val item = result.first()
+            assertEquals(1L, item.announcementId)
+            assertEquals("일간 공고", item.title)
+            assertEquals("2개월", item.workingPeriod)
+            assertEquals("http://image.url/logo.png", item.companyImageUrl)
+            assertEquals(true, item.isScrapped)
+            assertEquals("#ABCDEF", item.hexColor)
+            assertEquals("2025년 6월", item.startYearMonth)
+            assertEquals("D-DAY", item.formattedDeadline)
+        }
+
+        @Test
+        @DisplayName("공고 ID가 null이면 예외가 발생한다")
+        fun throwsExceptionWhenAnnouncementIdIsNull() {
+            val date = LocalDate.of(2025, 6, 8)
+
+            val announcement = mockk<InternshipAnnouncement>()
+            every { announcement.id } returns null
+            every { announcement.company.logoUrl.value } returns "http://image.url/logo.png"
+            every { announcement.title.value } returns "일간 공고"
+            every { announcement.workingPeriod.toString() } returns "2개월"
+            every { announcement.internshipAnnouncementDeadline.value } returns date
+            every { announcement.startDate.year.value } returns 2025
+            every { announcement.startDate.month.value } returns 6
+
+            val scrap = mockk<Scrap>()
+            every { scrap.internshipAnnouncement } returns announcement
+
+            every {
+                scrapRepository.findScrapsByUserIdAndDeadlineOrderByDeadline(userId, date)
+            } returns listOf(scrap)
+
+            val exception =
+                assertThrows(ScrapException::class.java) {
+                    scrapService.dailyScraps(userId, date)
+                }
+
+            assertEquals(ScrapErrorCode.SCRAP_ID_NULL, exception.errorCode)
+        }
+    }
 }
