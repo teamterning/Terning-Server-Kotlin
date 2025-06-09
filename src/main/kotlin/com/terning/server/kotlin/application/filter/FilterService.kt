@@ -18,12 +18,14 @@ class FilterService(
                 FilterException(FilterErrorCode.NOT_FOUND_USER_EXCEPTION)
             }
 
+        val startDate = filter.startDate()
+
         return FilterResponse(
             jobType = filter.jobType().type,
             grade = filter.grade().type,
             workingPeriod = filter.workingPeriod().period,
-            startYear = filter.startDate().filterYear.value,
-            startMonth = filter.startDate().filterMonth.value,
+            startYear = startDate.filterYear.value,
+            startMonth = startDate.filterMonth.value,
         )
     }
 }
