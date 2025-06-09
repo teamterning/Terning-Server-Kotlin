@@ -1,8 +1,8 @@
 package com.terning.server.kotlin.application.filter
 
 import com.terning.server.kotlin.domain.filter.FilterRepository
-import com.terning.server.kotlin.domain.user.exception.UserErrorCode
-import com.terning.server.kotlin.domain.user.exception.UserException
+import com.terning.server.kotlin.domain.filter.exception.FilterErrorCode
+import com.terning.server.kotlin.domain.filter.exception.FilterException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -15,7 +15,7 @@ class FilterService(
     fun getUserFilter(userId: Long): FilterResponse {
         val filter =
             filterRepository.findById(userId).orElseThrow {
-                UserException(UserErrorCode.NOT_FOUND_USER_EXCEPTION)
+                FilterException(FilterErrorCode.NOT_FOUND_USER_EXCEPTION)
             }
 
         return FilterResponse(
