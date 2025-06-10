@@ -7,6 +7,7 @@ enum class FilterGrade(
     val type: String,
     val label: String,
 ) {
+    NONE("none", "선택 안 함"),
     FRESHMAN("freshman", "1학년"),
     SOPHOMORE("sophomore", "2학년"),
     JUNIOR("junior", "3학년"),
