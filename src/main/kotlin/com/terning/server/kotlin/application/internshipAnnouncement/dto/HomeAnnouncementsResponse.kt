@@ -37,22 +37,18 @@ data class HomeAnnouncement(
 ) {
     companion object {
         fun from(tuple: Tuple): HomeAnnouncement {
-            val announcement =
-                tuple[internshipAnnouncement]
-                    ?: throw InternshipAnnouncementException(InternshipAnnouncementErrorCode.NOT_FOUND_ANNOUNCEMENT_EXCEPTION)
-
-            val announcementId =
-                announcement.id
-                    ?: throw InternshipAnnouncementException(InternshipAnnouncementErrorCode.NOT_FOUND_ANNOUNCEMENT_EXCEPTION)
-
-            return HomeAnnouncement(
-                announcementId = announcementId,
-                companyImageUrl = announcement.company.logoUrl.value,
-                title = announcement.title.value,
-                workingPeriod = announcement.workingPeriod.toString(),
-                isScrapped = tuple[scrap.id] != null,
-                hexColor = tuple[scrap.color]?.toHexString(),
-            )
+            return tuple[internshipAnnouncement]?.let { announcement ->
+                HomeAnnouncement(
+                    announcementId =
+                        announcement.id
+                            ?: throw InternshipAnnouncementException(InternshipAnnouncementErrorCode.NOT_FOUND_ANNOUNCEMENT_EXCEPTION),
+                    companyImageUrl = announcement.company.logoUrl.value,
+                    title = announcement.title.value,
+                    workingPeriod = announcement.workingPeriod.toString(),
+                    isScrapped = tuple[scrap.id] != null,
+                    hexColor = tuple[scrap.color]?.toHexString(),
+                )
+            } ?: throw InternshipAnnouncementException(InternshipAnnouncementErrorCode.NOT_FOUND_ANNOUNCEMENT_EXCEPTION)
         }
     }
 }
