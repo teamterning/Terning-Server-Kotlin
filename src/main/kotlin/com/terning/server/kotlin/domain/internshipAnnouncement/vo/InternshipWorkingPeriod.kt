@@ -6,17 +6,17 @@ import jakarta.persistence.Embeddable
 
 @Embeddable
 class InternshipWorkingPeriod private constructor(
-    val months: Int,
+    val value: Int,
 ) {
     init {
-        validatePositive(months)
+        validatePositive(value)
     }
 
-    fun toKoreanPeriod(): String = "${months}개월"
+    fun toKoreanPeriod(): String = "${value}개월"
 
-    override fun equals(other: Any?): Boolean = this === other || (other is InternshipWorkingPeriod && months == other.months)
+    override fun equals(other: Any?): Boolean = this === other || (other is InternshipWorkingPeriod && value == other.value)
 
-    override fun hashCode(): Int = months
+    override fun hashCode(): Int = value
 
     override fun toString(): String = toKoreanPeriod()
 
