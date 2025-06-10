@@ -36,6 +36,6 @@ class InternshipAnnouncementScrapCount private constructor(
     companion object {
         private const val MIN_VALUE = 0
 
-        fun from(): InternshipAnnouncementScrapCount = InternshipAnnouncementScrapCount(MIN_VALUE)
+        fun from(value: Int = MIN_VALUE): InternshipAnnouncementScrapCount = InternshipAnnouncementScrapCount(value)
     }
 }
