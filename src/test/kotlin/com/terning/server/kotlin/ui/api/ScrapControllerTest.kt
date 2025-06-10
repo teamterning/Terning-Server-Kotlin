@@ -110,29 +110,28 @@ class ScrapControllerTest {
                 ZoneId.systemDefault(),
             )
 
+        val detailedScrap = DetailedScrap.from(
+            announcementId = 1L,
+            companyImageUrl = "https://test.image/logo.png",
+            title = "백엔드 인턴 모집",
+            workingPeriod = "3개월",
+            isScrapped = true,
+            hexColor = "#123456",
+            deadline = LocalDate.of(2025, 6, 30),
+            startYear = 2025,
+            startMonth = 7,
+            clock = clock,
+        )
+
         val detailedResponse =
             DetailedMonthlyScrapResponse(
                 dailyGroups =
-                    listOf(
-                        DetailedScrapGroup(
-                            deadline = "2025-06-30",
-                            scraps =
-                                listOf(
-                                    DetailedScrap.from(
-                                        announcementId = 1L,
-                                        companyImageUrl = "https://test.image/logo.png",
-                                        title = "백엔드 인턴 모집",
-                                        workingPeriod = "3개월",
-                                        isScrapped = true,
-                                        hexColor = "#123456",
-                                        deadline = LocalDate.of(2025, 6, 30),
-                                        startYear = 2025,
-                                        startMonth = 7,
-                                        clock = clock,
-                                    ),
-                                ),
-                        ),
+                listOf(
+                    DetailedScrapGroup(
+                        deadline = "2025-06-30",
+                        scraps = listOf(detailedScrap),
                     ),
+                ),
             )
 
         every { scrapService.detailedMonthlyScraps(userId, year, month) } returns detailedResponse
@@ -145,13 +144,15 @@ class ScrapControllerTest {
             status { isOk() }
             jsonPath("$.status") { value(200) }
             jsonPath("$.result.dailyGroups[0].deadline") { value("2025-06-30") }
-            jsonPath("$.result.dailyGroups[0].scraps[0].announcementId") { value(1) }
-            jsonPath("$.result.dailyGroups[0].scraps[0].companyImageUrl") { value("https://test.image/logo.png") }
+            jsonPath("$.result.dailyGroups[0].scraps[0].internshipAnnouncementId") { value(1) }
+            jsonPath("$.result.dailyGroups[0].scraps[0].companyImage") { value("https://test.image/logo.png") }
             jsonPath("$.result.dailyGroups[0].scraps[0].title") { value("백엔드 인턴 모집") }
             jsonPath("$.result.dailyGroups[0].scraps[0].workingPeriod") { value("3개월") }
-            jsonPath("$.result.dailyGroups[0].scraps[0].deadlineText") { value("2025년 6월 30일") }
+            jsonPath("$.result.dailyGroups[0].scraps[0].isScrapped") { value(true) }
+            jsonPath("$.result.dailyGroups[0].scraps[0].color") { value("#123456") }
+            jsonPath("$.result.dailyGroups[0].scraps[0].deadline") { value("2025년 6월 30일") }
             jsonPath("$.result.dailyGroups[0].scraps[0].startYearMonth") { value("2025년 7월") }
-            jsonPath("$.result.dailyGroups[0].scraps[0].formattedDeadline") { value("D-5") }
+            jsonPath("$.result.dailyGroups[0].scraps[0].dday") { value("D-5") }
         }
     }
 

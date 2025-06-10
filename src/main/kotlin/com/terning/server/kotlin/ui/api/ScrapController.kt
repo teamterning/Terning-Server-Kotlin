@@ -51,7 +51,11 @@ class ScrapController(
     ): ResponseEntity<ApiResponse<DetailedMonthlyScrapResponse>> {
         val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
 
-        val response = scrapService.detailedMonthlyScraps(userId, year, month)
+        val response = scrapService.detailedMonthlyScraps(
+            userId = userId,
+            year = year,
+            month = month,
+        )
 
         return ResponseEntity.ok(
             ApiResponse.success(
@@ -70,7 +74,11 @@ class ScrapController(
     ): ResponseEntity<ApiResponse<MonthlyScrapDeadlineResponse>> {
         val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
 
-        val monthlyScrapDeadlineResponse = scrapService.monthlyScrapDeadlines(userId, year, month)
+        val monthlyScrapDeadlineResponse = scrapService.monthlyScrapDeadlines(
+            userId = userId,
+            year = year,
+            month = month,
+        )
 
         return ResponseEntity.ok(
             ApiResponse.success(
@@ -89,7 +97,11 @@ class ScrapController(
     ): ResponseEntity<ApiResponse<Unit>> {
         val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
 
-        scrapService.scrap(userId, internshipAnnouncementId, scrapRequest)
+        scrapService.scrap(
+            userId = userId,
+            internshipAnnouncementId = internshipAnnouncementId,
+            scrapRequest = scrapRequest,
+        )
 
         return ResponseEntity
             .status(HttpStatus.CREATED)
@@ -110,7 +122,11 @@ class ScrapController(
     ): ResponseEntity<ApiResponse<Unit>> {
         val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
 
-        scrapService.updateScrap(userId, internshipAnnouncementId, scrapUpdateRequest)
+        scrapService.updateScrap(
+            userId = userId,
+            internshipAnnouncementId = internshipAnnouncementId,
+            scrapUpdateRequest = scrapUpdateRequest,
+        )
 
         return ResponseEntity
             .status(HttpStatus.OK)
@@ -130,7 +146,10 @@ class ScrapController(
     ): ResponseEntity<ApiResponse<Unit>> {
         val userId: Long = 1 // 임시 userId
 
-        scrapService.cancelScrap(userId, internshipAnnouncementId)
+        scrapService.cancelScrap(
+            userId = userId,
+            internshipAnnouncementId = internshipAnnouncementId,
+        )
 
         return ResponseEntity.ok(
             ApiResponse.success(
