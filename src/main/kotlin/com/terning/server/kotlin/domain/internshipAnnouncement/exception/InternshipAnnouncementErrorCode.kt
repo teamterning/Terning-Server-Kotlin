@@ -23,4 +23,8 @@ enum class InternshipAnnouncementErrorCode(
     UNSUPPORTED_COMPANY_LOGO_URL_SCHEME(HttpStatus.BAD_REQUEST, "지원하지 않는 URL scheme입니다. http 또는 https만 허용됩니다."),
     INVALID_ANNOUNCEMENT_URL_FORMAT(HttpStatus.BAD_REQUEST, "공고 URL 형식이 잘못되었습니다."),
     UNSUPPORTED_ANNOUNCEMENT_URL_SCHEME(HttpStatus.BAD_REQUEST, "지원하지 않는 공고 URL scheme입니다. http 또는 https만 허용됩니다."),
+    NOT_FOUND_USER_EXCEPTION(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다."),
+    NOT_FOUND_ANNOUNCEMENT_EXCEPTION(HttpStatus.NOT_FOUND, "인턴십 공고를 찾을 수 없습니다."),
+    INVALID_SORT_TYPE(HttpStatus.BAD_REQUEST, "지원하지 않는 정렬 방식입니다."),
+    INVALID_START_DATE(HttpStatus.BAD_REQUEST, "시작 날짜 형식이 잘못되었습니다. 'YYYY-MM' 형식이어야 합니다."),
 }
