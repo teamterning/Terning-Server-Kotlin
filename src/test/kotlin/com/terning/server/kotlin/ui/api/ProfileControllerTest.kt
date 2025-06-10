@@ -1,11 +1,10 @@
-package com.terning.server.kotlin.ui.api.profile
+package com.terning.server.kotlin.ui.api
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import com.terning.server.kotlin.application.profile.ProfileRequest
 import com.terning.server.kotlin.application.profile.ProfileResponse
 import com.terning.server.kotlin.application.profile.ProfileService
-import com.terning.server.kotlin.ui.api.ProfileController
 import io.mockk.every
 import io.mockk.just
 import io.mockk.runs
