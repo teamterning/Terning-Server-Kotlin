@@ -22,7 +22,7 @@ class InternshipFilterWorkingPeriodTest {
             val period = InternshipWorkingPeriod.from(months)
 
             // then
-            assertThat(period.months).isEqualTo(months)
+            assertThat(period.value).isEqualTo(months)
         }
 
         @Test
