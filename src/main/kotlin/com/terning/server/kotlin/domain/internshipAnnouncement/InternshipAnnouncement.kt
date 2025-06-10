@@ -51,7 +51,7 @@ class InternshipAnnouncement(
     var internshipAnnouncementViewCount: InternshipAnnouncementViewCount = InternshipAnnouncementViewCount.from(),
 
     @Embedded
-    @AttributeOverride(name = "value", column = Column(name = "ScrapCount", nullable = false))
+    @AttributeOverride(name = "value", column = Column(name = "scrapCount", nullable = false))
     var internshipAnnouncementScrapCount: InternshipAnnouncementScrapCount = InternshipAnnouncementScrapCount.from(),
 
     @Embedded
