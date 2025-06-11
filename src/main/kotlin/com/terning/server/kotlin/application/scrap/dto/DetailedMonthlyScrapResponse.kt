@@ -1,5 +1,7 @@
 package com.terning.server.kotlin.application.scrap.dto
 
+import com.fasterxml.jackson.annotation.JsonIgnore
+import java.time.Clock
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
@@ -12,20 +14,30 @@ data class DetailedScrapGroup(
     val scraps: List<DetailedScrap>,
 )
 
-data class DetailedScrap(
-    val announcementId: Long,
-    val companyImageUrl: String,
-    val title: String,
-    val workingPeriod: String,
-    val isScrapped: Boolean,
-    val hexColor: String,
-    val deadline: LocalDate,
-    val startYear: Int,
-    val startMonth: Int,
-    val formattedDeadline: String,
+data class DetailedScrap private constructor(
+    private val rawAnnouncementId: Long,
+    private val rawCompanyImageUrl: String,
+    private val rawTitle: String,
+    private val rawWorkingPeriod: String,
+    private val rawIsScrapped: Boolean,
+    private val rawHexColor: String,
+    @get:JsonIgnore
+    private val rawDeadline: LocalDate,
+    @get:JsonIgnore
+    private val rawStartYear: Int,
+    @get:JsonIgnore
+    private val rawStartMonth: Int,
+    private val rawDDay: String,
 ) {
-    val deadlineText: String = "${deadline.year}년 ${deadline.monthValue}월 ${deadline.dayOfMonth}일"
-    val startYearMonth: String = "${startYear}년 ${startMonth}월"
+    val internshipAnnouncementId: Long = rawAnnouncementId
+    val companyImage: String = rawCompanyImageUrl
+    val dDay: String = rawDDay
+    val title: String = rawTitle
+    val workingPeriod: String = rawWorkingPeriod
+    val isScrapped: Boolean = rawIsScrapped
+    val color: String = rawHexColor
+    val deadline: String = "${rawDeadline.year}년 ${rawDeadline.monthValue}월 ${rawDeadline.dayOfMonth}일"
+    val startYearMonth: String = "${rawStartYear}년 ${rawStartMonth}월"
 
     companion object {
         fun from(
@@ -38,10 +50,10 @@ data class DetailedScrap(
             deadline: LocalDate,
             startYear: Int,
             startMonth: Int,
-            clock: java.time.Clock,
+            clock: Clock,
         ): DetailedScrap {
             val today = LocalDate.now(clock)
-            val formattedDeadline =
+            val dDay =
                 when {
                     deadline.isEqual(today) -> "D-DAY"
                     deadline.isBefore(today) -> "지원마감"
@@ -49,16 +61,16 @@ data class DetailedScrap(
                 }
 
             return DetailedScrap(
-                announcementId,
-                companyImageUrl,
-                title,
-                workingPeriod,
-                isScrapped,
-                hexColor,
-                deadline,
-                startYear,
-                startMonth,
-                formattedDeadline,
+                rawAnnouncementId = announcementId,
+                rawCompanyImageUrl = companyImageUrl,
+                rawTitle = title,
+                rawWorkingPeriod = workingPeriod,
+                rawIsScrapped = isScrapped,
+                rawHexColor = hexColor,
+                rawDeadline = deadline,
+                rawStartYear = startYear,
+                rawStartMonth = startMonth,
+                rawDDay = dDay,
             )
         }
     }
