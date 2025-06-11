@@ -2,7 +2,7 @@ package com.terning.server.kotlin.ui.api.scrap
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
-import com.terning.server.kotlin.application.ScrapService
+import com.terning.server.kotlin.application.scrap.ScrapService
 import com.terning.server.kotlin.application.scrap.dto.DetailedMonthlyScrapResponse
 import com.terning.server.kotlin.application.scrap.dto.DetailedScrap
 import com.terning.server.kotlin.application.scrap.dto.DetailedScrapGroup
@@ -55,7 +55,6 @@ class ScrapControllerTest {
     @Test
     @DisplayName("일간 스크랩 데이터를 조회한다")
     fun getDailyScraps() {
-        // given
         val userId = 1L
         val date = LocalDate.of(2025, 6, 8)
         val clock =
@@ -80,7 +79,6 @@ class ScrapControllerTest {
 
         every { scrapService.dailyScraps(userId, date) } returns listOf(scrap)
 
-        // when & then
         mockMvc.get("/api/v1/calendar/daily") {
             param("date", "2025-06-08")
         }.andExpect {
@@ -93,15 +91,16 @@ class ScrapControllerTest {
             jsonPath("$.result[0].isScrapped") { value(true) }
             jsonPath("$.result[0].hexColor") { value("#ABCDEF") }
             jsonPath("$.result[0].startYearMonth") { value("2025년 6월") }
-            jsonPath("$.result[0].deadlineText") { value("2025년 6월 8일") }
-            jsonPath("$.result[0].formattedDeadline") { value("D-DAY") }
+            // ✨ 수정: 'deadlineText' -> 'deadline'
+            jsonPath("$.result[0].deadline") { value("2025년 6월 8일") }
+            // ✨ 수정: 'formattedDeadline' -> 'dday'
+            jsonPath("$.result[0].dday") { value("D-DAY") }
         }
     }
 
     @Test
     @DisplayName("월간 스크랩 데이터를 리스트 형태로 조회한다")
     fun getDetailedMonthlyScraps() {
-        // given
         val userId = 1L
         val year = 2025
         val month = 6
@@ -138,7 +137,6 @@ class ScrapControllerTest {
 
         every { scrapService.detailedMonthlyScraps(userId, year, month) } returns detailedResponse
 
-        // when & then
         mockMvc.get("/api/v1/calendar/monthly-list") {
             param("year", year.toString())
             param("month", month.toString())
@@ -146,12 +144,15 @@ class ScrapControllerTest {
             status { isOk() }
             jsonPath("$.status") { value(200) }
             jsonPath("$.result.dailyGroups[0].deadline") { value("2025-06-30") }
-            jsonPath("$.result.dailyGroups[0].scraps[0].internshipAnnouncementId") { value(1) }
-            jsonPath("$.result.dailyGroups[0].scraps[0].companyImage") { value("https://test.image/logo.png") }
+            // ✨ 수정: 'internshipAnnouncementId' -> 'announcementId'
+            jsonPath("$.result.dailyGroups[0].scraps[0].announcementId") { value(1) }
+            // ✨ 수정: 'companyImage' -> 'companyImageUrl'
+            jsonPath("$.result.dailyGroups[0].scraps[0].companyImageUrl") { value("https://test.image/logo.png") }
             jsonPath("$.result.dailyGroups[0].scraps[0].title") { value("백엔드 인턴 모집") }
             jsonPath("$.result.dailyGroups[0].scraps[0].workingPeriod") { value("3개월") }
             jsonPath("$.result.dailyGroups[0].scraps[0].isScrapped") { value(true) }
-            jsonPath("$.result.dailyGroups[0].scraps[0].color") { value("#123456") }
+            // ✨ 수정: 'color' -> 'hexColor'
+            jsonPath("$.result.dailyGroups[0].scraps[0].hexColor") { value("#123456") }
             jsonPath("$.result.dailyGroups[0].scraps[0].deadline") { value("2025년 6월 30일") }
             jsonPath("$.result.dailyGroups[0].scraps[0].startYearMonth") { value("2025년 7월") }
             jsonPath("$.result.dailyGroups[0].scraps[0].dday") { value("D-5") }
@@ -161,7 +162,6 @@ class ScrapControllerTest {
     @Test
     @DisplayName("월간 스크랩 데이터를 조회한다")
     fun getMonthlyScraps() {
-        // given
         val userId = 1L
         val year = 2025
         val month = 6
@@ -184,7 +184,6 @@ class ScrapControllerTest {
 
         every { scrapService.monthlyScrapDeadlines(userId, year, month) } returns response
 
-        // when & then
         mockMvc.get("/api/v1/calendar/monthly-default") {
             param("year", year.toString())
             param("month", month.toString())

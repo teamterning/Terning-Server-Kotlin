@@ -1,4 +1,4 @@
-package com.terning.server.kotlin.application
+package com.terning.server.kotlin.application.scrap
 
 import com.terning.server.kotlin.application.scrap.dto.DetailedMonthlyScrapResponse
 import com.terning.server.kotlin.application.scrap.dto.DetailedScrap

@@ -1,6 +1,6 @@
 package com.terning.server.kotlin.ui.api
 
-import com.terning.server.kotlin.application.ScrapService
+import com.terning.server.kotlin.application.scrap.ScrapService
 import com.terning.server.kotlin.application.scrap.dto.DetailedMonthlyScrapResponse
 import com.terning.server.kotlin.application.scrap.dto.DetailedScrap
 import com.terning.server.kotlin.application.scrap.dto.MonthlyScrapDeadlineResponse
