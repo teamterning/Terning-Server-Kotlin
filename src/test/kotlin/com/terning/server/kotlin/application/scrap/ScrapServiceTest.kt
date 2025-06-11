@@ -1,5 +1,6 @@
 package com.terning.server.kotlin.application.scrap
 
+import com.terning.server.kotlin.application.ScrapService
 import com.terning.server.kotlin.application.scrap.dto.ScrapRequest
 import com.terning.server.kotlin.application.scrap.dto.ScrapUpdateRequest
 import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipAnnouncement
@@ -238,9 +239,8 @@ class ScrapServiceTest {
         @DisplayName("스크랩 ID가 null이면 예외가 발생한다")
         fun throwsExceptionWhenScrapIdIsNull() {
             // given
-            val announcement = mockk<InternshipAnnouncement>(relaxed = true)
+            val announcement = mockk<InternshipAnnouncement>()
             val scrap = mockk<Scrap>()
-
             every { scrap.id } returns null
             every { scrap.internshipAnnouncement } returns announcement
             every {
@@ -268,7 +268,6 @@ class ScrapServiceTest {
 
             val announcement = mockk<InternshipAnnouncement>(relaxed = true)
             every { announcement.id } returns 1L
-            every { announcement.company.logoUrl.value } returns "http://image.url/logo.png"
             every { announcement.title.value } returns "상세 공고"
             every { announcement.workingPeriod.toString() } returns "${workingPeriod}개월"
             every { announcement.internshipAnnouncementDeadline.value } returns deadline
@@ -292,11 +291,9 @@ class ScrapServiceTest {
 
             assertEquals(1L, detailedScrap.announcementId)
             assertEquals("상세 공고", detailedScrap.title)
+            assertEquals("#123456", detailedScrap.hexColor)
             assertEquals("${workingPeriod}개월", detailedScrap.workingPeriod)
             assertEquals(true, detailedScrap.isScrapped)
-            assertEquals("#123456", detailedScrap.hexColor)
-            assertEquals("http://image.url/logo.png", detailedScrap.companyImageUrl)
-            assertEquals("2025년 6월 11일", detailedScrap.deadline)
             assertEquals("2025년 6월", detailedScrap.startYearMonth)
         }
 
@@ -331,7 +328,6 @@ class ScrapServiceTest {
             val date = LocalDate.of(2025, 6, 8)
             val announcement = mockk<InternshipAnnouncement>(relaxed = true)
             every { announcement.id } returns 1L
-            every { announcement.company.logoUrl.value } returns "http://image.url/logo.png"
             every { announcement.title.value } returns "일간 공고"
             every { announcement.workingPeriod.toString() } returns "2개월"
             every { announcement.internshipAnnouncementDeadline.value } returns date
@@ -349,14 +345,11 @@ class ScrapServiceTest {
             // then
             assertEquals(1, result.size)
             val item = result.first()
-
             assertEquals(1L, item.announcementId)
             assertEquals("일간 공고", item.title)
             assertEquals("2개월", item.workingPeriod)
-            assertEquals("http://image.url/logo.png", item.companyImageUrl)
             assertEquals(true, item.isScrapped)
             assertEquals("#ABCDEF", item.hexColor)
-            assertEquals("2025년 6월 8일", item.deadline)
             assertEquals("2025년 6월", item.startYearMonth)
             assertEquals("D-DAY", item.dDay)
         }
