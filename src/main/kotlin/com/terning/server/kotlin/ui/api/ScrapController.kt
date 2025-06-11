@@ -1,6 +1,7 @@
 package com.terning.server.kotlin.ui.api
 
 import com.terning.server.kotlin.application.ScrapService
+import com.terning.server.kotlin.application.scrap.dto.DetailedMonthlyScrapResponse
 import com.terning.server.kotlin.application.scrap.dto.MonthlyScrapDeadlineResponse
 import com.terning.server.kotlin.application.scrap.dto.ScrapRequest
 import com.terning.server.kotlin.application.scrap.dto.ScrapUpdateRequest
@@ -21,6 +22,30 @@ import org.springframework.web.bind.annotation.RestController
 class ScrapController(
     private val scrapService: ScrapService,
 ) {
+    @GetMapping("/calendar/monthly-list")
+    fun monthlyScrapsAsList(
+        // TODO: @AuthenticationPrincipal userId: Long,
+        @RequestParam("year") year: Int,
+        @RequestParam("month") month: Int,
+    ): ResponseEntity<ApiResponse<DetailedMonthlyScrapResponse>> {
+        val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
+
+        val response =
+            scrapService.detailedMonthlyScraps(
+                userId = userId,
+                year = year,
+                month = month,
+            )
+
+        return ResponseEntity.ok(
+            ApiResponse.success(
+                status = HttpStatus.OK,
+                message = "캘린더 > (월간) 스크랩 된 공고 정보 (리스트) 불러오기를 성공했습니다",
+                result = response,
+            ),
+        )
+    }
+
     @GetMapping("/calendar/monthly-default")
     fun monthlyScraps(
         // TODO: @AuthenticationPrincipal userId: Long,
@@ -29,7 +54,12 @@ class ScrapController(
     ): ResponseEntity<ApiResponse<MonthlyScrapDeadlineResponse>> {
         val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
 
-        val monthlyScrapDeadlineResponse = scrapService.monthlyScrapDeadlines(userId, year, month)
+        val monthlyScrapDeadlineResponse =
+            scrapService.monthlyScrapDeadlines(
+                userId = userId,
+                year = year,
+                month = month,
+            )
 
         return ResponseEntity.ok(
             ApiResponse.success(
@@ -48,7 +78,11 @@ class ScrapController(
     ): ResponseEntity<ApiResponse<Unit>> {
         val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
 
-        scrapService.scrap(userId, internshipAnnouncementId, scrapRequest)
+        scrapService.scrap(
+            userId = userId,
+            internshipAnnouncementId = internshipAnnouncementId,
+            scrapRequest = scrapRequest,
+        )
 
         return ResponseEntity
             .status(HttpStatus.CREATED)
@@ -69,7 +103,11 @@ class ScrapController(
     ): ResponseEntity<ApiResponse<Unit>> {
         val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
 
-        scrapService.updateScrap(userId, internshipAnnouncementId, scrapUpdateRequest)
+        scrapService.updateScrap(
+            userId = userId,
+            internshipAnnouncementId = internshipAnnouncementId,
+            scrapUpdateRequest = scrapUpdateRequest,
+        )
 
         return ResponseEntity
             .status(HttpStatus.OK)
@@ -89,7 +127,10 @@ class ScrapController(
     ): ResponseEntity<ApiResponse<Unit>> {
         val userId: Long = 1 // 임시 userId
 
-        scrapService.cancelScrap(userId, internshipAnnouncementId)
+        scrapService.cancelScrap(
+            userId = userId,
+            internshipAnnouncementId = internshipAnnouncementId,
+        )
 
         return ResponseEntity.ok(
             ApiResponse.success(

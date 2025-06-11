@@ -1,5 +1,8 @@
 package com.terning.server.kotlin.application
 
+import com.terning.server.kotlin.application.scrap.dto.DetailedMonthlyScrapResponse
+import com.terning.server.kotlin.application.scrap.dto.DetailedScrap
+import com.terning.server.kotlin.application.scrap.dto.DetailedScrapGroup
 import com.terning.server.kotlin.application.scrap.dto.MonthlyScrapDeadlineGroup
 import com.terning.server.kotlin.application.scrap.dto.MonthlyScrapDeadlineResponse
 import com.terning.server.kotlin.application.scrap.dto.MonthlyScrapDeadlineSummary
@@ -14,6 +17,7 @@ import com.terning.server.kotlin.domain.scrap.vo.Color
 import com.terning.server.kotlin.domain.user.UserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Clock
 import java.time.LocalDate
 
 @Service
@@ -22,6 +26,7 @@ class ScrapService(
     private val scrapRepository: ScrapRepository,
     private val userRepository: UserRepository,
     private val internshipAnnouncementRepository: InternshipAnnouncementRepository,
+    private val clock: Clock,
 ) {
     @Transactional
     fun scrap(
@@ -118,5 +123,51 @@ class ScrapService(
                 )
             }
         return MonthlyScrapDeadlineResponse(monthlyScrapDeadline = monthlyGroups)
+    }
+
+    fun detailedMonthlyScraps(
+        userId: Long,
+        year: Int,
+        month: Int,
+    ): DetailedMonthlyScrapResponse {
+        val startDate = LocalDate.of(year, month, 1)
+        val endDate = startDate.plusMonths(1).minusDays(1)
+
+        val scraps =
+            scrapRepository.findScrapsByUserIdAndDeadlineBetweenOrderByDeadline(
+                userId = userId,
+                start = startDate,
+                end = endDate,
+            )
+
+        val dailyGroups =
+            scraps
+                .groupBy { it.internshipAnnouncement.internshipAnnouncementDeadline.value }
+                .toSortedMap()
+                .map { (deadline, dailyScraps) ->
+                    DetailedScrapGroup(
+                        deadline = deadline.toString(),
+                        scraps =
+                            dailyScraps.map { scrap ->
+                                val announcement = scrap.internshipAnnouncement
+                                DetailedScrap.from(
+                                    announcementId =
+                                        announcement.id
+                                            ?: throw ScrapException(ScrapErrorCode.SCRAP_ID_NULL),
+                                    companyImageUrl = announcement.company.logoUrl.value,
+                                    title = announcement.title.value,
+                                    workingPeriod = announcement.workingPeriod.toString(),
+                                    isScrapped = true,
+                                    hexColor = scrap.hexColor(),
+                                    deadline = deadline,
+                                    startYear = announcement.startDate.year.value,
+                                    startMonth = announcement.startDate.month.value,
+                                    clock = clock,
+                                )
+                            },
+                    )
+                }
+
+        return DetailedMonthlyScrapResponse(dailyGroups = dailyGroups)
     }
 }
