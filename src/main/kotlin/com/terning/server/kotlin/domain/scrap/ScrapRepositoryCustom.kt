@@ -8,4 +8,9 @@ interface ScrapRepositoryCustom {
         start: LocalDate,
         end: LocalDate,
     ): List<Scrap>
+
+    fun findScrapsByUserIdAndDeadlineOrderByDeadline(
+        userId: Long,
+        date: LocalDate,
+    ): List<Scrap>
 }

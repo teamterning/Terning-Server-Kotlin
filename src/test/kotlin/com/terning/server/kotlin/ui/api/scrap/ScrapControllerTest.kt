@@ -1,8 +1,8 @@
-package com.terning.server.kotlin.ui.api
+package com.terning.server.kotlin.ui.api.scrap
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
-import com.terning.server.kotlin.application.ScrapService
+import com.terning.server.kotlin.application.scrap.ScrapService
 import com.terning.server.kotlin.application.scrap.dto.DetailedMonthlyScrapResponse
 import com.terning.server.kotlin.application.scrap.dto.DetailedScrap
 import com.terning.server.kotlin.application.scrap.dto.DetailedScrapGroup
@@ -11,6 +11,7 @@ import com.terning.server.kotlin.application.scrap.dto.MonthlyScrapDeadlineRespo
 import com.terning.server.kotlin.application.scrap.dto.MonthlyScrapDeadlineSummary
 import com.terning.server.kotlin.application.scrap.dto.ScrapRequest
 import com.terning.server.kotlin.application.scrap.dto.ScrapUpdateRequest
+import com.terning.server.kotlin.ui.api.ScrapController
 import io.mockk.every
 import io.mockk.just
 import io.mockk.runs
@@ -49,6 +50,52 @@ class ScrapControllerTest {
     fun setUp() {
         scrapRequest = ScrapRequest(color = "BLUE")
         scrapUpdateRequest = ScrapUpdateRequest(color = "RED")
+    }
+
+    @Test
+    @DisplayName("일간 스크랩 데이터를 조회한다")
+    fun getDailyScraps() {
+        // given
+        val userId = 1L
+        val date = LocalDate.of(2025, 6, 8)
+        val clock =
+            Clock.fixed(
+                date.atStartOfDay(ZoneId.systemDefault()).toInstant(),
+                ZoneId.systemDefault(),
+            )
+
+        val scrap =
+            DetailedScrap.from(
+                announcementId = 1L,
+                companyImageUrl = "https://test.image/logo.png",
+                title = "일간 인턴 모집",
+                workingPeriod = "2개월",
+                isScrapped = true,
+                hexColor = "#ABCDEF",
+                deadline = date,
+                startYear = 2025,
+                startMonth = 6,
+                clock = clock,
+            )
+
+        every { scrapService.dailyScraps(userId, date) } returns listOf(scrap)
+
+        // when & then
+        mockMvc.get("/api/v1/calendar/daily") {
+            param("date", "2025-06-08")
+        }.andExpect {
+            status { isOk() }
+            jsonPath("$.status") { value(200) }
+            jsonPath("$.result[0].announcementId") { value(1) }
+            jsonPath("$.result[0].companyImageUrl") { value("https://test.image/logo.png") }
+            jsonPath("$.result[0].title") { value("일간 인턴 모집") }
+            jsonPath("$.result[0].workingPeriod") { value("2개월") }
+            jsonPath("$.result[0].isScrapped") { value(true) }
+            jsonPath("$.result[0].hexColor") { value("#ABCDEF") }
+            jsonPath("$.result[0].startYearMonth") { value("2025년 6월") }
+            jsonPath("$.result[0].deadline") { value("2025년 6월 8일") }
+            jsonPath("$.result[0].dday") { value("D-DAY") }
+        }
     }
 
     @Test
@@ -99,12 +146,12 @@ class ScrapControllerTest {
             status { isOk() }
             jsonPath("$.status") { value(200) }
             jsonPath("$.result.dailyGroups[0].deadline") { value("2025-06-30") }
-            jsonPath("$.result.dailyGroups[0].scraps[0].internshipAnnouncementId") { value(1) }
-            jsonPath("$.result.dailyGroups[0].scraps[0].companyImage") { value("https://test.image/logo.png") }
+            jsonPath("$.result.dailyGroups[0].scraps[0].announcementId") { value(1) }
+            jsonPath("$.result.dailyGroups[0].scraps[0].companyImageUrl") { value("https://test.image/logo.png") }
             jsonPath("$.result.dailyGroups[0].scraps[0].title") { value("백엔드 인턴 모집") }
             jsonPath("$.result.dailyGroups[0].scraps[0].workingPeriod") { value("3개월") }
             jsonPath("$.result.dailyGroups[0].scraps[0].isScrapped") { value(true) }
-            jsonPath("$.result.dailyGroups[0].scraps[0].color") { value("#123456") }
+            jsonPath("$.result.dailyGroups[0].scraps[0].hexColor") { value("#123456") }
             jsonPath("$.result.dailyGroups[0].scraps[0].deadline") { value("2025년 6월 30일") }
             jsonPath("$.result.dailyGroups[0].scraps[0].startYearMonth") { value("2025년 7월") }
             jsonPath("$.result.dailyGroups[0].scraps[0].dday") { value("D-5") }

@@ -1,4 +1,4 @@
-package com.terning.server.kotlin.application
+package com.terning.server.kotlin.application.scrap
 
 import com.terning.server.kotlin.application.scrap.dto.DetailedMonthlyScrapResponse
 import com.terning.server.kotlin.application.scrap.dto.DetailedScrap
@@ -169,5 +169,31 @@ class ScrapService(
                 }
 
         return DetailedMonthlyScrapResponse(dailyGroups = dailyGroups)
+    }
+
+    fun dailyScraps(
+        userId: Long,
+        date: LocalDate,
+    ): List<DetailedScrap> {
+        val scraps = scrapRepository.findScrapsByUserIdAndDeadlineOrderByDeadline(userId, date)
+
+        return scraps.map { scrap ->
+            val announcement = scrap.internshipAnnouncement
+
+            DetailedScrap.from(
+                announcementId =
+                    announcement.id
+                        ?: throw ScrapException(ScrapErrorCode.SCRAP_ID_NULL),
+                companyImageUrl = announcement.company.logoUrl.value,
+                title = announcement.title.value,
+                workingPeriod = announcement.workingPeriod.toString(),
+                isScrapped = true,
+                hexColor = scrap.hexColor(),
+                deadline = announcement.internshipAnnouncementDeadline.value,
+                startYear = announcement.startDate.year.value,
+                startMonth = announcement.startDate.month.value,
+                clock = clock,
+            )
+        }
     }
 }
