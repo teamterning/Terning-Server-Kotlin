@@ -197,7 +197,10 @@ class ScrapServiceTest {
         every { internshipAnnouncementRepository.findById(announcementId) } returns Optional.of(announcement)
     }
 
-    private fun givenUserAndAnnouncementExist(user: User, announcement: InternshipAnnouncement) {
+    private fun givenUserAndAnnouncementExist(
+        user: User,
+        announcement: InternshipAnnouncement,
+    ) {
         givenAnnouncementExists(announcement)
         every { userRepository.findById(userId) } returns Optional.of(user)
     }
