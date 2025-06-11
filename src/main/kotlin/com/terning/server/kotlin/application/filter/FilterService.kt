@@ -15,12 +15,14 @@ class FilterService(
 ) {
     @Transactional
     fun getUserFilter(userId: Long): FilterResponse {
-        val user = userRepository.findById(userId).orElseThrow {
-            FilterException(FilterErrorCode.NOT_FOUND_USER_EXCEPTION)
-        }
+        val user =
+            userRepository.findById(userId).orElseThrow {
+                FilterException(FilterErrorCode.NOT_FOUND_USER_EXCEPTION)
+            }
 
-        val filter = filterRepository.findLatestByUser(user)
-            ?: throw FilterException(FilterErrorCode.NOT_FOUND_FILTER_EXCEPTION)
+        val filter =
+            filterRepository.findLatestByUser(user)
+                ?: throw FilterException(FilterErrorCode.NOT_FOUND_FILTER_EXCEPTION)
 
         val startDate = filter.startDate()
 
