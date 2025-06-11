@@ -29,13 +29,13 @@ data class DetailedScrap private constructor(
     private val rawStartMonth: Int,
     private val rawDDay: String,
 ) {
-    val internshipAnnouncementId: Long = rawAnnouncementId
-    val companyImage: String = rawCompanyImageUrl
+    val announcementId: Long = rawAnnouncementId
+    val companyImageUrl: String = rawCompanyImageUrl
     val dDay: String = rawDDay
     val title: String = rawTitle
     val workingPeriod: String = rawWorkingPeriod
     val isScrapped: Boolean = rawIsScrapped
-    val color: String = rawHexColor
+    val hexColor: String = rawHexColor
     val deadline: String = "${rawDeadline.year}년 ${rawDeadline.monthValue}월 ${rawDeadline.dayOfMonth}일"
     val startYearMonth: String = "${rawStartYear}년 ${rawStartMonth}월"
 
