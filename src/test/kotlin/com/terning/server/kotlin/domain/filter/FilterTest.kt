@@ -41,7 +41,7 @@ class FilterTest {
     fun updateFilter() {
         val filter = Filter.of(user, filterJobType, filterGrade, filterWorkingPeriod, filterStartDate)
 
-        filter.update(newFilterJobType, newFilterGrade, newFilterWorkingPeriod, newFilterStartDate)
+        filter.updateFilter(newFilterJobType, newFilterGrade, newFilterWorkingPeriod, newFilterStartDate)
 
         assertThat(filter.jobType()).isEqualTo(newFilterJobType)
         assertThat(filter.grade()).isEqualTo(newFilterGrade)

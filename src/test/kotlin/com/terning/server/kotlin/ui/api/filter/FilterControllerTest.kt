@@ -1,8 +1,8 @@
 package com.terning.server.kotlin.ui.api.filter
 
 import com.ninjasquad.springmockk.MockkBean
-import com.terning.server.kotlin.application.filter.dto.FilterResponse
 import com.terning.server.kotlin.application.filter.FilterService
+import com.terning.server.kotlin.application.filter.dto.FilterResponse
 import com.terning.server.kotlin.ui.api.FilterController
 import io.mockk.every
 import org.junit.jupiter.api.BeforeEach
