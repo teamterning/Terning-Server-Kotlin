@@ -11,4 +11,5 @@ enum class FilterErrorCode(
     INVALID_WORKING_PERIOD(HttpStatus.BAD_REQUEST, "유효하지 않은 근무 기간입니다."),
     INVALID_GRADE(HttpStatus.BAD_REQUEST, "유효하지 않은 학년입니다."),
     INVALID_YEAR(HttpStatus.BAD_REQUEST, "연도는 1900보다 커야 합니다."),
+    NOT_FOUND_FILTER_EXCEPTION(HttpStatus.BAD_REQUEST, "해당 유저의 필터가 존재하지 않습니다"),
 }
