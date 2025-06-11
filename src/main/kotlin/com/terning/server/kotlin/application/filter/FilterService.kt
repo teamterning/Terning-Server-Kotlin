@@ -34,4 +34,18 @@ class FilterService(
             startMonth = startDate.filterMonth.value,
         )
     }
+
+    @Transactional
+    fun postUserFilter(userId: Long)
+  //  : FilterResponse
+    {
+        val user =
+            userRepository.findById(userId).orElseThrow {
+                FilterException(FilterErrorCode.NOT_FOUND_USER_EXCEPTION)
+            }
+
+//        val filter =
+//
+//        return
+    }
 }
