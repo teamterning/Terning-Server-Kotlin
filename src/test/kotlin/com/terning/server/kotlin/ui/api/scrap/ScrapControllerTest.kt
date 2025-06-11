@@ -64,28 +64,29 @@ class ScrapControllerTest {
                 ZoneId.systemDefault(),
             )
 
-        val detailedScrap = DetailedScrap.from(
-            announcementId = 1L,
-            companyImageUrl = "https://test.image/logo.png",
-            title = "백엔드 인턴 모집",
-            workingPeriod = "3개월",
-            isScrapped = true,
-            hexColor = "#123456",
-            deadline = LocalDate.of(2025, 6, 30),
-            startYear = 2025,
-            startMonth = 7,
-            clock = clock,
-        )
+        val detailedScrap =
+            DetailedScrap.from(
+                announcementId = 1L,
+                companyImageUrl = "https://test.image/logo.png",
+                title = "백엔드 인턴 모집",
+                workingPeriod = "3개월",
+                isScrapped = true,
+                hexColor = "#123456",
+                deadline = LocalDate.of(2025, 6, 30),
+                startYear = 2025,
+                startMonth = 7,
+                clock = clock,
+            )
 
         val detailedResponse =
             DetailedMonthlyScrapResponse(
                 dailyGroups =
-                listOf(
-                    DetailedScrapGroup(
-                        deadline = "2025-06-30",
-                        scraps = listOf(detailedScrap),
+                    listOf(
+                        DetailedScrapGroup(
+                            deadline = "2025-06-30",
+                            scraps = listOf(detailedScrap),
+                        ),
                     ),
-                ),
             )
 
         every { scrapService.detailedMonthlyScraps(userId, year, month) } returns detailedResponse

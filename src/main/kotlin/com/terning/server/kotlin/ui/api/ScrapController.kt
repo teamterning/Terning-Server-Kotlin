@@ -30,11 +30,12 @@ class ScrapController(
     ): ResponseEntity<ApiResponse<DetailedMonthlyScrapResponse>> {
         val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
 
-        val response = scrapService.detailedMonthlyScraps(
-            userId = userId,
-            year = year,
-            month = month,
-        )
+        val response =
+            scrapService.detailedMonthlyScraps(
+                userId = userId,
+                year = year,
+                month = month,
+            )
 
         return ResponseEntity.ok(
             ApiResponse.success(
@@ -53,11 +54,12 @@ class ScrapController(
     ): ResponseEntity<ApiResponse<MonthlyScrapDeadlineResponse>> {
         val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
 
-        val monthlyScrapDeadlineResponse = scrapService.monthlyScrapDeadlines(
-            userId = userId,
-            year = year,
-            month = month,
-        )
+        val monthlyScrapDeadlineResponse =
+            scrapService.monthlyScrapDeadlines(
+                userId = userId,
+                year = year,
+                month = month,
+            )
 
         return ResponseEntity.ok(
             ApiResponse.success(
