@@ -1,12 +1,10 @@
-package com.terning.server.kotlin.infrastructure.internshipAnnouncement
+package com.terning.server.kotlin.domain.internshipAnnouncement
 
 import com.querydsl.core.Tuple
 import com.querydsl.jpa.impl.JPAQuery
 import com.querydsl.jpa.impl.JPAQueryFactory
 import com.terning.server.kotlin.domain.filter.Filter
-import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipAnnouncementRepositoryCustom
 import com.terning.server.kotlin.domain.internshipAnnouncement.QInternshipAnnouncement.internshipAnnouncement
-import com.terning.server.kotlin.domain.internshipAnnouncement.SortType
 import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipAnnouncementMonth
 import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipAnnouncementYear
 import com.terning.server.kotlin.domain.scrap.QScrap.scrap

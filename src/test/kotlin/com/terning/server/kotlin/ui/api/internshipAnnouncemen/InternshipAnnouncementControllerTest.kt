@@ -1,9 +1,10 @@
-package com.terning.server.kotlin.ui.api
+package com.terning.server.kotlin.ui.api.internshipAnnouncemen
 
 import com.ninjasquad.springmockk.MockkBean
 import com.terning.server.kotlin.application.internshipAnnouncement.InternshipAnnouncementService
 import com.terning.server.kotlin.application.internshipAnnouncement.dto.HomeAnnouncement
 import com.terning.server.kotlin.application.internshipAnnouncement.dto.HomeAnnouncementsResponse
+import com.terning.server.kotlin.ui.api.InternshipAnnouncementController
 import io.mockk.every
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test

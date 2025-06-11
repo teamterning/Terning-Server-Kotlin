@@ -10,6 +10,7 @@ import com.terning.server.kotlin.domain.filter.vo.FilterMonth
 import com.terning.server.kotlin.domain.filter.vo.FilterStartDate
 import com.terning.server.kotlin.domain.filter.vo.FilterWorkingPeriod
 import com.terning.server.kotlin.domain.filter.vo.FilterYear
+import com.terning.server.kotlin.domain.user.User
 import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
@@ -36,7 +37,7 @@ class FilterServiceTest {
         val userId = 1L
         every { filterRepository.findById(userId) } returns Optional.empty()
 
-        // then
+        // when & then
         val exception =
             assertThrows(FilterException::class.java) {
                 filterService.getUserFilter(userId)
@@ -50,16 +51,18 @@ class FilterServiceTest {
     fun getFilterInformation() {
         // given
         val userId = 1L
+        val user = mockk<User>()
         val filter =
             Filter.of(
+                user = user,
                 filterJobType = FilterJobType.IT,
                 filterGrade = FilterGrade.SENIOR,
                 filterWorkingPeriod = FilterWorkingPeriod.SHORT_TERM,
                 filterStartDate =
-                    FilterStartDate.of(
-                        filterYear = FilterYear.from(2025),
-                        filterMonth = FilterMonth.from(6),
-                    ),
+                FilterStartDate.of(
+                    filterYear = FilterYear.from(2025),
+                    filterMonth = FilterMonth.from(6),
+                ),
             )
 
         every { filterRepository.findById(userId) } returns Optional.of(filter)
