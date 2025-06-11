@@ -59,10 +59,10 @@ class FilterServiceTest {
                 filterGrade = FilterGrade.SENIOR,
                 filterWorkingPeriod = FilterWorkingPeriod.SHORT_TERM,
                 filterStartDate =
-                FilterStartDate.of(
-                    filterYear = FilterYear.from(2025),
-                    filterMonth = FilterMonth.from(6),
-                ),
+                    FilterStartDate.of(
+                        filterYear = FilterYear.from(2025),
+                        filterMonth = FilterMonth.from(6),
+                    ),
             )
 
         every { filterRepository.findById(userId) } returns Optional.of(filter)
