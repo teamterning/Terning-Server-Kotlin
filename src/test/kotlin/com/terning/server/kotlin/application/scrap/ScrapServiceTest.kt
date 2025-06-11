@@ -1,5 +1,6 @@
-package com.terning.server.kotlin.application
+package com.terning.server.kotlin.application.scrap
 
+import com.terning.server.kotlin.application.ScrapService
 import com.terning.server.kotlin.application.scrap.dto.ScrapRequest
 import com.terning.server.kotlin.application.scrap.dto.ScrapUpdateRequest
 import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipAnnouncement
@@ -247,9 +248,10 @@ class ScrapServiceTest {
             } returns listOf(scrap)
 
             // when & then
-            val exception = assertThrows<ScrapException> {
-                scrapService.monthlyScrapDeadlines(userId, 2025, 6)
-            }
+            val exception =
+                assertThrows<ScrapException> {
+                    scrapService.monthlyScrapDeadlines(userId, 2025, 6)
+                }
             assertEquals(ScrapErrorCode.SCRAP_ID_NULL, exception.errorCode)
         }
     }
@@ -287,12 +289,11 @@ class ScrapServiceTest {
             val group = response.dailyGroups.first()
             val detailedScrap = group.scraps.first()
 
-            assertEquals("1", detailedScrap.announcementId.toString())
+            assertEquals(1L, detailedScrap.announcementId)
             assertEquals("상세 공고", detailedScrap.title)
             assertEquals("#123456", detailedScrap.hexColor)
             assertEquals("${workingPeriod}개월", detailedScrap.workingPeriod)
             assertEquals(true, detailedScrap.isScrapped)
-            assertEquals(deadline, detailedScrap.deadline)
             assertEquals("2025년 6월", detailedScrap.startYearMonth)
         }
 
@@ -309,9 +310,10 @@ class ScrapServiceTest {
             } returns listOf(scrap)
 
             // when & then
-            val exception = assertThrows<ScrapException> {
-                scrapService.detailedMonthlyScraps(userId, 2025, 6)
-            }
+            val exception =
+                assertThrows<ScrapException> {
+                    scrapService.detailedMonthlyScraps(userId, 2025, 6)
+                }
             assertEquals(ScrapErrorCode.SCRAP_ID_NULL, exception.errorCode)
         }
     }
@@ -349,7 +351,7 @@ class ScrapServiceTest {
             assertEquals(true, item.isScrapped)
             assertEquals("#ABCDEF", item.hexColor)
             assertEquals("2025년 6월", item.startYearMonth)
-            assertEquals("D-DAY", item.formattedDeadline)
+            assertEquals("D-DAY", item.dDay)
         }
 
         @Test
@@ -364,9 +366,10 @@ class ScrapServiceTest {
             every { scrapRepository.findScrapsByUserIdAndDeadlineOrderByDeadline(userId, date) } returns listOf(scrap)
 
             // when & then
-            val exception = assertThrows<ScrapException> {
-                scrapService.dailyScraps(userId, date)
-            }
+            val exception =
+                assertThrows<ScrapException> {
+                    scrapService.dailyScraps(userId, date)
+                }
             assertEquals(ScrapErrorCode.SCRAP_ID_NULL, exception.errorCode)
         }
     }

@@ -1,4 +1,4 @@
-package com.terning.server.kotlin.ui.api
+package com.terning.server.kotlin.ui.api.scrap
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
@@ -11,6 +11,7 @@ import com.terning.server.kotlin.application.scrap.dto.MonthlyScrapDeadlineRespo
 import com.terning.server.kotlin.application.scrap.dto.MonthlyScrapDeadlineSummary
 import com.terning.server.kotlin.application.scrap.dto.ScrapRequest
 import com.terning.server.kotlin.application.scrap.dto.ScrapUpdateRequest
+import com.terning.server.kotlin.ui.api.ScrapController
 import io.mockk.every
 import io.mockk.just
 import io.mockk.runs
