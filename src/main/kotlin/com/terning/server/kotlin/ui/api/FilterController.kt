@@ -1,11 +1,13 @@
 package com.terning.server.kotlin.ui.api
 
-import com.terning.server.kotlin.application.filter.FilterResponse
 import com.terning.server.kotlin.application.filter.FilterService
+import com.terning.server.kotlin.application.filter.dto.FilterRequest
+import com.terning.server.kotlin.application.filter.dto.FilterResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -32,19 +34,15 @@ class FilterController(
     }
 
     @PutMapping("filters")
-    fun putUserFilter(
+    fun updateUserFilter(
         // TODO: @AuthenticationPrincipal userId: Long,
-    ): ResponseEntity<ApiResponse<FilterResponse>> {
+        @RequestBody filterRequest: FilterRequest,
+    ) {
         val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
 
-        val response = filterService.postUserFilter(userId)
-
-        return ResponseEntity.ok(
-            ApiResponse.success(
-                status = HttpStatus.OK,
-                message = "필터링 재설정에 성공했습니다",
-                result = response,
-            ),
+        filterService.updateUserFilter(
+            userId = userId,
+            filterRequest = filterRequest,
         )
     }
 }
