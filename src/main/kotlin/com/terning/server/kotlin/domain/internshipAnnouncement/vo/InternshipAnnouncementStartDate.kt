@@ -19,9 +19,9 @@ class InternshipAnnouncementStartDate private constructor(
 ) {
     override fun equals(other: Any?): Boolean =
         this === other || (
-                other is InternshipAnnouncementStartDate &&
-                        this.year == other.year && this.month == other.month
-                )
+            other is InternshipAnnouncementStartDate &&
+                this.year == other.year && this.month == other.month
+        )
 
     override fun hashCode(): Int = 31 * year.hashCode() + month.hashCode()
 
