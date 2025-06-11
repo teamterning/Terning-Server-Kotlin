@@ -1,4 +1,4 @@
-package com.terning.server.kotlin.application.filter
+package com.terning.server.kotlin.application.filter.dto
 
 data class FilterResponse(
     val jobType: String,
