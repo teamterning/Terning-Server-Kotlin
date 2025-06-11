@@ -16,16 +16,16 @@ class FilterYear private constructor(val value: Int) {
         }
     }
 
+    override fun equals(other: Any?): Boolean = this === other || (other is FilterYear && value == other.value)
+
+    override fun hashCode(): Int = value
+
+    override fun toString(): String = "$value"
+
     companion object {
         private const val MIN_VALID_YEAR = 1900
         val DEFAULT = FilterYear(MIN_VALID_YEAR)
 
         fun from(value: Int): FilterYear = FilterYear(value)
     }
-
-    override fun equals(other: Any?): Boolean = this === other || (other is FilterYear && value == other.value)
-
-    override fun hashCode(): Int = value
-
-    override fun toString(): String = "$value"
 }
