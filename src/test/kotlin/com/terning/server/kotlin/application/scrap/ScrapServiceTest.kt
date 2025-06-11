@@ -1,6 +1,5 @@
 package com.terning.server.kotlin.application.scrap
 
-import com.terning.server.kotlin.application.ScrapService
 import com.terning.server.kotlin.application.scrap.dto.ScrapRequest
 import com.terning.server.kotlin.application.scrap.dto.ScrapUpdateRequest
 import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipAnnouncement
@@ -95,7 +94,6 @@ class ScrapServiceTest {
             val user = mockk<User>()
             val announcement = mockk<InternshipAnnouncement>(relaxed = true)
             val scrapSlot = slot<Scrap>()
-
             givenScrapDoesNotExist()
             givenUserAndAnnouncementExist(user, announcement)
             every { scrapRepository.save(capture(scrapSlot)) } returns mockk()
@@ -198,22 +196,18 @@ class ScrapServiceTest {
             // given
             val deadline = LocalDate.of(2025, 6, 30)
             val scrapId = 1L
-
             val title = mockk<InternshipTitle>()
-            every { title.value } returns "테스트 공고"
-
             val internshipAnnouncementDeadline = mockk<InternshipAnnouncementDeadline>()
-            every { internshipAnnouncementDeadline.value } returns deadline
-
             val internshipAnnouncement = mockk<InternshipAnnouncement>()
+            val scrap = mockk<Scrap>()
+
+            every { title.value } returns "테스트 공고"
+            every { internshipAnnouncementDeadline.value } returns deadline
             every { internshipAnnouncement.title } returns title
             every { internshipAnnouncement.internshipAnnouncementDeadline } returns internshipAnnouncementDeadline
-
-            val scrap = mockk<Scrap>()
             every { scrap.id } returns scrapId
             every { scrap.internshipAnnouncement } returns internshipAnnouncement
             every { scrap.hexColor() } returns "#4AA9F2"
-
             every {
                 scrapRepository.findScrapsByUserIdAndDeadlineBetweenOrderByDeadline(
                     userId = userId,
@@ -241,6 +235,10 @@ class ScrapServiceTest {
             // given
             val announcement = mockk<InternshipAnnouncement>()
             val scrap = mockk<Scrap>()
+            val deadline = mockk<InternshipAnnouncementDeadline>()
+
+            every { announcement.internshipAnnouncementDeadline } returns deadline
+            every { deadline.value } returns LocalDate.now()
             every { scrap.id } returns null
             every { scrap.internshipAnnouncement } returns announcement
             every {
@@ -265,19 +263,18 @@ class ScrapServiceTest {
             // given
             val deadline = LocalDate.now(clock).plusDays(3)
             val workingPeriod = 6
-
             val announcement = mockk<InternshipAnnouncement>(relaxed = true)
+            val scrap = mockk<Scrap>()
+
             every { announcement.id } returns 1L
+            every { announcement.company.logoUrl.value } returns "http://image.url/logo.png"
             every { announcement.title.value } returns "상세 공고"
             every { announcement.workingPeriod.toString() } returns "${workingPeriod}개월"
             every { announcement.internshipAnnouncementDeadline.value } returns deadline
             every { announcement.startDate.year.value } returns 2025
             every { announcement.startDate.month.value } returns 6
-
-            val scrap = mockk<Scrap>()
             every { scrap.internshipAnnouncement } returns announcement
             every { scrap.hexColor() } returns "#123456"
-
             every {
                 scrapRepository.findScrapsByUserIdAndDeadlineBetweenOrderByDeadline(any(), any(), any())
             } returns listOf(scrap)
@@ -288,12 +285,13 @@ class ScrapServiceTest {
             // then
             val group = response.dailyGroups.first()
             val detailedScrap = group.scraps.first()
-
             assertEquals(1L, detailedScrap.announcementId)
             assertEquals("상세 공고", detailedScrap.title)
-            assertEquals("#123456", detailedScrap.hexColor)
+            assertEquals("http://image.url/logo.png", detailedScrap.companyImageUrl)
             assertEquals("${workingPeriod}개월", detailedScrap.workingPeriod)
             assertEquals(true, detailedScrap.isScrapped)
+            assertEquals("#123456", detailedScrap.hexColor)
+            assertEquals("2025년 6월 11일", detailedScrap.deadline)
             assertEquals("2025년 6월", detailedScrap.startYearMonth)
         }
 
@@ -302,8 +300,9 @@ class ScrapServiceTest {
         fun throwsExceptionWhenAnnouncementIdIsNull() {
             // given
             val announcement = mockk<InternshipAnnouncement>(relaxed = true)
-            every { announcement.id } returns null
             val scrap = mockk<Scrap>()
+
+            every { announcement.id } returns null
             every { scrap.internshipAnnouncement } returns announcement
             every {
                 scrapRepository.findScrapsByUserIdAndDeadlineBetweenOrderByDeadline(any(), any(), any())
@@ -327,14 +326,15 @@ class ScrapServiceTest {
             // given
             val date = LocalDate.of(2025, 6, 8)
             val announcement = mockk<InternshipAnnouncement>(relaxed = true)
+            val scrap = mockk<Scrap>()
+
             every { announcement.id } returns 1L
+            every { announcement.company.logoUrl.value } returns "http://image.url/logo.png"
             every { announcement.title.value } returns "일간 공고"
             every { announcement.workingPeriod.toString() } returns "2개월"
             every { announcement.internshipAnnouncementDeadline.value } returns date
             every { announcement.startDate.year.value } returns 2025
             every { announcement.startDate.month.value } returns 6
-
-            val scrap = mockk<Scrap>()
             every { scrap.internshipAnnouncement } returns announcement
             every { scrap.hexColor() } returns "#ABCDEF"
             every { scrapRepository.findScrapsByUserIdAndDeadlineOrderByDeadline(userId, date) } returns listOf(scrap)
@@ -347,9 +347,11 @@ class ScrapServiceTest {
             val item = result.first()
             assertEquals(1L, item.announcementId)
             assertEquals("일간 공고", item.title)
+            assertEquals("http://image.url/logo.png", item.companyImageUrl)
             assertEquals("2개월", item.workingPeriod)
             assertEquals(true, item.isScrapped)
             assertEquals("#ABCDEF", item.hexColor)
+            assertEquals("2025년 6월 8일", item.deadline)
             assertEquals("2025년 6월", item.startYearMonth)
             assertEquals("D-DAY", item.dDay)
         }
@@ -360,8 +362,9 @@ class ScrapServiceTest {
             // given
             val date = LocalDate.of(2025, 6, 8)
             val announcement = mockk<InternshipAnnouncement>(relaxed = true)
-            every { announcement.id } returns null
             val scrap = mockk<Scrap>()
+
+            every { announcement.id } returns null
             every { scrap.internshipAnnouncement } returns announcement
             every { scrapRepository.findScrapsByUserIdAndDeadlineOrderByDeadline(userId, date) } returns listOf(scrap)
 
