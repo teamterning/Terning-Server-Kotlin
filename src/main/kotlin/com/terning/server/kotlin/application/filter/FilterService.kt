@@ -5,7 +5,12 @@ import com.terning.server.kotlin.application.filter.dto.FilterResponse
 import com.terning.server.kotlin.domain.filter.FilterRepository
 import com.terning.server.kotlin.domain.filter.exception.FilterErrorCode
 import com.terning.server.kotlin.domain.filter.exception.FilterException
-import com.terning.server.kotlin.domain.filter.vo.*
+import com.terning.server.kotlin.domain.filter.vo.FilterGrade
+import com.terning.server.kotlin.domain.filter.vo.FilterJobType
+import com.terning.server.kotlin.domain.filter.vo.FilterMonth
+import com.terning.server.kotlin.domain.filter.vo.FilterStartDate
+import com.terning.server.kotlin.domain.filter.vo.FilterWorkingPeriod
+import com.terning.server.kotlin.domain.filter.vo.FilterYear
 import com.terning.server.kotlin.domain.user.UserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
