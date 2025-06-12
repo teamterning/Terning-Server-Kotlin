@@ -1,5 +1,7 @@
 package com.terning.server.kotlin.domain.internshipAnnouncement.vo
 
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementErrorCode
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementException
 import jakarta.persistence.AttributeOverride
 import jakarta.persistence.Column
 import jakarta.persistence.Embeddable
@@ -30,5 +32,17 @@ class InternshipAnnouncementStartDate private constructor(
             year: InternshipAnnouncementYear,
             month: InternshipAnnouncementMonth,
         ): InternshipAnnouncementStartDate = InternshipAnnouncementStartDate(year, month)
+
+        fun from(yearMonth: String): InternshipAnnouncementStartDate {
+            return runCatching {
+                val (yearStr, monthStr) = yearMonth.split("-")
+                of(
+                    InternshipAnnouncementYear.from(yearStr.toInt()),
+                    InternshipAnnouncementMonth.from(monthStr.toInt()),
+                )
+            }.getOrElse {
+                throw InternshipAnnouncementException(InternshipAnnouncementErrorCode.INVALID_START_DATE)
+            }
+        }
     }
 }

@@ -27,6 +27,8 @@ class FilterMonth private constructor(
         private const val MAX_MONTH = 12
         private const val INVALID_MONTH_MESSAGE = "월은 $MIN_MONTH~$MAX_MONTH 사이여야 합니다. 입력값: %d"
 
+        val DEFAULT: FilterMonth = FilterMonth(MIN_MONTH)
+
         fun from(value: Int): FilterMonth = FilterMonth(value)
     }
 }
