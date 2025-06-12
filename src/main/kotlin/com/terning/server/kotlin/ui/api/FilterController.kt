@@ -37,12 +37,20 @@ class FilterController(
     fun updateUserFilter(
         // TODO: @AuthenticationPrincipal userId: Long,
         @RequestBody filterRequest: FilterRequest,
-    ) {
+    ): ResponseEntity<ApiResponse<Unit>> {
         val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
 
         filterService.updateUserFilter(
             userId = userId,
             filterRequest = filterRequest,
+        )
+
+        return ResponseEntity.ok(
+            ApiResponse.success(
+                status = HttpStatus.OK,
+                message = "필터링 재설정에 성공했습니다",
+                result = Unit,
+            ),
         )
     }
 }
