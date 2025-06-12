@@ -1,5 +1,6 @@
 package com.terning.server.kotlin.application.filter
 
+import com.terning.server.kotlin.application.filter.dto.FilterRequest
 import com.terning.server.kotlin.domain.filter.Filter
 import com.terning.server.kotlin.domain.filter.FilterRepository
 import com.terning.server.kotlin.domain.filter.exception.FilterErrorCode
@@ -14,6 +15,7 @@ import com.terning.server.kotlin.domain.user.User
 import com.terning.server.kotlin.domain.user.UserRepository
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
@@ -27,6 +29,8 @@ class FilterServiceTest {
 
     private lateinit var filterService: FilterService
 
+    private val userId = 1L
+
     @BeforeEach
     fun setUp() {
         filterService = FilterService(filterRepository, userRepository)
@@ -36,7 +40,6 @@ class FilterServiceTest {
     @DisplayName("사용자를 찾을 수 없으면 에러가 발생한다")
     fun getFilterFailsIfUserNotFound() {
         // given
-        val userId = 1L
         every { userRepository.findById(userId) } returns Optional.empty()
 
         // when & then
@@ -52,7 +55,6 @@ class FilterServiceTest {
     @DisplayName("사용자는 있지만 필터가 없으면 에러가 발생한다")
     fun getFilterFailsIfFilterNotFound() {
         // given
-        val userId = 1L
         val user = mockk<User>()
 
         every { userRepository.findById(userId) } returns Optional.of(user)
@@ -71,7 +73,6 @@ class FilterServiceTest {
     @DisplayName("필터 정보를 성공적으로 조회한다")
     fun getFilterInformation() {
         // given
-        val userId = 1L
         val user = mockk<User>()
         val filter =
             Filter.of(
@@ -98,5 +99,44 @@ class FilterServiceTest {
         assertThat(result.workingPeriod).isEqualTo("short")
         assertThat(result.startYear).isEqualTo(2025)
         assertThat(result.startMonth).isEqualTo(6)
+    }
+
+    @Test
+    @DisplayName("필터링 정보를 성공적으로 업데이트 한다")
+    fun updateFilterSucceeds() {
+        // given
+        val user = mockk<User>()
+        val filter = mockk<Filter>(relaxed = true)
+        val filterRequest =
+            FilterRequest(
+                jobType = "plan",
+                grade = "sophomore",
+                workingPeriod = "middle",
+                startYear = 2025,
+                startMonth = 2,
+            )
+
+        every { userRepository.findById(userId) } returns Optional.of(user)
+        every { filterRepository.findLatestByUser(user) } returns filter
+
+        // when
+        filterService.updateUserFilter(
+            userId = userId,
+            filterRequest = filterRequest,
+        )
+
+        // then
+        verify {
+            filter.updateFilter(
+                newFilterJobType = FilterJobType.from("plan"),
+                newFilterGrade = FilterGrade.from("sophomore"),
+                newFilterWorkingPeriod = FilterWorkingPeriod.from("middle"),
+                newFilterStartDate =
+                    FilterStartDate.of(
+                        filterYear = FilterYear.from(2025),
+                        filterMonth = FilterMonth.from(2),
+                    ),
+            )
+        }
     }
 }

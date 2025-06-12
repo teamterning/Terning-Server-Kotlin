@@ -50,7 +50,7 @@ class Filter private constructor(
     )
     private var filterStartDate: FilterStartDate,
 ) : BaseRootEntity() {
-    fun update(
+    fun updateFilter(
         newFilterJobType: FilterJobType,
         newFilterGrade: FilterGrade,
         newFilterWorkingPeriod: FilterWorkingPeriod,
