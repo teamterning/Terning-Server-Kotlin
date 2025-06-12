@@ -11,10 +11,13 @@ import com.terning.server.kotlin.application.scrap.dto.MonthlyScrapDeadlineRespo
 import com.terning.server.kotlin.application.scrap.dto.MonthlyScrapDeadlineSummary
 import com.terning.server.kotlin.application.scrap.dto.ScrapRequest
 import com.terning.server.kotlin.application.scrap.dto.ScrapUpdateRequest
+import com.terning.server.kotlin.application.scrap.dto.UpcomingDeadlineScrapDetail
+import com.terning.server.kotlin.application.scrap.dto.UpcomingDeadlineScrapResponse
 import com.terning.server.kotlin.ui.api.ScrapController
 import io.mockk.every
 import io.mockk.just
 import io.mockk.runs
+import org.hamcrest.Matchers.hasSize
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -50,6 +53,97 @@ class ScrapControllerTest {
     fun setUp() {
         scrapRequest = ScrapRequest(color = "BLUE")
         scrapUpdateRequest = ScrapUpdateRequest(color = "RED")
+    }
+
+    @Test
+    @DisplayName("홈 화면 - 곧 마감되는 스크랩 공고를 성공적으로 조회한다")
+    fun getUpcomingDeadlineScraps() {
+        // given
+        val userId = 1L
+        val detail =
+            UpcomingDeadlineScrapDetail(
+                internshipAnnouncementId = 1L,
+                companyImage = "https://test.image/logo.png",
+                companyInfo = "테스트 기업",
+                title = "곧 마감되는 공고",
+                dDay = "D-3",
+                workingPeriod = "3개월",
+                isScrapped = true,
+                color = "#A1C5F2",
+                deadline = "2025-06-16",
+                startYearMonth = "2025년 7월",
+            )
+        val response =
+            UpcomingDeadlineScrapResponse(
+                hasScrapped = true,
+                message = "곧 마감되는 스크랩 공고를 성공적으로 조회했습니다.",
+                scraps = listOf(detail),
+            )
+
+        every { scrapService.findUpcomingDeadlineScraps(userId) } returns response
+
+        // when & then
+        mockMvc.get("/api/v1/home/upcoming")
+            .andExpect {
+                status { isOk() }
+                jsonPath("$.status") { value(200) }
+                jsonPath("$.message") { value("곧 마감되는 스크랩 공고를 성공적으로 조회했습니다.") }
+                jsonPath("$.result.hasScrapped") { value(true) }
+                jsonPath("$.result.scraps[0].internshipAnnouncementId") { value(1L) }
+                jsonPath("$.result.scraps[0].companyInfo") { value("테스트 기업") }
+                jsonPath("$.result.scraps[0].title") { value("곧 마감되는 공고") }
+                jsonPath("$.result.scraps[0].dday") { value("D-3") }
+            }
+    }
+
+    @Test
+    @DisplayName("홈 화면 - 스크랩은 있지만 마감 임박 공고가 없을 경우를 올바르게 반환한다")
+    fun getUpcomingDeadlineScrapsWhenUpcomingIsEmpty() {
+        // given
+        val userId = 1L
+        val response =
+            UpcomingDeadlineScrapResponse(
+                hasScrapped = true,
+                message = "일주일 내에 마감인 공고가 없어요\n캘린더에서 스크랩한 공고 일정을 확인해 보세요",
+                scraps = emptyList(),
+            )
+
+        every { scrapService.findUpcomingDeadlineScraps(userId) } returns response
+
+        // when & then
+        mockMvc.get("/api/v1/home/upcoming")
+            .andExpect {
+                status { isOk() }
+                jsonPath("$.status") { value(200) }
+                jsonPath("$.message") { value("일주일 내에 마감인 공고가 없어요\n캘린더에서 스크랩한 공고 일정을 확인해 보세요") }
+                jsonPath("$.result.hasScrapped") { value(true) }
+                jsonPath("$.result.scraps", hasSize<Any>(0))
+            }
+    }
+
+    @Test
+    @DisplayName("홈 화면 - 스크랩한 공고가 아예 없을 경우를 올바르게 반환한다")
+    fun getUpcomingDeadlineScrapsWhenScrapIsEmpty() {
+        // given
+        val userId = 1L
+        val response =
+            UpcomingDeadlineScrapResponse(
+                hasScrapped = false,
+                message = "아직 스크랩된 인턴 공고가 없어요!",
+                scraps = emptyList(),
+            )
+
+        every { scrapService.findUpcomingDeadlineScraps(userId) } returns response
+
+        // when & then
+        mockMvc.get("/api/v1/home/upcoming")
+            .andExpect {
+                status { isOk() }
+                jsonPath("$.status") { value(200) }
+                jsonPath("$.message") { value("아직 스크랩된 인턴 공고가 없어요!") }
+                jsonPath("$.result.hasScrapped") { value(false) }
+                jsonPath("$.result.scraps", hasSize<Any>(0))
+            }
     }
 
     @Test
