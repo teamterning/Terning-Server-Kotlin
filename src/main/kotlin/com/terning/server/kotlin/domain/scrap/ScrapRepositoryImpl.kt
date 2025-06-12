@@ -8,6 +8,17 @@ import java.time.LocalDate
 class ScrapRepositoryImpl(
     private val queryFactory: JPAQueryFactory,
 ) : ScrapRepositoryCustom {
+    override fun existsByUserId(userId: Long): Boolean {
+        val scrap = QScrap.scrap
+        val fetchFirst =
+            queryFactory
+                .selectOne()
+                .from(scrap)
+                .where(scrap.user.id.eq(userId))
+                .fetchFirst()
+        return fetchFirst != null
+    }
+
     override fun findScrapsByUserIdAndDeadlineBetweenOrderByDeadline(
         userId: Long,
         start: LocalDate,
