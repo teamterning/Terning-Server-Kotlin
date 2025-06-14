@@ -1,11 +1,10 @@
-package com.terning.server.kotlin.ui.api.filter
+package com.terning.server.kotlin.ui.api
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import com.terning.server.kotlin.application.filter.FilterService
 import com.terning.server.kotlin.application.filter.dto.FilterRequest
 import com.terning.server.kotlin.application.filter.dto.FilterResponse
-import com.terning.server.kotlin.ui.api.FilterController
 import io.mockk.every
 import io.mockk.just
 import io.mockk.runs

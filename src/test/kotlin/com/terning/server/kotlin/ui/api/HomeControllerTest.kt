@@ -1,10 +1,9 @@
-package com.terning.server.kotlin.ui.api.internshipAnnouncemen
+package com.terning.server.kotlin.ui.api
 
 import com.ninjasquad.springmockk.MockkBean
-import com.terning.server.kotlin.application.internshipAnnouncement.InternshipAnnouncementService
-import com.terning.server.kotlin.application.internshipAnnouncement.dto.HomeAnnouncement
-import com.terning.server.kotlin.application.internshipAnnouncement.dto.HomeAnnouncementsResponse
-import com.terning.server.kotlin.ui.api.InternshipAnnouncementController
+import com.terning.server.kotlin.application.home.HomeService
+import com.terning.server.kotlin.application.home.dto.Home
+import com.terning.server.kotlin.application.home.dto.HomeResponse
 import io.mockk.every
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -16,14 +15,14 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 
-@WebMvcTest(InternshipAnnouncementController::class)
+@WebMvcTest(HomeController::class)
 @ActiveProfiles("test")
-class InternshipAnnouncementControllerTest {
+class HomeControllerTest {
     @Autowired
     private lateinit var mockMvc: MockMvc
 
     @MockkBean
-    private lateinit var internshipAnnouncementService: InternshipAnnouncementService
+    private lateinit var homeService: HomeService
 
     @Test
     @DisplayName("필터링 조건에 맞는 인턴 공고를 조회한다")
@@ -34,7 +33,7 @@ class InternshipAnnouncementControllerTest {
         val sortBy = "deadlineSoon"
 
         val announcement =
-            HomeAnnouncement(
+            Home(
                 announcementId = 1L,
                 companyImageUrl = "https://test.image/logo.png",
                 title = "백엔드 인턴 모집",
@@ -43,14 +42,14 @@ class InternshipAnnouncementControllerTest {
                 hexColor = "#FFFFFF",
             )
         val response =
-            HomeAnnouncementsResponse(
+            HomeResponse(
                 totalPages = 1,
                 totalCount = 1L,
                 hasNext = false,
                 announcements = listOf(announcement),
             )
 
-        every { internshipAnnouncementService.getFilteredAnnouncements(userId, sortBy, pageable) } returns response
+        every { homeService.getFilteredAnnouncements(userId, sortBy, pageable) } returns response
 
         // when & then
         mockMvc.get("/api/v1/home") {

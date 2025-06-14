@@ -1,4 +1,4 @@
-package com.terning.server.kotlin.application.scrap.dto
+package com.terning.server.kotlin.application.home.dto
 
 import com.terning.server.kotlin.domain.scrap.Scrap
 import java.time.Clock
@@ -41,7 +41,10 @@ data class UpcomingDeadlineScrapDetail(
                 }
 
             return UpcomingDeadlineScrapDetail(
-                internshipAnnouncementId = announcement.id!!,
+                internshipAnnouncementId =
+                    checkNotNull(announcement.id) {
+                        "[ERROR] 스크랩(id=${scrap.id})이 id가 없는 InternshipAnnouncement를 참조하고 있습니다."
+                    },
                 companyImage = announcement.company.logoUrl.value,
                 companyInfo = announcement.company.name.value,
                 title = announcement.title.value,

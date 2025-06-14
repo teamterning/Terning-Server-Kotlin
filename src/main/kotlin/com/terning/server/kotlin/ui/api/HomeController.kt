@@ -1,7 +1,8 @@
 package com.terning.server.kotlin.ui.api
 
-import com.terning.server.kotlin.application.internshipAnnouncement.InternshipAnnouncementService
-import com.terning.server.kotlin.application.internshipAnnouncement.dto.HomeAnnouncementsResponse
+import com.terning.server.kotlin.application.home.HomeService
+import com.terning.server.kotlin.application.home.dto.HomeResponse
+import com.terning.server.kotlin.application.home.dto.UpcomingDeadlineScrapResponse
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
@@ -13,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/v1/home")
-class InternshipAnnouncementController(
-    private val internshipAnnouncementService: InternshipAnnouncementService,
+class HomeController(
+    private val homeService: HomeService,
 ) {
     @GetMapping
     fun getInternshipAnnouncementsFilteredByUserFilter(
@@ -23,11 +24,11 @@ class InternshipAnnouncementController(
         @RequestParam(name = "sortBy", required = false, defaultValue = "deadlineSoon")
         sortingCondition: String,
         @PageableDefault(size = 10) pageable: Pageable,
-    ): ResponseEntity<ApiResponse<HomeAnnouncementsResponse>> {
+    ): ResponseEntity<ApiResponse<HomeResponse>> {
         val authenticatedUserId: Long = 1L // TODO: 인증 시스템 연동 시 실제 유저 ID로 대체
 
-        val internshipAnnouncementResponse: HomeAnnouncementsResponse =
-            internshipAnnouncementService.getFilteredAnnouncements(
+        val internshipAnnouncementResponse: HomeResponse =
+            homeService.getFilteredAnnouncements(
                 userId = authenticatedUserId,
                 sortBy = sortingCondition,
                 pageable = pageable,
@@ -38,6 +39,22 @@ class InternshipAnnouncementController(
                 status = HttpStatus.OK,
                 message = "인턴 공고 불러오기를 성공했습니다",
                 result = internshipAnnouncementResponse,
+            ),
+        )
+    }
+
+    @GetMapping("/upcoming")
+    fun getUpcomingDeadlineScraps(
+        // TODO: @AuthenticationPrincipal userId: Long,
+    ): ResponseEntity<ApiResponse<UpcomingDeadlineScrapResponse>> {
+        val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 교체
+        val response = homeService.findUpcomingDeadlineScraps(userId)
+
+        return ResponseEntity.ok(
+            ApiResponse.success(
+                status = HttpStatus.OK,
+                message = response.message,
+                result = response,
             ),
         )
     }
