@@ -1,6 +1,5 @@
 package com.terning.server.kotlin.ui.api
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import com.terning.server.kotlin.application.calendar.CalendarService
 import com.terning.server.kotlin.application.calendar.dto.DailyScrapsResponse
@@ -28,9 +27,6 @@ class CalendarControllerTest {
 
     @MockkBean
     private lateinit var calendarService: CalendarService
-
-    @Autowired
-    private lateinit var objectMapper: ObjectMapper
 
     @Test
     @DisplayName("일간 스크랩 데이터를 조회한다")
