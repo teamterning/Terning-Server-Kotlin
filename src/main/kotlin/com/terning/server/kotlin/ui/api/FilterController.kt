@@ -1,6 +1,7 @@
 package com.terning.server.kotlin.ui.api
 
 import com.terning.server.kotlin.application.filter.FilterService
+import com.terning.server.kotlin.application.filter.dto.CreateFilterRequest
 import com.terning.server.kotlin.application.filter.dto.GetFilterResponse
 import com.terning.server.kotlin.application.filter.dto.UpdateFilterRequest
 import org.springframework.http.HttpStatus
@@ -20,8 +21,22 @@ class FilterController(
     @PostMapping("auth/sign-up/filter")
     fun createUserFilter(
         // TODO : @AuthenticationPrincipal userId: Long,
-        @RequestBody updateFilterRequest: UpdateFilterRequest,
-    ) {
+        @RequestBody createFilterRequest: CreateFilterRequest,
+    ): ResponseEntity<ApiResponse<Unit>> {
+        val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
+
+        filterService.createUserFilter(
+            userId = userId,
+            createFilterRequest = createFilterRequest,
+        )
+
+        return ResponseEntity.ok(
+            ApiResponse.success(
+                status = HttpStatus.OK,
+                message = "사용자 필터링 정보 생성에 성공하였습니다",
+                result = Unit,
+            ),
+        )
     }
 
     @GetMapping("filters")
