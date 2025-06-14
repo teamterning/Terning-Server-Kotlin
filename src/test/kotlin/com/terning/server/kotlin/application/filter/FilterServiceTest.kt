@@ -33,7 +33,11 @@ class FilterServiceTest {
 
     @BeforeEach
     fun setUp() {
-        filterService = FilterService(filterRepository, userRepository)
+        filterService =
+            FilterService(
+                filterRepository = filterRepository,
+                userRepository = userRepository,
+            )
     }
 
     @Test
