@@ -1,7 +1,8 @@
 package com.terning.server.kotlin.application.filter
 
-import com.terning.server.kotlin.application.filter.dto.FilterRequest
-import com.terning.server.kotlin.application.filter.dto.FilterResponse
+import com.terning.server.kotlin.application.filter.dto.CreateFilterRequest
+import com.terning.server.kotlin.application.filter.dto.GetFilterResponse
+import com.terning.server.kotlin.application.filter.dto.UpdateFilterRequest
 import com.terning.server.kotlin.domain.filter.FilterRepository
 import com.terning.server.kotlin.domain.filter.exception.FilterErrorCode
 import com.terning.server.kotlin.domain.filter.exception.FilterException
@@ -22,7 +23,31 @@ class FilterService(
     private val userRepository: UserRepository,
 ) {
     @Transactional
-    fun getUserFilter(userId: Long): FilterResponse {
+    fun createUserFilter(
+        userId: Long,
+        createFilterRequest: CreateFilterRequest,
+    ) {
+        val user =
+            userRepository.findById(userId).orElseThrow {
+                FilterException(FilterErrorCode.NOT_FOUND_USER_EXCEPTION)
+            }
+
+        val filter = filterRepository.findLatestByUser(user) ?: throw FilterException(FilterErrorCode.NOT_FOUND_FILTER_EXCEPTION)
+
+        filter.updateFilter(
+            newFilterJobType = FilterJobType.from(FilterJobType.TOTAL.type),
+            newFilterGrade = FilterGrade.from(createFilterRequest.grade),
+            newFilterWorkingPeriod = FilterWorkingPeriod.from(createFilterRequest.workingPeriod),
+            newFilterStartDate =
+                FilterStartDate.of(
+                    filterMonth = FilterMonth.from(createFilterRequest.startMonth),
+                    filterYear = FilterYear.from(createFilterRequest.startYear),
+                ),
+        )
+    }
+
+    @Transactional
+    fun getUserFilter(userId: Long): GetFilterResponse {
         val user =
             userRepository.findById(userId).orElseThrow {
                 FilterException(FilterErrorCode.NOT_FOUND_USER_EXCEPTION)
@@ -34,7 +59,7 @@ class FilterService(
 
         val startDate = filter.startDate()
 
-        return FilterResponse(
+        return GetFilterResponse(
             jobType = filter.jobType().type,
             grade = filter.grade().type,
             workingPeriod = filter.workingPeriod().period,
@@ -46,7 +71,7 @@ class FilterService(
     @Transactional
     fun updateUserFilter(
         userId: Long,
-        filterRequest: FilterRequest,
+        updateFilterRequest: UpdateFilterRequest,
     ) {
         val user =
             userRepository.findById(userId).orElseThrow {
@@ -58,13 +83,13 @@ class FilterService(
                 ?: throw FilterException(FilterErrorCode.NOT_FOUND_FILTER_EXCEPTION)
 
         filter.updateFilter(
-            newFilterJobType = FilterJobType.from(filterRequest.jobType),
-            newFilterGrade = FilterGrade.from(filterRequest.grade),
-            newFilterWorkingPeriod = FilterWorkingPeriod.from(filterRequest.workingPeriod),
+            newFilterJobType = FilterJobType.from(updateFilterRequest.jobType),
+            newFilterGrade = FilterGrade.from(updateFilterRequest.grade),
+            newFilterWorkingPeriod = FilterWorkingPeriod.from(updateFilterRequest.workingPeriod),
             newFilterStartDate =
                 FilterStartDate.of(
-                    filterMonth = FilterMonth.from(filterRequest.startMonth),
-                    filterYear = FilterYear.from(filterRequest.startYear),
+                    filterMonth = FilterMonth.from(updateFilterRequest.startMonth),
+                    filterYear = FilterYear.from(updateFilterRequest.startYear),
                 ),
         )
     }
