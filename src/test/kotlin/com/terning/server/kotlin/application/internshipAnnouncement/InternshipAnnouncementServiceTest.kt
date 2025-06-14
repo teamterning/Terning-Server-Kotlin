@@ -15,6 +15,7 @@ import com.terning.server.kotlin.domain.internshipAnnouncement.vo.CompanyName
 import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipTitle
 import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipWorkingPeriod
 import com.terning.server.kotlin.domain.scrap.QScrap.scrap
+import com.terning.server.kotlin.domain.scrap.ScrapRepository
 import com.terning.server.kotlin.domain.user.User
 import com.terning.server.kotlin.domain.user.UserRepository
 import io.mockk.every
@@ -27,6 +28,9 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
+import java.time.Clock
+import java.time.Instant
+import java.time.ZoneId
 import java.util.Optional
 
 class InternshipAnnouncementServiceTest {
@@ -34,6 +38,8 @@ class InternshipAnnouncementServiceTest {
     private lateinit var userRepository: UserRepository
     private lateinit var filterRepository: FilterRepository
     private lateinit var service: InternshipAnnouncementService
+    private lateinit var scrapRepository: ScrapRepository
+    private lateinit var clock: Clock
 
     private val userId = 1L
     private lateinit var user: User
@@ -46,7 +52,16 @@ class InternshipAnnouncementServiceTest {
         userRepository = mockk()
         filterRepository = mockk()
         user = mockk()
-        service = InternshipAnnouncementService(internshipRepository, userRepository, filterRepository)
+        scrapRepository = mockk()
+        clock = Clock.fixed(Instant.parse("2025-06-08T00:00:00Z"), ZoneId.systemDefault())
+        service =
+            InternshipAnnouncementService(
+                internshipRepository = internshipRepository,
+                userRepository = userRepository,
+                filterRepository = filterRepository,
+                scrapRepository = scrapRepository,
+                clock = clock,
+            )
     }
 
     @Nested
