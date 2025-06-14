@@ -9,4 +9,5 @@ enum class UserErrorCode(
 ) : BaseErrorCode {
     NOT_FOUND_USER_EXCEPTION(HttpStatus.BAD_REQUEST, "해당 유저가 존재하지 않습니다"),
     INVALID_PROFILE_IMAGE(HttpStatus.BAD_REQUEST, "유효하지 않은 프로필 이미지 입니다."),
+    USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "해당 유저를 찾을 수 없습니다."),
 }

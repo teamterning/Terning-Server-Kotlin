@@ -13,6 +13,8 @@ import com.terning.server.kotlin.domain.scrap.exception.ScrapException
 import com.terning.server.kotlin.domain.scrap.vo.Color
 import com.terning.server.kotlin.domain.user.User
 import com.terning.server.kotlin.domain.user.UserRepository
+import com.terning.server.kotlin.domain.user.exception.UserErrorCode
+import com.terning.server.kotlin.domain.user.exception.UserException
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
@@ -374,6 +376,106 @@ class ScrapServiceTest {
                     scrapService.dailyScraps(userId, date)
                 }
             assertEquals(ScrapErrorCode.SCRAP_ID_NULL, exception.errorCode)
+        }
+    }
+
+    @Nested
+    @DisplayName("홈 화면 - 곧 마감되는 스크랩 조회")
+    inner class FindUpcomingDeadlineScrapsTest {
+        @Test
+        @DisplayName("사용자가 존재하지 않으면 UserException이 발생한다")
+        fun throwsUserExceptionWhenUserNotFound() {
+            // given
+            every { userRepository.existsById(userId) } returns false
+
+            // when & then
+            val exception =
+                assertThrows<UserException> {
+                    scrapService.findUpcomingDeadlineScraps(userId)
+                }
+            assertEquals(UserErrorCode.USER_NOT_FOUND, exception.errorCode)
+        }
+
+        @Test
+        @DisplayName("스크랩한 공고가 없으면 hasScrapped가 false인 응답을 반환한다")
+        fun returnsHasScrappedFalseWhenNoScrapsExist() {
+            // given
+            every { userRepository.existsById(userId) } returns true
+            every { scrapRepository.existsByUserId(userId) } returns false
+
+            // when
+            val response = scrapService.findUpcomingDeadlineScraps(userId)
+
+            // then
+            assertEquals(false, response.hasScrapped)
+            assertEquals("아직 스크랩된 인턴 공고가 없어요!", response.message)
+            assertEquals(0, response.scraps.size)
+        }
+
+        @Test
+        @DisplayName("스크랩은 했지만 7일 내 마감 공고가 없으면 hasScrapped가 true이고 빈 리스트를 반환한다")
+        fun returnsEmptyListWhenUpcomingScrapsDoNotExist() {
+            // given
+            every { userRepository.existsById(userId) } returns true
+            every { scrapRepository.existsByUserId(userId) } returns true
+            every {
+                scrapRepository.findScrapsByUserIdAndDeadlineBetweenOrderByDeadline(
+                    userId = userId,
+                    start = LocalDate.now(clock),
+                    end = LocalDate.now(clock).plusDays(7),
+                )
+            } returns emptyList()
+
+            // when
+            val response = scrapService.findUpcomingDeadlineScraps(userId)
+
+            // then
+            assertEquals(true, response.hasScrapped)
+            assertEquals("일주일 내에 마감인 공고가 없어요\n캘린더에서 스크랩한 공고 일정을 확인해 보세요", response.message)
+            assertEquals(0, response.scraps.size)
+        }
+
+        @Test
+        @DisplayName("마감 임박 스크랩 공고를 성공적으로 조회한다")
+        fun returnsUpcomingDeadlineScrapsSuccessfully() {
+            // given
+            val announcement = mockk<InternshipAnnouncement>(relaxed = true)
+            val scrap = mockk<Scrap>(relaxed = true)
+
+            every { announcement.id } returns 1L
+            every { announcement.company.logoUrl.value } returns "http://logo.url/logo.png"
+            every { announcement.company.name.value } returns "터닝 기업"
+            every { announcement.title.value } returns "마감 임박 공고"
+            every { announcement.workingPeriod.toString() } returns "3개월"
+
+            every { announcement.internshipAnnouncementDeadline.value } returns LocalDate.now(clock).plusDays(5)
+            every { announcement.startDate.year.value } returns 2025
+            every { announcement.startDate.month.value } returns 7
+
+            every { scrap.internshipAnnouncement } returns announcement
+            every { scrap.hexColor() } returns "#FF5733"
+
+            every { userRepository.existsById(userId) } returns true
+            every { scrapRepository.existsByUserId(userId) } returns true
+            every {
+                scrapRepository.findScrapsByUserIdAndDeadlineBetweenOrderByDeadline(any(), any(), any())
+            } returns listOf(scrap)
+
+            // when
+            val response = scrapService.findUpcomingDeadlineScraps(userId)
+
+            // then
+            assertEquals(true, response.hasScrapped)
+            assertEquals("곧 마감되는 스크랩 공고를 성공적으로 조회했습니다.", response.message)
+            assertEquals(1, response.scraps.size)
+
+            val detail = response.scraps.first()
+            assertEquals(1L, detail.internshipAnnouncementId)
+            assertEquals("터닝 기업", detail.companyInfo)
+            assertEquals("마감 임박 공고", detail.title)
+            assertEquals("D-5", detail.dDay)
+            assertEquals(true, detail.isScrapped)
+            assertEquals("#FF5733", detail.color)
         }
     }
 

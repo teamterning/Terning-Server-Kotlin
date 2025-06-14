@@ -6,6 +6,7 @@ import com.terning.server.kotlin.application.scrap.dto.DetailedScrap
 import com.terning.server.kotlin.application.scrap.dto.MonthlyScrapDeadlineResponse
 import com.terning.server.kotlin.application.scrap.dto.ScrapRequest
 import com.terning.server.kotlin.application.scrap.dto.ScrapUpdateRequest
+import com.terning.server.kotlin.application.scrap.dto.UpcomingDeadlineScrapResponse
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -25,6 +26,22 @@ import java.time.LocalDate
 class ScrapController(
     private val scrapService: ScrapService,
 ) {
+    @GetMapping("/home/upcoming")
+    fun getUpcomingDeadlineScraps(
+        // TODO: @AuthenticationPrincipal userId: Long,
+    ): ResponseEntity<ApiResponse<UpcomingDeadlineScrapResponse>> {
+        val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 교체
+        val response = scrapService.findUpcomingDeadlineScraps(userId)
+
+        return ResponseEntity.ok(
+            ApiResponse.success(
+                status = HttpStatus.OK,
+                message = response.message,
+                result = response,
+            ),
+        )
+    }
+
     @GetMapping("/calendar/daily")
     fun dailyScraps(
         // TODO: @AuthenticationPrincipal userId: Long,
