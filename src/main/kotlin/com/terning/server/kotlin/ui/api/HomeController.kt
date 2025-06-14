@@ -8,6 +8,7 @@ import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController
 class HomeController(
     private val homeService: HomeService,
 ) {
-    @GetMapping
+    @GetMapping("home")
     fun getInternshipAnnouncementsFilteredByUserFilter(
         // TODO: 실제 로그인된 사용자의 인증 정보 주입 필요
         // @AuthenticationPrincipal userId: Long,
