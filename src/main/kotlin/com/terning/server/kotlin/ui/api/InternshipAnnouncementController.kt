@@ -61,8 +61,8 @@ class InternshipAnnouncementController(
             ApiResponse.success(
                 status = HttpStatus.OK,
                 message = "공고 상세 정보 불러오기에 성공했습니다",
-                result = response
-            )
+                result = response,
+            ),
         )
     }
 }
