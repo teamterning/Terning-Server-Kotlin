@@ -1,22 +1,24 @@
 package com.terning.server.kotlin.ui.api
 
 import com.terning.server.kotlin.application.internshipAnnouncement.InternshipAnnouncementService
+import com.terning.server.kotlin.application.internshipAnnouncement.dto.DetailAnnouncementResponse
 import com.terning.server.kotlin.application.internshipAnnouncement.dto.HomeAnnouncementsResponse
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/v1/home")
+@RequestMapping("/api/v1")
 class InternshipAnnouncementController(
     private val internshipAnnouncementService: InternshipAnnouncementService,
 ) {
-    @GetMapping
+    @GetMapping("home")
     fun getInternshipAnnouncementsFilteredByUserFilter(
         // TODO: 실제 로그인된 사용자의 인증 정보 주입 필요
         // @AuthenticationPrincipal userId: Long,
@@ -38,6 +40,28 @@ class InternshipAnnouncementController(
                 status = HttpStatus.OK,
                 message = "인턴 공고 불러오기를 성공했습니다",
                 result = internshipAnnouncementResponse,
+            ),
+        )
+    }
+
+    @GetMapping("announcements/{internshipAnnouncementId}")
+    fun getDetailInternshipAnnouncement(
+        // TODO: @AuthenticationPrincipal userId: Long,
+        @PathVariable internshipAnnouncementId: Long,
+    ): ResponseEntity<ApiResponse<DetailAnnouncementResponse>> {
+        val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
+
+        val response =
+            internshipAnnouncementService.getDetailAnnouncement(
+                userId = userId,
+                internshipAnnouncementId = internshipAnnouncementId,
+            )
+
+        return ResponseEntity.ok(
+            ApiResponse.success(
+                status = HttpStatus.OK,
+                message = "공고 상세 정보 불러오기에 성공했습니다",
+                result = response,
             ),
         )
     }
