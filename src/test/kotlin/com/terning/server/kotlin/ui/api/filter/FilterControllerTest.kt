@@ -3,8 +3,8 @@ package com.terning.server.kotlin.ui.api.filter
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import com.terning.server.kotlin.application.filter.FilterService
-import com.terning.server.kotlin.application.filter.dto.UpdateFilterRequest
 import com.terning.server.kotlin.application.filter.dto.GetFilterResponse
+import com.terning.server.kotlin.application.filter.dto.UpdateFilterRequest
 import com.terning.server.kotlin.ui.api.FilterController
 import io.mockk.every
 import io.mockk.just

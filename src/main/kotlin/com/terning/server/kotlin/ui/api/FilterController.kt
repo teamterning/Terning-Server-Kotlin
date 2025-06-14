@@ -1,8 +1,8 @@
 package com.terning.server.kotlin.ui.api
 
 import com.terning.server.kotlin.application.filter.FilterService
-import com.terning.server.kotlin.application.filter.dto.UpdateFilterRequest
 import com.terning.server.kotlin.application.filter.dto.GetFilterResponse
+import com.terning.server.kotlin.application.filter.dto.UpdateFilterRequest
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -20,9 +20,8 @@ class FilterController(
     @PostMapping("auth/sign-up/filter")
     fun createUserFilter(
         // TODO : @AuthenticationPrincipal userId: Long,
-        @RequestBody updateFilterRequest: UpdateFilterRequest
+        @RequestBody updateFilterRequest: UpdateFilterRequest,
     ) {
-
     }
 
     @GetMapping("filters")
