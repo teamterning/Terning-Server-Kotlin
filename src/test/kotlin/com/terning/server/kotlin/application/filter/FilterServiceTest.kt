@@ -1,6 +1,6 @@
 package com.terning.server.kotlin.application.filter
 
-import com.terning.server.kotlin.application.filter.dto.FilterRequest
+import com.terning.server.kotlin.application.filter.dto.UpdateFilterRequest
 import com.terning.server.kotlin.domain.filter.Filter
 import com.terning.server.kotlin.domain.filter.FilterRepository
 import com.terning.server.kotlin.domain.filter.exception.FilterErrorCode
@@ -107,8 +107,8 @@ class FilterServiceTest {
         // given
         val user = mockk<User>()
         val filter = mockk<Filter>(relaxed = true)
-        val filterRequest =
-            FilterRequest(
+        val updateFilterRequest =
+            UpdateFilterRequest(
                 jobType = "plan",
                 grade = "sophomore",
                 workingPeriod = "middle",
@@ -122,7 +122,7 @@ class FilterServiceTest {
         // when
         filterService.updateUserFilter(
             userId = userId,
-            filterRequest = filterRequest,
+            updateFilterRequest = updateFilterRequest,
         )
 
         // then

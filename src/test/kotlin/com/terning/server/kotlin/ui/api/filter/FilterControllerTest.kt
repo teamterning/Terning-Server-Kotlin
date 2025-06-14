@@ -3,8 +3,8 @@ package com.terning.server.kotlin.ui.api.filter
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import com.terning.server.kotlin.application.filter.FilterService
-import com.terning.server.kotlin.application.filter.dto.FilterRequest
-import com.terning.server.kotlin.application.filter.dto.FilterResponse
+import com.terning.server.kotlin.application.filter.dto.UpdateFilterRequest
+import com.terning.server.kotlin.application.filter.dto.GetFilterResponse
 import com.terning.server.kotlin.ui.api.FilterController
 import io.mockk.every
 import io.mockk.just
@@ -32,13 +32,13 @@ class FilterControllerTest {
     @Autowired
     private lateinit var objectMapper: ObjectMapper
 
-    private lateinit var filterResponse: FilterResponse
-    private lateinit var filterRequest: FilterRequest
+    private lateinit var getFilterResponse: GetFilterResponse
+    private lateinit var updateFilterRequest: UpdateFilterRequest
 
     @BeforeEach
     fun setUp() {
-        filterResponse =
-            FilterResponse(
+        getFilterResponse =
+            GetFilterResponse(
                 jobType = "it",
                 grade = "senior",
                 workingPeriod = "short",
@@ -46,8 +46,8 @@ class FilterControllerTest {
                 startMonth = 6,
             )
 
-        filterRequest =
-            FilterRequest(
+        updateFilterRequest =
+            UpdateFilterRequest(
                 jobType = "plan",
                 grade = "sophomore",
                 workingPeriod = "middle",
@@ -61,7 +61,7 @@ class FilterControllerTest {
     fun getFilter() {
         // given
         val userId = 1L
-        every { filterService.getUserFilter(userId = userId) } returns filterResponse
+        every { filterService.getUserFilter(userId = userId) } returns getFilterResponse
 
         // when
         mockMvc.get("/api/v1/filters") {
@@ -85,14 +85,14 @@ class FilterControllerTest {
         every {
             filterService.updateUserFilter(
                 userId = userId,
-                filterRequest = filterRequest,
+                updateFilterRequest = updateFilterRequest,
             )
         } just runs
 
         // when
         mockMvc.put("/api/v1/filters") {
             contentType = MediaType.APPLICATION_JSON
-            content = objectMapper.writeValueAsString(filterRequest)
+            content = objectMapper.writeValueAsString(updateFilterRequest)
         }.andExpect {
             // then
             status { isOk() }
