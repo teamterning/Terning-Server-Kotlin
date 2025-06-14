@@ -1,6 +1,6 @@
 package com.terning.server.kotlin.application.filter.dto
 
-data class FilterRequest(
+data class UpdateFilterRequest(
     val jobType: String,
     val grade: String,
     val workingPeriod: String,
