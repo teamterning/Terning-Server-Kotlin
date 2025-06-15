@@ -1,4 +1,4 @@
-package com.terning.server.kotlin.application.internshipAnnouncement.dto
+package com.terning.server.kotlin.application.home.dto
 
 import com.querydsl.core.Tuple
 import com.terning.server.kotlin.domain.internshipAnnouncement.QInternshipAnnouncement.internshipAnnouncement
@@ -7,17 +7,17 @@ import com.terning.server.kotlin.domain.internshipAnnouncement.exception.Interns
 import com.terning.server.kotlin.domain.scrap.QScrap.scrap
 import org.springframework.data.domain.Page
 
-data class HomeAnnouncementsResponse(
+data class HomeResponse(
     val totalPages: Int,
     val totalCount: Long,
     val hasNext: Boolean,
-    val announcements: List<HomeAnnouncement>,
+    val announcements: List<Home>,
 ) {
     companion object {
-        fun from(pagedTuples: Page<Tuple>): HomeAnnouncementsResponse {
-            val announcements = pagedTuples.content.map(HomeAnnouncement::from)
+        fun from(pagedTuples: Page<Tuple>): HomeResponse {
+            val announcements = pagedTuples.content.map(Home.Companion::from)
 
-            return HomeAnnouncementsResponse(
+            return HomeResponse(
                 totalPages = pagedTuples.totalPages,
                 totalCount = pagedTuples.totalElements,
                 hasNext = pagedTuples.hasNext(),
@@ -27,7 +27,7 @@ data class HomeAnnouncementsResponse(
     }
 }
 
-data class HomeAnnouncement(
+data class Home(
     val announcementId: Long,
     val companyImageUrl: String,
     val title: String,
@@ -36,9 +36,9 @@ data class HomeAnnouncement(
     val hexColor: String?,
 ) {
     companion object {
-        fun from(tuple: Tuple): HomeAnnouncement {
+        fun from(tuple: Tuple): Home {
             return tuple[internshipAnnouncement]?.let { announcement ->
-                HomeAnnouncement(
+                Home(
                     announcementId =
                         announcement.id
                             ?: throw InternshipAnnouncementException(InternshipAnnouncementErrorCode.NOT_FOUND_ANNOUNCEMENT_EXCEPTION),
