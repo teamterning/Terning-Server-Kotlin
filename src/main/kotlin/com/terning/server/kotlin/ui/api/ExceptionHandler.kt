@@ -29,7 +29,11 @@ class ExceptionHandler : ResponseEntityExceptionHandler() {
                 is InvalidFormatException -> "${exception.path.lastOrNull()?.fieldName ?: "UnknownField"}: 올바른 형식이어야 합니다"
                 else -> exception?.message.orEmpty()
             }
-        return buildErrorResponse(ex, HttpStatus.BAD_REQUEST, message)
+        return buildErrorResponse(
+            exception = ex,
+            status = HttpStatus.BAD_REQUEST,
+            message = message,
+        )
     }
 
     override fun handleMethodArgumentNotValid(
@@ -39,46 +43,46 @@ class ExceptionHandler : ResponseEntityExceptionHandler() {
         request: WebRequest,
     ): ResponseEntity<Any>? {
         val message = ex.messages()
-        return buildErrorResponse(ex, HttpStatus.BAD_REQUEST, message)
+        return buildErrorResponse(
+            exception = ex,
+            status = HttpStatus.BAD_REQUEST,
+            message = message,
+        )
     }
 
     @ExceptionHandler(IllegalArgumentException::class, IllegalStateException::class)
     fun handleBadRequestException(exception: RuntimeException): ResponseEntity<ApiResponse<Unit>> {
-        return buildErrorResponse(
+        return buildUnitErrorResponse(
             exception = exception,
             status = HttpStatus.BAD_REQUEST,
             message = exception.message ?: "잘못된 요청입니다.",
-            isUnit = true,
         )
     }
 
     @ExceptionHandler(EntityNotFoundException::class)
     fun handleNotFoundException(exception: EntityNotFoundException): ResponseEntity<ApiResponse<Unit>> {
-        return buildErrorResponse(
+        return buildUnitErrorResponse(
             exception = exception,
             status = HttpStatus.NOT_FOUND,
             message = exception.message ?: "데이터를 찾을 수 없습니다.",
-            isUnit = true,
         )
     }
 
     @ExceptionHandler(BaseException::class)
     fun handleBaseException(exception: BaseException): ResponseEntity<ApiResponse<Unit>> {
-        return buildErrorResponse(
+        return buildUnitErrorResponse(
             exception = exception,
             status = exception.errorCode.status,
             message = exception.errorCode.message,
-            isUnit = true,
         )
     }
 
     @ExceptionHandler(Exception::class)
     fun handleGlobalException(exception: Exception): ResponseEntity<ApiResponse<Unit>> {
-        return buildErrorResponse(
+        return buildUnitErrorResponse(
             exception = exception,
             status = HttpStatus.INTERNAL_SERVER_ERROR,
             message = "서버 내부 오류가 발생했습니다.",
-            isUnit = true,
         )
     }
 
@@ -96,11 +100,10 @@ class ExceptionHandler : ResponseEntityExceptionHandler() {
             .body(ApiResponse.error(status, message))
     }
 
-    private fun buildErrorResponse(
+    private fun buildUnitErrorResponse(
         exception: Exception,
         status: HttpStatus,
         message: String,
-        isUnit: Boolean = true,
     ): ResponseEntity<ApiResponse<Unit>> {
         logger.error(
             "Handling ${exception::class.simpleName} with status $status: $message",
