@@ -1,6 +1,7 @@
 package com.terning.server.kotlin.ui.api
 
 import com.terning.server.kotlin.application.search.SearchService
+import com.terning.server.kotlin.application.search.dto.BannersView
 import com.terning.server.kotlin.application.search.dto.ScrapCountResponse
 import com.terning.server.kotlin.application.search.dto.SearchPageResponse
 import com.terning.server.kotlin.application.search.dto.ViewCountResponse
@@ -73,6 +74,23 @@ class SearchController(
             ApiResponse.success(
                 status = HttpStatus.OK,
                 message = "탐색 > 스크랩 수 많은 공고를 조회하는데 성공했습니다",
+                result = response,
+            ),
+        )
+    }
+
+    @GetMapping("/banners")
+    fun getBanners(
+        // TODO: @AuthenticationPrincipal userId: Long,
+    ): ResponseEntity<ApiResponse<BannersView>> {
+        val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
+
+        val response = searchService.getBanners(userId)
+
+        return ResponseEntity.ok(
+            ApiResponse.success(
+                status = HttpStatus.OK,
+                message = "탐색 뷰 > 배너 조회에 성공했습니다",
                 result = response,
             ),
         )
