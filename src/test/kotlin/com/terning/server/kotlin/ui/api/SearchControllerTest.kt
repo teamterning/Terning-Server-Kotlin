@@ -2,6 +2,8 @@ package com.terning.server.kotlin.ui.api
 
 import com.ninjasquad.springmockk.MockkBean
 import com.terning.server.kotlin.application.search.SearchService
+import com.terning.server.kotlin.application.search.dto.ScrapCountAnnouncementResponse
+import com.terning.server.kotlin.application.search.dto.ScrapCountResponse
 import com.terning.server.kotlin.application.search.dto.SearchAnnouncementResponse
 import com.terning.server.kotlin.application.search.dto.SearchPageResponse
 import com.terning.server.kotlin.application.search.dto.ViewCountAnnouncementResponse
@@ -158,15 +160,15 @@ class SearchControllerTest {
         // given
         val userId = 1L
         val scrapCountResponse =
-            ViewCountResponse(
+            ScrapCountResponse(
                 announcements =
                     listOf(
-                        ViewCountAnnouncementResponse(
+                        ScrapCountAnnouncementResponse(
                             internshipAnnouncementId = 50L,
                             companyImage = "image_scrap_1",
                             title = "스크랩 많은 공고 1",
                         ),
-                        ViewCountAnnouncementResponse(
+                        ScrapCountAnnouncementResponse(
                             internshipAnnouncementId = 51L,
                             companyImage = "image_scrap_2",
                             title = "스크랩 많은 공고 2",
