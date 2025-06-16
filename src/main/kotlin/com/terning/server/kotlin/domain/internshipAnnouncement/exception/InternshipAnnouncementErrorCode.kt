@@ -27,4 +27,5 @@ enum class InternshipAnnouncementErrorCode(
     NOT_FOUND_ANNOUNCEMENT_EXCEPTION(HttpStatus.NOT_FOUND, "인턴십 공고를 찾을 수 없습니다."),
     INVALID_SORT_TYPE(HttpStatus.BAD_REQUEST, "지원하지 않는 정렬 방식입니다."),
     INVALID_START_DATE(HttpStatus.BAD_REQUEST, "시작 날짜 형식이 잘못되었습니다. 'YYYY-MM' 형식이어야 합니다."),
+    ANNOUNCEMENT_ID_NULL(HttpStatus.INTERNAL_SERVER_ERROR, "공고 ID가 존재하지 않습니다."),
 }
