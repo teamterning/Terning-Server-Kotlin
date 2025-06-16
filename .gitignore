@@ -113,3 +113,34 @@ native-build-tools/
 
 # 🧼 Gradle 임시 작업 파일
 .tmp/
+
+# IDE related
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Gradle
+.gradle/
+build/
+caches/
+daemon/
+jdks/
+native/
+native-build-tools/
+kotlin-profile/
+
+# Temporary files
+.tmp/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+
+# Local configuration
+local.properties
+
