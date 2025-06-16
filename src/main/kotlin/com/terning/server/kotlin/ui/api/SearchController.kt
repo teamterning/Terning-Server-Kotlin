@@ -59,4 +59,21 @@ class SearchController(
             ),
         )
     }
+
+    @GetMapping("/scraps")
+    fun getMostScrappedAnnouncements(
+        // TODO: @AuthenticationPrincipal userId: Long,
+    ): ResponseEntity<ApiResponse<ViewCountResponse>> {
+        val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
+
+        val response = searchService.getMostScrappedAnnouncements(userId)
+
+        return ResponseEntity.ok(
+            ApiResponse.success(
+                status = HttpStatus.OK,
+                message = "탐색 > 스크랩 수 많은 공고를 조회하는데 성공했습니다",
+                result = response,
+            ),
+        )
+    }
 }
