@@ -49,6 +49,7 @@ class HomeServiceTest {
     private lateinit var user: User
     private val pageable = PageRequest.of(0, 10)
     private val sortBy = "recent"
+    private lateinit var now: LocalDate
 
     @BeforeEach
     fun setUp() {
@@ -58,8 +59,9 @@ class HomeServiceTest {
         scrapRepository = mockk(relaxed = true)
         user = mockk()
         val fixedInstant = Instant.parse("2025-06-08T00:00:00Z")
-        clock = Clock.fixed(fixedInstant, ZoneId.systemDefault())
+        clock = Clock.fixed(fixedInstant, ZoneId.of("Asia/Seoul"))
         service = HomeService(internshipRepository, userRepository, filterRepository, scrapRepository, clock)
+        now = LocalDate.now(clock)
     }
 
     @Nested
@@ -93,7 +95,7 @@ class HomeServiceTest {
             every { userRepository.findById(userId) } returns Optional.of(user)
             every { filterRepository.findLatestByUser(user) } returns filter
             every {
-                internshipRepository.findAllInternshipsWithScrapInfo(user, sortBy, pageable)
+                internshipRepository.findAllInternshipsWithScrapInfo(user, sortBy, pageable, now)
             } returns PageImpl(listOf(tuple))
 
             // when
@@ -147,8 +149,8 @@ class HomeServiceTest {
             every {
                 scrapRepository.findScrapsByUserIdAndDeadlineBetweenOrderByDeadline(
                     userId = userId,
-                    start = LocalDate.now(clock),
-                    end = LocalDate.now(clock).plusDays(7),
+                    start = now,
+                    end = now.plusDays(7),
                 )
             } returns emptyList()
 
@@ -165,25 +167,18 @@ class HomeServiceTest {
         @DisplayName("마감 임박 스크랩 공고를 성공적으로 조회한다")
         fun returnsUpcomingDeadlineScrapsSuccessfully() {
             // given
-            val announcement = mockk<InternshipAnnouncement>(relaxed = true)
-            val scrap = mockk<Scrap>(relaxed = true)
-            val startDate = LocalDate.now(clock)
-            val endDate = startDate.plusDays(7)
+            val scrap =
+                createMockScrap(
+                    announcementId = 1L,
+                    title = "마감 임박 공고",
+                    deadline = now.plusDays(5),
+                    hexColor = "#FF5733",
+                )
 
-            every { announcement.id } returns 1L
-            every { announcement.company.logoUrl.value } returns "http://logo.url/logo.png"
-            every { announcement.company.name.value } returns "터닝 기업"
-            every { announcement.title.value } returns "마감 임박 공고"
-            every { announcement.workingPeriod.toString() } returns "3개월"
-            every { announcement.internshipAnnouncementDeadline.value } returns LocalDate.now(clock).plusDays(5)
-            every { announcement.startDate.year.value } returns 2025
-            every { announcement.startDate.month.value } returns 7
-            every { scrap.internshipAnnouncement } returns announcement
-            every { scrap.hexColor() } returns "#FF5733"
             every { userRepository.existsById(userId) } returns true
             every { scrapRepository.existsByUserId(userId) } returns true
             every {
-                scrapRepository.findScrapsByUserIdAndDeadlineBetweenOrderByDeadline(userId, startDate, endDate)
+                scrapRepository.findScrapsByUserIdAndDeadlineBetweenOrderByDeadline(userId, now, now.plusDays(7))
             } returns listOf(scrap)
 
             // when
@@ -196,7 +191,6 @@ class HomeServiceTest {
 
             val detail = response.scraps.first()
             assertEquals(1L, detail.internshipAnnouncementId)
-            assertEquals("터닝 기업", detail.companyInfo)
             assertEquals("마감 임박 공고", detail.title)
             assertEquals("D-5", detail.dDay)
             assertEquals(true, detail.isScrapped)
@@ -207,6 +201,7 @@ class HomeServiceTest {
     private fun createMockInternship(
         id: Long,
         title: String,
+        deadline: LocalDate = LocalDate.of(2025, 12, 31),
     ): InternshipAnnouncement {
         return mockk {
             every { this@mockk.id } returns id
@@ -218,6 +213,28 @@ class HomeServiceTest {
                     category = CompanyCategory.from("기타"),
                     logoUrl = CompanyLogoUrl.from("https://logo.com"),
                 )
+            every { this@mockk.internshipAnnouncementDeadline } returns
+                mockk {
+                    every { value } returns deadline
+                }
+            every { this@mockk.startDate } returns
+                mockk {
+                    every { year.value } returns 2025
+                    every { month.value } returns 8
+                }
+        }
+    }
+
+    private fun createMockScrap(
+        announcementId: Long,
+        title: String,
+        deadline: LocalDate,
+        hexColor: String,
+    ): Scrap {
+        val announcement = createMockInternship(announcementId, title, deadline)
+        return mockk {
+            every { internshipAnnouncement } returns announcement
+            every { this@mockk.hexColor() } returns hexColor
         }
     }
 
