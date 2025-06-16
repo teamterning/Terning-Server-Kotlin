@@ -29,13 +29,15 @@ class SearchService(
             userRepository.findById(userId)
                 .orElseThrow { UserException(UserErrorCode.USER_NOT_FOUND) }
 
+        val currentDate = LocalDate.now(clock)
+
         val announcementTuples =
             internshipAnnouncementRepository.findByKeywordWithScrapInfo(
                 user = user,
                 keyword = keyword,
                 sortBy = sortBy,
                 pageable = pageable,
-                now = LocalDate.now(clock),
+                now = currentDate,
             )
 
         val announcementResponse = announcementTuples.map { tuple -> SearchAnnouncementResponse.of(tuple, clock) }
