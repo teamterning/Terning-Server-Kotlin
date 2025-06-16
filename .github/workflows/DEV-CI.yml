@@ -11,12 +11,19 @@ jobs:
       - name: 체크아웃
         uses: actions/checkout@v3
 
-      - name: Set up GraalVM JDK 21 with native-image
-        uses: graalvm/setup-graalvm@v1.1.1
+      # GraalVM 설정 대신 일반 JDK를 사용하도록 수정
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
         with:
-          distribution: 'graalvm-community'
-          version: '23.1.0'
           java-version: '21'
+          distribution: 'temurin'
+
+      # - name: Set up GraalVM JDK 21 with native-image  
+      #   uses: graalvm/setup-graalvm@v1.1.1
+      #   with:
+      #     distribution: 'graalvm-community'
+      #     version: '23.1.0'
+      #     java-version: '21'
 
       - name: Gradle 캐시 설정
         uses: actions/cache@v3
@@ -37,9 +44,9 @@ jobs:
       - name: ktlint 실행
         run: ./gradlew ktlintCheck
 
-      - name: Native Image Compile (Fail-safe)
-        continue-on-error: true
-        run: |
-          echo "::group::GraalVM Native Image Build"
-          ./gradlew nativeCompile --info --stacktrace
-          echo "::endgroup::"
+      # - name: Native Image Compile (Fail-safe)  
+      #   continue-on-error: true
+      #   run: |
+      #     echo "::group::GraalVM Native Image Build"
+      #     ./gradlew nativeCompile --info --stacktrace
+      #     echo "::endgroup::"
