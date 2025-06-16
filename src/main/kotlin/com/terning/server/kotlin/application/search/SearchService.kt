@@ -55,9 +55,10 @@ class SearchService(
         val currentDate = LocalDate.now(clock)
         val announcements = internshipAnnouncementRepository.findTop5ByViews(currentDate)
 
-        val responses = announcements.map {
-            ViewCountAnnouncementResponse.from(it)
-        }
+        val responses =
+            announcements.map {
+                ViewCountAnnouncementResponse.from(it)
+            }
 
         return ViewCountResponse(announcements = responses)
     }
