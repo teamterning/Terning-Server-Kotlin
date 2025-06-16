@@ -2,6 +2,7 @@ package com.terning.server.kotlin.ui.api
 
 import com.terning.server.kotlin.application.search.SearchService
 import com.terning.server.kotlin.application.search.dto.SearchPageResponse
+import com.terning.server.kotlin.application.search.dto.ViewCountResponse
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
@@ -37,6 +38,23 @@ class SearchController(
             ApiResponse.success(
                 status = HttpStatus.OK,
                 message = "검색에 성공했습니다.",
+                result = response,
+            ),
+        )
+    }
+
+    @GetMapping("/views")
+    fun getMostViewedAnnouncements(
+        // TODO: @AuthenticationPrincipal userId: Long,
+    ): ResponseEntity<ApiResponse<ViewCountResponse>> {
+        val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
+
+        val response = searchService.getMostViewedAnnouncements(userId)
+
+        return ResponseEntity.ok(
+            ApiResponse.success(
+                status = HttpStatus.OK,
+                message = "탐색 > 조회수 많은 공고를 조회하는데 성공했습니다",
                 result = response,
             ),
         )
