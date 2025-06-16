@@ -4,6 +4,8 @@ import com.ninjasquad.springmockk.MockkBean
 import com.terning.server.kotlin.application.search.SearchService
 import com.terning.server.kotlin.application.search.dto.SearchAnnouncementResponse
 import com.terning.server.kotlin.application.search.dto.SearchPageResponse
+import com.terning.server.kotlin.application.search.dto.ViewCountAnnouncementResponse
+import com.terning.server.kotlin.application.search.dto.ViewCountResponse
 import io.mockk.every
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -112,5 +114,41 @@ class SearchControllerTest {
             jsonPath("$.result.announcements[0].title") { value("[카카오] 프론트엔드 개발 인턴 모집") }
             jsonPath("$.result.announcements[0].isScrapped") { value(false) }
         }
+    }
+
+    @Test
+    @DisplayName("조회수 많은 공고를 성공적으로 조회한다")
+    fun getMostViewedAnnouncementsSuccessfully() {
+        // given
+        val userId = 1L
+        val viewCountResponse =
+            ViewCountResponse(
+                announcements =
+                    listOf(
+                        ViewCountAnnouncementResponse(
+                            internshipAnnouncementId = 23L,
+                            companyImage = "image_url_1",
+                            title = "인기 공고 1",
+                        ),
+                        ViewCountAnnouncementResponse(
+                            internshipAnnouncementId = 3L,
+                            companyImage = "image_url_2",
+                            title = "인기 공고 2",
+                        ),
+                    ),
+            )
+
+        every { searchService.getMostViewedAnnouncements(userId) } returns viewCountResponse
+
+        // when & then
+        mockMvc.get("/api/v1/search/views")
+            .andExpect {
+                status { isOk() }
+                jsonPath("$.status") { value(200) }
+                jsonPath("$.message") { value("탐색 > 조회수 많은 공고를 조회하는데 성공했습니다") }
+                jsonPath("$.result.announcements.size()") { value(2) }
+                jsonPath("$.result.announcements[0].internshipAnnouncementId") { value(23L) }
+                jsonPath("$.result.announcements[0].title") { value("인기 공고 1") }
+            }
     }
 }
