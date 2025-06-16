@@ -11,7 +11,7 @@ plugins {
     id("org.springframework.boot") version "3.4.4"
     id("io.spring.dependency-management") version "1.1.7"
     id("org.hibernate.orm") version "6.6.11.Final"
-    id("org.graalvm.buildtools.native") version "0.10.6"
+    // id("org.graalvm.buildtools.native") version "0.10.6" // 개발 중 CI 속도 개선을 위해 임시 주석 처리
     id("org.jlleitschuh.gradle.ktlint") version "12.1.0"
 }
 
@@ -79,9 +79,9 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-tasks.named("processTestAot") {
-    enabled = false
-}
+// tasks.named("processTestAot") {
+//     enabled = false
+// }
 
 ktlint {
     reporters {
