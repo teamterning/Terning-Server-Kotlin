@@ -15,8 +15,9 @@ data class ScrapCountAnnouncementResponse(
 ) {
     companion object {
         fun from(announcement: InternshipAnnouncement): ScrapCountAnnouncementResponse {
-            val announcementId = announcement.id
-                ?: throw InternshipAnnouncementException(InternshipAnnouncementErrorCode.ANNOUNCEMENT_ID_NULL)
+            val announcementId =
+                announcement.id
+                    ?: throw InternshipAnnouncementException(InternshipAnnouncementErrorCode.ANNOUNCEMENT_ID_NULL)
             return ScrapCountAnnouncementResponse(
                 internshipAnnouncementId = announcementId,
                 companyImage = announcement.company.logoUrl.value,
