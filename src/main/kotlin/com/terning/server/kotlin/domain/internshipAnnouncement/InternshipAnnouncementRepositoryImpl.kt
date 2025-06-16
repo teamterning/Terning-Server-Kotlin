@@ -100,7 +100,7 @@ class InternshipAnnouncementRepositoryImpl(
             .selectFrom(internshipAnnouncement)
             .where(
                 internshipAnnouncement.internshipAnnouncementDeadline.value.goe(now),
-                internshipAnnouncement.internshipAnnouncementDeadline.value.loe(now.plusDays(30))
+                internshipAnnouncement.internshipAnnouncementDeadline.value.loe(now.plusDays(30)),
             )
             .orderBy(internshipAnnouncement.internshipAnnouncementViewCount.value.desc())
             .limit(5)

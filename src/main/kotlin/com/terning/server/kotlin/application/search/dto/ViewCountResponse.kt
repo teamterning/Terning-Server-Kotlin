@@ -3,7 +3,7 @@ package com.terning.server.kotlin.application.search.dto
 import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipAnnouncement
 
 data class ViewCountResponse(
-    val announcements: List<ViewCountAnnouncementResponse>
+    val announcements: List<ViewCountAnnouncementResponse>,
 )
 
 data class ViewCountAnnouncementResponse(
@@ -16,7 +16,7 @@ data class ViewCountAnnouncementResponse(
             return ViewCountAnnouncementResponse(
                 internshipAnnouncementId = announcement.id!!,
                 companyImage = announcement.company.logoUrl.value,
-                title = announcement.title.value
+                title = announcement.title.value,
             )
         }
     }
