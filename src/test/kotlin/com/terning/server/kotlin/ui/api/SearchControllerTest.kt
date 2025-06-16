@@ -151,4 +151,40 @@ class SearchControllerTest {
                 jsonPath("$.result.announcements[0].title") { value("인기 공고 1") }
             }
     }
+
+    @Test
+    @DisplayName("스크랩 많은 공고를 성공적으로 조회한다")
+    fun getMostScrappedAnnouncementsSuccessfully() {
+        // given
+        val userId = 1L
+        val scrapCountResponse =
+            ViewCountResponse(
+                announcements =
+                    listOf(
+                        ViewCountAnnouncementResponse(
+                            internshipAnnouncementId = 50L,
+                            companyImage = "image_scrap_1",
+                            title = "스크랩 많은 공고 1",
+                        ),
+                        ViewCountAnnouncementResponse(
+                            internshipAnnouncementId = 51L,
+                            companyImage = "image_scrap_2",
+                            title = "스크랩 많은 공고 2",
+                        ),
+                    ),
+            )
+
+        every { searchService.getMostScrappedAnnouncements(userId) } returns scrapCountResponse
+
+        // when & then
+        mockMvc.get("/api/v1/search/scraps")
+            .andExpect {
+                status { isOk() }
+                jsonPath("$.status") { value(200) }
+                jsonPath("$.message") { value("탐색 > 스크랩 수 많은 공고를 조회하는데 성공했습니다") }
+                jsonPath("$.result.announcements.size()") { value(2) }
+                jsonPath("$.result.announcements[0].internshipAnnouncementId") { value(50L) }
+                jsonPath("$.result.announcements[0].title") { value("스크랩 많은 공고 1") }
+            }
+    }
 }
