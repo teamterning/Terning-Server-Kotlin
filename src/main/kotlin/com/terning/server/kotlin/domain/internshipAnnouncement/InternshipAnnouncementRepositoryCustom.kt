@@ -30,4 +30,6 @@ interface InternshipAnnouncementRepositoryCustom {
         pageable: Pageable,
         now: LocalDate,
     ): Page<Tuple>
+
+    fun findTop5ByViews(now: LocalDate): List<InternshipAnnouncement>
 }
