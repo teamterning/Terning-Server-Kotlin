@@ -1,4 +1,4 @@
-package com.terning.server.kotlin.application.internshipAnnouncement.dto
+package com.terning.server.kotlin.application.announcement.dto
 
 import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipAnnouncementMonth
 import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipAnnouncementStartDate
