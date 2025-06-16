@@ -1,21 +1,34 @@
 # ================================
-# 📦 빌드 시스템 (Gradle) & 컴파일 산출물
+# 📦 빌드 시스템 (Gradle)
 # ================================
 .gradle/
+.gradle/**
+**/.gradle/**
 build/
 caches/
 daemon/
-jdks/
-native/
-native-build-tools/
 kotlin-profile/
+native/
 out/
-.tmp/
-target/
-*.class
-*.kt.class
-*.kts.class
+jdks/
+jdks/**
 
+
+# Gradle Wrapper (필수 파일은 제외)
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+
+# ================================
+# ⚙️ 실행 스크립트 (Wrapper)
+# ================================
+!gradlew
+!gradlew.bat
+
+# ================================
+# 🧪 소스 코드 외 빌드 제외
+# ================================
+!**/src/main/**
+!**/src/test/**
 
 # ================================
 # 💻 IDE 설정 파일
@@ -23,25 +36,54 @@ target/
 # IntelliJ
 .idea/
 *.iml
+*.iws
+*.ipr
 
 # VS Code
 .vscode/
 
+# STS
+.apt_generated/
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans/
+.sts4-cache/
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# ================================
+# 🧬 Kotlin / Java 컴파일 산출물
+# ================================
+*.class
+*.kt.class
+*.kts.class
+
+# ================================
+# 🧰 프론트 / Node / Vaadin
+# ================================
+node_modules/
+webpack.generated.js
+pnpmfile.js
+target/
 
 # ================================
 # 🐳 Docker 관련
 # ================================
-# 로컬 Docker 볼륨 데이터는 제외하되, 초기화 스크립트는 포함
 docker/db/mysql/data/
 docker/db/mysql/init/*
 !docker/db/mysql/init/init.sql
-
 
 # ================================
 # 📄 Spring REST Docs
 # ================================
 **/src/main/resources/static/docs/
-
 
 # ================================
 # 🗂️ 시스템 파일
@@ -51,18 +93,23 @@ Thumbs.db
 ehthumbs.db
 desktop.ini
 
-
 # ================================
 # 🔒 환경 및 로그 파일
 # ================================
 *.log
-local.properties
 .env
 *.env
 
+# ================================
+# 📘 기타
+# ================================
+HELP.md
 
-# ================================
-# 📘 기타 (프로젝트 문서는 포함)
-# ================================
-# HELP.md는 일반적으로 버전에 포함하지만, 제외하려면 주석을 해제하세요.
-# HELP.md
+# Gradle wrapper distribution (자동 설치된 바이너리 - 커밋 X)
+wrapper/
+
+# 🧊 GraalVM Native Build Tools
+native-build-tools/
+
+# 🧼 Gradle 임시 작업 파일
+.tmp/
