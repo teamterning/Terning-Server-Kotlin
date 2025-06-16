@@ -62,4 +62,19 @@ class SearchService(
 
         return ViewCountResponse(announcements = responses)
     }
+
+    fun getMostScrappedAnnouncements(userId: Long): ViewCountResponse {
+        if (!userRepository.existsById(userId)) {
+            throw UserException(UserErrorCode.USER_NOT_FOUND)
+        }
+
+        val announcements = internshipAnnouncementRepository.findTop5ByScraps()
+
+        val responses =
+            announcements.map {
+                ViewCountAnnouncementResponse.from(it)
+            }
+
+        return ViewCountResponse(announcements = responses)
+    }
 }
