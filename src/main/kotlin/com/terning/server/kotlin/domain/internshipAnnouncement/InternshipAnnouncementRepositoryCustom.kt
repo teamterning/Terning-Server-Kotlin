@@ -32,4 +32,6 @@ interface InternshipAnnouncementRepositoryCustom {
     ): Page<Tuple>
 
     fun findTop5ByViews(now: LocalDate): List<InternshipAnnouncement>
+
+    fun findTop5ByScraps(): List<InternshipAnnouncement>
 }
