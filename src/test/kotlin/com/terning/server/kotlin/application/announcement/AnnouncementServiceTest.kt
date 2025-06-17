@@ -2,10 +2,10 @@ package com.terning.server.kotlin.application.announcement
 
 import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipAnnouncement
 import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipAnnouncementRepository
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementErrorCode
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementException
 import com.terning.server.kotlin.domain.scrap.Scrap
 import com.terning.server.kotlin.domain.scrap.ScrapRepository
-import com.terning.server.kotlin.domain.scrap.exception.ScrapErrorCode
-import com.terning.server.kotlin.domain.scrap.exception.ScrapException
 import com.terning.server.kotlin.domain.user.User
 import io.mockk.every
 import io.mockk.mockk
@@ -54,10 +54,10 @@ class AnnouncementServiceTest {
 
             // when & then
             val exception =
-                assertThrows<ScrapException> {
+                assertThrows<InternshipAnnouncementException> {
                     service.getDetailAnnouncement(userId = 1L, internshipAnnouncementId = internshipId)
                 }
-            Assertions.assertEquals(ScrapErrorCode.INTERN_SHIP_ANNOUNCEMENT_NOT_FOUND, exception.errorCode)
+            Assertions.assertEquals(InternshipAnnouncementErrorCode.NOT_FOUND_ANNOUNCEMENT_EXCEPTION, exception.errorCode)
         }
 
         @Test
