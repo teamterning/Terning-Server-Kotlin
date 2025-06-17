@@ -76,7 +76,7 @@ class FilterService(
         )
     }
 
-    private fun getLatestFilterByUserId(userId: Long): Filter  {
+    private fun getLatestFilterByUserId(userId: Long): Filter {
         val user =
             userRepository.findById(userId).orElseThrow {
                 FilterException(FilterErrorCode.NOT_FOUND_USER_EXCEPTION)
