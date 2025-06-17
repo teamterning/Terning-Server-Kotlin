@@ -1,4 +1,4 @@
-package com.terning.server.kotlin.application.profile
+package com.terning.server.kotlin.application.mypage
 
 import com.terning.server.kotlin.domain.auth.Auth
 import com.terning.server.kotlin.domain.auth.AuthRepository
@@ -21,16 +21,16 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import java.util.Optional
 
-class ProfileServiceTest {
+class MyPageServiceTest {
     private val authRepository: AuthRepository = mockk()
     private val userRepository: UserRepository = mockk()
 
-    private lateinit var profileService: ProfileService
+    private lateinit var mypageService: MyPageService
 
     @BeforeEach
     fun setUp() {
-        profileService =
-            ProfileService(
+        mypageService =
+            MyPageService(
                 authRepository = authRepository,
                 userRepository = userRepository,
             )
@@ -54,7 +54,7 @@ class ProfileServiceTest {
         every { authRepository.findById(userId) } returns Optional.of(auth)
 
         // when
-        val result = profileService.getUserProfile(userId)
+        val result = mypageService.getUserProfile(userId)
 
         // then
         assertThat(result.name).isEqualTo("유빈")
@@ -72,7 +72,7 @@ class ProfileServiceTest {
         // then
         val exception =
             assertThrows(UserException::class.java) {
-                profileService.getUserProfile(userId)
+                mypageService.getUserProfile(userId)
             }
 
         assertThat(exception.errorCode).isEqualTo(UserErrorCode.NOT_FOUND_USER_EXCEPTION)
@@ -90,7 +90,7 @@ class ProfileServiceTest {
         every { userRepository.findById(userId) } returns Optional.of(user)
 
         // when
-        profileService.updateUserProfile(userId, profileRequest)
+        mypageService.updateUserProfile(userId, profileRequest)
 
         // then
         verify {
@@ -115,7 +115,7 @@ class ProfileServiceTest {
         // then
         val exception =
             assertThrows(IllegalArgumentException::class.java) {
-                profileService.updateUserProfile(userId, profileRequest)
+                mypageService.updateUserProfile(userId, profileRequest)
             }
 
         assertThat(exception.message).contains(UserName.ERROR_LENGTH)
