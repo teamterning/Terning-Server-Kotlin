@@ -2,10 +2,10 @@ package com.terning.server.kotlin.application.announcement
 
 import com.terning.server.kotlin.application.announcement.dto.DetailAnnouncementResponse
 import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipAnnouncementRepository
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementErrorCode
+import com.terning.server.kotlin.domain.internshipAnnouncement.exception.InternshipAnnouncementException
 import com.terning.server.kotlin.domain.internshipAnnouncement.vo.InternshipAnnouncementUrl
 import com.terning.server.kotlin.domain.scrap.ScrapRepository
-import com.terning.server.kotlin.domain.scrap.exception.ScrapErrorCode
-import com.terning.server.kotlin.domain.scrap.exception.ScrapException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Clock
@@ -23,7 +23,7 @@ class AnnouncementService(
     ): DetailAnnouncementResponse {
         val announcement =
             internshipRepository.findById(internshipAnnouncementId).orElseThrow {
-                ScrapException(ScrapErrorCode.INTERN_SHIP_ANNOUNCEMENT_NOT_FOUND)
+                InternshipAnnouncementException(InternshipAnnouncementErrorCode.NOT_FOUND_ANNOUNCEMENT_EXCEPTION)
             }
 
         announcement.increaseViewCount()
