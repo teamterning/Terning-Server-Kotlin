@@ -3,6 +3,7 @@ package com.terning.server.kotlin.application.filter
 import com.terning.server.kotlin.application.filter.dto.CreateFilterRequest
 import com.terning.server.kotlin.application.filter.dto.GetFilterResponse
 import com.terning.server.kotlin.application.filter.dto.UpdateFilterRequest
+import com.terning.server.kotlin.domain.filter.Filter
 import com.terning.server.kotlin.domain.filter.FilterRepository
 import com.terning.server.kotlin.domain.filter.exception.FilterErrorCode
 import com.terning.server.kotlin.domain.filter.exception.FilterException
@@ -27,12 +28,7 @@ class FilterService(
         userId: Long,
         createFilterRequest: CreateFilterRequest,
     ) {
-        val user =
-            userRepository.findById(userId).orElseThrow {
-                FilterException(FilterErrorCode.NOT_FOUND_USER_EXCEPTION)
-            }
-
-        val filter = filterRepository.findLatestByUser(user) ?: throw FilterException(FilterErrorCode.NOT_FOUND_FILTER_EXCEPTION)
+        val filter = findUserAndFilter(userId)
 
         filter.updateFilter(
             newFilterJobType = FilterJobType.from(FilterJobType.TOTAL.type),
@@ -48,14 +44,7 @@ class FilterService(
 
     @Transactional
     fun getUserFilter(userId: Long): GetFilterResponse {
-        val user =
-            userRepository.findById(userId).orElseThrow {
-                FilterException(FilterErrorCode.NOT_FOUND_USER_EXCEPTION)
-            }
-
-        val filter =
-            filterRepository.findLatestByUser(user)
-                ?: throw FilterException(FilterErrorCode.NOT_FOUND_FILTER_EXCEPTION)
+        val filter = findUserAndFilter(userId)
 
         val startDate = filter.startDate()
 
@@ -73,14 +62,7 @@ class FilterService(
         userId: Long,
         updateFilterRequest: UpdateFilterRequest,
     ) {
-        val user =
-            userRepository.findById(userId).orElseThrow {
-                FilterException(FilterErrorCode.NOT_FOUND_USER_EXCEPTION)
-            }
-
-        val filter =
-            filterRepository.findLatestByUser(user)
-                ?: throw FilterException(FilterErrorCode.NOT_FOUND_FILTER_EXCEPTION)
+        val filter = findUserAndFilter(userId)
 
         filter.updateFilter(
             newFilterJobType = FilterJobType.from(updateFilterRequest.jobType),
@@ -92,5 +74,15 @@ class FilterService(
                     filterYear = FilterYear.from(updateFilterRequest.startYear),
                 ),
         )
+    }
+
+    private fun findUserAndFilter(userId: Long): Filter  {
+        val user =
+            userRepository.findById(userId).orElseThrow {
+                FilterException(FilterErrorCode.NOT_FOUND_USER_EXCEPTION)
+            }
+
+        return filterRepository.findLatestByUser(user)
+            ?: throw FilterException(FilterErrorCode.NOT_FOUND_FILTER_EXCEPTION)
     }
 }
