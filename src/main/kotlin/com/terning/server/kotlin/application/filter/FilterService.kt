@@ -28,7 +28,7 @@ class FilterService(
         userId: Long,
         createFilterRequest: CreateFilterRequest,
     ) {
-        val filter = findUserAndFilter(userId)
+        val filter = getLatestFilterByUserId(userId)
 
         filter.updateFilter(
             newFilterJobType = FilterJobType.from(FilterJobType.TOTAL.type),
@@ -44,7 +44,7 @@ class FilterService(
 
     @Transactional
     fun getUserFilter(userId: Long): GetFilterResponse {
-        val filter = findUserAndFilter(userId)
+        val filter = getLatestFilterByUserId(userId)
 
         val startDate = filter.startDate()
 
@@ -62,7 +62,7 @@ class FilterService(
         userId: Long,
         updateFilterRequest: UpdateFilterRequest,
     ) {
-        val filter = findUserAndFilter(userId)
+        val filter = getLatestFilterByUserId(userId)
 
         filter.updateFilter(
             newFilterJobType = FilterJobType.from(updateFilterRequest.jobType),
@@ -76,7 +76,7 @@ class FilterService(
         )
     }
 
-    private fun findUserAndFilter(userId: Long): Filter  {
+    private fun getLatestFilterByUserId(userId: Long): Filter  {
         val user =
             userRepository.findById(userId).orElseThrow {
                 FilterException(FilterErrorCode.NOT_FOUND_USER_EXCEPTION)
