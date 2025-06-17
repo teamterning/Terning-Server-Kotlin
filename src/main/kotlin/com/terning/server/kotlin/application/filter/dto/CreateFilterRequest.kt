@@ -1,7 +1,6 @@
 package com.terning.server.kotlin.application.filter.dto
 
-data class FilterResponse(
-    val jobType: String,
+data class CreateFilterRequest(
     val grade: String,
     val workingPeriod: String,
     val startYear: Int,

@@ -1,6 +1,7 @@
 package com.terning.server.kotlin.application.filter
 
-import com.terning.server.kotlin.application.filter.dto.FilterRequest
+import com.terning.server.kotlin.application.filter.dto.CreateFilterRequest
+import com.terning.server.kotlin.application.filter.dto.UpdateFilterRequest
 import com.terning.server.kotlin.domain.filter.Filter
 import com.terning.server.kotlin.domain.filter.FilterRepository
 import com.terning.server.kotlin.domain.filter.exception.FilterErrorCode
@@ -20,6 +21,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.util.Optional
 
@@ -29,114 +31,191 @@ class FilterServiceTest {
 
     private lateinit var filterService: FilterService
 
+    private lateinit var createFilterRequest: CreateFilterRequest
+    private lateinit var updateFilterRequest: UpdateFilterRequest
+
     private val userId = 1L
 
     @BeforeEach
     fun setUp() {
-        filterService = FilterService(filterRepository, userRepository)
-    }
-
-    @Test
-    @DisplayName("사용자를 찾을 수 없으면 에러가 발생한다")
-    fun getFilterFailsIfUserNotFound() {
-        // given
-        every { userRepository.findById(userId) } returns Optional.empty()
-
-        // when & then
-        val exception =
-            assertThrows(FilterException::class.java) {
-                filterService.getUserFilter(userId)
-            }
-
-        assertThat(exception.errorCode).isEqualTo(FilterErrorCode.NOT_FOUND_USER_EXCEPTION)
-    }
-
-    @Test
-    @DisplayName("사용자는 있지만 필터가 없으면 에러가 발생한다")
-    fun getFilterFailsIfFilterNotFound() {
-        // given
-        val user = mockk<User>()
-
-        every { userRepository.findById(userId) } returns Optional.of(user)
-        every { filterRepository.findLatestByUser(user) } returns null
-
-        // when & then
-        val exception =
-            assertThrows(FilterException::class.java) {
-                filterService.getUserFilter(userId)
-            }
-
-        assertThat(exception.errorCode).isEqualTo(FilterErrorCode.NOT_FOUND_FILTER_EXCEPTION)
-    }
-
-    @Test
-    @DisplayName("필터 정보를 성공적으로 조회한다")
-    fun getFilterInformation() {
-        // given
-        val user = mockk<User>()
-        val filter =
-            Filter.of(
-                user = user,
-                filterJobType = FilterJobType.IT,
-                filterGrade = FilterGrade.SENIOR,
-                filterWorkingPeriod = FilterWorkingPeriod.SHORT_TERM,
-                filterStartDate =
-                    FilterStartDate.of(
-                        filterYear = FilterYear.from(2025),
-                        filterMonth = FilterMonth.from(6),
-                    ),
+        filterService =
+            FilterService(
+                filterRepository = filterRepository,
+                userRepository = userRepository,
             )
 
-        every { userRepository.findById(userId) } returns Optional.of(user)
-        every { filterRepository.findLatestByUser(user) } returns filter
+        createFilterRequest =
+            CreateFilterRequest(
+                grade = "freshman",
+                workingPeriod = "long",
+                startYear = 2025,
+                startMonth = 7,
+            )
 
-        // when
-        val result = filterService.getUserFilter(userId)
-
-        // then
-        assertThat(result.jobType).isEqualTo("it")
-        assertThat(result.grade).isEqualTo("senior")
-        assertThat(result.workingPeriod).isEqualTo("short")
-        assertThat(result.startYear).isEqualTo(2025)
-        assertThat(result.startMonth).isEqualTo(6)
-    }
-
-    @Test
-    @DisplayName("필터링 정보를 성공적으로 업데이트 한다")
-    fun updateFilterSucceeds() {
-        // given
-        val user = mockk<User>()
-        val filter = mockk<Filter>(relaxed = true)
-        val filterRequest =
-            FilterRequest(
+        updateFilterRequest =
+            UpdateFilterRequest(
                 jobType = "plan",
                 grade = "sophomore",
                 workingPeriod = "middle",
                 startYear = 2025,
                 startMonth = 2,
             )
+    }
 
-        every { userRepository.findById(userId) } returns Optional.of(user)
-        every { filterRepository.findLatestByUser(user) } returns filter
+    @Nested
+    @DisplayName("createUserFilter 메소드는")
+    inner class CreateUserFilter {
+        @Test
+        @DisplayName("사용자를 찾을 수 없으면 에러가 발생한다")
+        fun createFilterFailsIfUserNotFound() {
+            // given
+            every { userRepository.findById(userId) } returns Optional.empty()
 
-        // when
-        filterService.updateUserFilter(
-            userId = userId,
-            filterRequest = filterRequest,
-        )
+            // when & then
+            val exception =
+                assertThrows(FilterException::class.java) {
+                    filterService.createUserFilter(
+                        userId = userId,
+                        createFilterRequest = createFilterRequest,
+                    )
+                }
 
-        // then
-        verify {
-            filter.updateFilter(
-                newFilterJobType = FilterJobType.from("plan"),
-                newFilterGrade = FilterGrade.from("sophomore"),
-                newFilterWorkingPeriod = FilterWorkingPeriod.from("middle"),
-                newFilterStartDate =
-                    FilterStartDate.of(
-                        filterYear = FilterYear.from(2025),
-                        filterMonth = FilterMonth.from(2),
-                    ),
+            assertThat(exception.errorCode).isEqualTo(FilterErrorCode.NOT_FOUND_USER_EXCEPTION)
+        }
+
+        @Test
+        @DisplayName("필터링 정보를 성공적으로 생성 한다")
+        fun createFilterSucceeds() {
+            // given
+            val user = mockk<User>()
+            val filter = mockk<Filter>(relaxed = true)
+
+            every { userRepository.findById(userId) } returns Optional.of(user)
+            every { filterRepository.findLatestByUser(user) } returns filter
+
+            // when
+            filterService.createUserFilter(
+                userId = userId,
+                createFilterRequest = createFilterRequest,
             )
+
+            // then
+            verify {
+                filter.updateFilter(
+                    newFilterJobType = FilterJobType.from("total"),
+                    newFilterGrade = FilterGrade.from("freshman"),
+                    newFilterWorkingPeriod = FilterWorkingPeriod.from("long"),
+                    newFilterStartDate =
+                        FilterStartDate.of(
+                            filterYear = FilterYear.from(2025),
+                            filterMonth = FilterMonth.from(7),
+                        ),
+                )
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("getUserFilter 메소드는")
+    inner class GetUserFilter {
+        @Test
+        @DisplayName("사용자를 찾을 수 없으면 에러가 발생한다")
+        fun getFilterFailsIfUserNotFound() {
+            // given
+            every { userRepository.findById(userId) } returns Optional.empty()
+
+            // when & then
+            val exception =
+                assertThrows(FilterException::class.java) {
+                    filterService.getUserFilter(userId)
+                }
+
+            assertThat(exception.errorCode).isEqualTo(FilterErrorCode.NOT_FOUND_USER_EXCEPTION)
+        }
+
+        @Test
+        @DisplayName("사용자는 있지만 필터가 없으면 에러가 발생한다")
+        fun getFilterFailsIfFilterNotFound() {
+            // given
+            val user = mockk<User>()
+
+            every { userRepository.findById(userId) } returns Optional.of(user)
+            every { filterRepository.findLatestByUser(user) } returns null
+
+            // when & then
+            val exception =
+                assertThrows(FilterException::class.java) {
+                    filterService.getUserFilter(userId)
+                }
+
+            assertThat(exception.errorCode).isEqualTo(FilterErrorCode.NOT_FOUND_FILTER_EXCEPTION)
+        }
+
+        @Test
+        @DisplayName("필터 정보를 성공적으로 조회한다")
+        fun getFilterInformation() {
+            // given
+            val user = mockk<User>()
+            val filter =
+                Filter.of(
+                    user = user,
+                    filterJobType = FilterJobType.IT,
+                    filterGrade = FilterGrade.SENIOR,
+                    filterWorkingPeriod = FilterWorkingPeriod.SHORT_TERM,
+                    filterStartDate =
+                        FilterStartDate.of(
+                            filterYear = FilterYear.from(2025),
+                            filterMonth = FilterMonth.from(6),
+                        ),
+                )
+
+            every { userRepository.findById(userId) } returns Optional.of(user)
+            every { filterRepository.findLatestByUser(user) } returns filter
+
+            // when
+            val result = filterService.getUserFilter(userId)
+
+            // then
+            assertThat(result.jobType).isEqualTo("it")
+            assertThat(result.grade).isEqualTo("senior")
+            assertThat(result.workingPeriod).isEqualTo("short")
+            assertThat(result.startYear).isEqualTo(2025)
+            assertThat(result.startMonth).isEqualTo(6)
+        }
+    }
+
+    @Nested
+    @DisplayName("updateUserFilter 메소드는")
+    inner class UpdateUserFilter {
+        @Test
+        @DisplayName("필터링 정보를 성공적으로 업데이트 한다")
+        fun updateFilterSucceeds() {
+            // given
+            val user = mockk<User>()
+            val filter = mockk<Filter>(relaxed = true)
+
+            every { userRepository.findById(userId) } returns Optional.of(user)
+            every { filterRepository.findLatestByUser(user) } returns filter
+
+            // when
+            filterService.updateUserFilter(
+                userId = userId,
+                updateFilterRequest = updateFilterRequest,
+            )
+
+            // then
+            verify {
+                filter.updateFilter(
+                    newFilterJobType = FilterJobType.from("plan"),
+                    newFilterGrade = FilterGrade.from("sophomore"),
+                    newFilterWorkingPeriod = FilterWorkingPeriod.from("middle"),
+                    newFilterStartDate =
+                        FilterStartDate.of(
+                            filterYear = FilterYear.from(2025),
+                            filterMonth = FilterMonth.from(2),
+                        ),
+                )
+            }
         }
     }
 }

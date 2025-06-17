@@ -1,11 +1,13 @@
 package com.terning.server.kotlin.ui.api
 
 import com.terning.server.kotlin.application.filter.FilterService
-import com.terning.server.kotlin.application.filter.dto.FilterRequest
-import com.terning.server.kotlin.application.filter.dto.FilterResponse
+import com.terning.server.kotlin.application.filter.dto.CreateFilterRequest
+import com.terning.server.kotlin.application.filter.dto.GetFilterResponse
+import com.terning.server.kotlin.application.filter.dto.UpdateFilterRequest
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -16,10 +18,31 @@ import org.springframework.web.bind.annotation.RestController
 class FilterController(
     private val filterService: FilterService,
 ) {
+    @PostMapping("auth/sign-up/filter")
+    fun createUserFilter(
+        // TODO : @AuthenticationPrincipal userId: Long,
+        @RequestBody createFilterRequest: CreateFilterRequest,
+    ): ResponseEntity<ApiResponse<Unit>> {
+        val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
+
+        filterService.createUserFilter(
+            userId = userId,
+            createFilterRequest = createFilterRequest,
+        )
+
+        return ResponseEntity.ok(
+            ApiResponse.success(
+                status = HttpStatus.OK,
+                message = "사용자 필터링 정보 생성에 성공하였습니다",
+                result = Unit,
+            ),
+        )
+    }
+
     @GetMapping("filters")
     fun getUserFilter(
         // TODO : @AuthenticationPrincipal userId: Long,
-    ): ResponseEntity<ApiResponse<FilterResponse>> {
+    ): ResponseEntity<ApiResponse<GetFilterResponse>> {
         val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
 
         val response = filterService.getUserFilter(userId)
@@ -36,13 +59,13 @@ class FilterController(
     @PutMapping("filters")
     fun updateUserFilter(
         // TODO: @AuthenticationPrincipal userId: Long,
-        @RequestBody filterRequest: FilterRequest,
+        @RequestBody updateFilterRequest: UpdateFilterRequest,
     ): ResponseEntity<ApiResponse<Unit>> {
         val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
 
         filterService.updateUserFilter(
             userId = userId,
-            filterRequest = filterRequest,
+            updateFilterRequest = updateFilterRequest,
         )
 
         return ResponseEntity.ok(
