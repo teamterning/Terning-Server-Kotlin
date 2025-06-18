@@ -2,9 +2,9 @@ package com.terning.server.kotlin.ui.api
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
+import com.terning.server.kotlin.application.mypage.MyPageService
 import com.terning.server.kotlin.application.mypage.ProfileRequest
 import com.terning.server.kotlin.application.mypage.ProfileResponse
-import com.terning.server.kotlin.application.mypage.MyPageService
 import io.mockk.every
 import io.mockk.just
 import io.mockk.runs

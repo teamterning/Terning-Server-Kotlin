@@ -1,8 +1,8 @@
 package com.terning.server.kotlin.ui.api
 
+import com.terning.server.kotlin.application.mypage.MyPageService
 import com.terning.server.kotlin.application.mypage.ProfileRequest
 import com.terning.server.kotlin.application.mypage.ProfileResponse
-import com.terning.server.kotlin.application.mypage.MyPageService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
