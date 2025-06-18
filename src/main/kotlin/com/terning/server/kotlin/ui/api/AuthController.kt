@@ -16,7 +16,7 @@ class AuthController(
     fun singIn(
         @RequestHeader("Authorization")authAccessToken: String,
         @RequestBody signInRequest: SignInRequest,
-    ): ResponseEntity<ApiResponse<SignInResponse>>  {
+    ): ResponseEntity<ApiResponse<SignInResponse>> {
         val response =
             authService.signInUser(
                 authAccessToken = authAccessToken,
