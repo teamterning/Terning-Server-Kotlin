@@ -44,9 +44,9 @@ class MyPageServiceTest {
         val auth =
             Auth.of(
                 user = user,
-                authId = AuthId("123"),
+                authId = AuthId.from("123"),
                 authType = AuthType.KAKAO,
-                refreshToken = RefreshToken("refreshToken"),
+                refreshToken = RefreshToken.from("refreshToken"),
             )
         val userId = 1L
 
