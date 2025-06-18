@@ -105,9 +105,11 @@ class HomeService(
         sortBy: String,
         pageable: Pageable,
     ): Page<Tuple> {
+        val now = LocalDate.now(clock)
+
         if (filter == null || filter.isDefault()) {
-            return internshipRepository.findAllInternshipsWithScrapInfo(user, sortBy, pageable)
+            return internshipRepository.findAllInternshipsWithScrapInfo(user, sortBy, pageable, now)
         }
-        return internshipRepository.findFilteredInternshipsWithScrapInfo(user, filter, sortBy, pageable)
+        return internshipRepository.findFilteredInternshipsWithScrapInfo(user, filter, sortBy, pageable, now)
     }
 }
