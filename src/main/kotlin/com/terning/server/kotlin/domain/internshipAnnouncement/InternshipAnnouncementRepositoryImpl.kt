@@ -95,6 +95,18 @@ class InternshipAnnouncementRepositoryImpl(
         return PageImpl(content, pageable, total)
     }
 
+    override fun findTop5ByViews(now: LocalDate): List<InternshipAnnouncement> {
+        return queryFactory
+            .selectFrom(internshipAnnouncement)
+            .where(
+                internshipAnnouncement.internshipAnnouncementDeadline.value.goe(now),
+                internshipAnnouncement.internshipAnnouncementDeadline.value.loe(now.plusDays(30)),
+            )
+            .orderBy(internshipAnnouncement.internshipAnnouncementViewCount.value.desc())
+            .limit(5)
+            .fetch()
+    }
+
     private fun baseQuery(user: User): JPAQuery<Tuple> {
         return queryFactory
             .select(internshipAnnouncement, scrap.id, scrap.color)

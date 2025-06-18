@@ -2,6 +2,8 @@ package com.terning.server.kotlin.application.search
 
 import com.terning.server.kotlin.application.search.dto.SearchAnnouncementResponse
 import com.terning.server.kotlin.application.search.dto.SearchPageResponse
+import com.terning.server.kotlin.application.search.dto.ViewCountAnnouncementResponse
+import com.terning.server.kotlin.application.search.dto.ViewCountResponse
 import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipAnnouncementRepository
 import com.terning.server.kotlin.domain.user.UserRepository
 import com.terning.server.kotlin.domain.user.exception.UserErrorCode
@@ -43,5 +45,21 @@ class SearchService(
         val announcementResponse = announcementTuples.map { tuple -> SearchAnnouncementResponse.of(tuple, clock) }
 
         return SearchPageResponse.from(announcementResponse)
+    }
+
+    fun getMostViewedAnnouncements(userId: Long): ViewCountResponse {
+        if (!userRepository.existsById(userId)) {
+            throw UserException(UserErrorCode.USER_NOT_FOUND)
+        }
+
+        val currentDate = LocalDate.now(clock)
+        val announcements = internshipAnnouncementRepository.findTop5ByViews(currentDate)
+
+        val responses =
+            announcements.map {
+                ViewCountAnnouncementResponse.from(it)
+            }
+
+        return ViewCountResponse(announcements = responses)
     }
 }
