@@ -2,6 +2,8 @@ package com.terning.server.kotlin.ui.api
 
 import com.ninjasquad.springmockk.MockkBean
 import com.terning.server.kotlin.application.search.SearchService
+import com.terning.server.kotlin.application.search.dto.ScrapCountAnnouncementResponse
+import com.terning.server.kotlin.application.search.dto.ScrapCountResponse
 import com.terning.server.kotlin.application.search.dto.SearchAnnouncementResponse
 import com.terning.server.kotlin.application.search.dto.SearchPageResponse
 import com.terning.server.kotlin.application.search.dto.ViewCountAnnouncementResponse
@@ -149,6 +151,42 @@ class SearchControllerTest {
                 jsonPath("$.result.announcements.size()") { value(2) }
                 jsonPath("$.result.announcements[0].internshipAnnouncementId") { value(23L) }
                 jsonPath("$.result.announcements[0].title") { value("인기 공고 1") }
+            }
+    }
+
+    @Test
+    @DisplayName("스크랩 많은 공고를 성공적으로 조회한다")
+    fun getMostScrappedAnnouncementsSuccessfully() {
+        // given
+        val userId = 1L
+        val scrapCountResponse =
+            ScrapCountResponse(
+                announcements =
+                    listOf(
+                        ScrapCountAnnouncementResponse(
+                            internshipAnnouncementId = 50L,
+                            companyImage = "image_scrap_1",
+                            title = "스크랩 많은 공고 1",
+                        ),
+                        ScrapCountAnnouncementResponse(
+                            internshipAnnouncementId = 51L,
+                            companyImage = "image_scrap_2",
+                            title = "스크랩 많은 공고 2",
+                        ),
+                    ),
+            )
+
+        every { searchService.getMostScrappedAnnouncements(userId) } returns scrapCountResponse
+
+        // when & then
+        mockMvc.get("/api/v1/search/scraps")
+            .andExpect {
+                status { isOk() }
+                jsonPath("$.status") { value(200) }
+                jsonPath("$.message") { value("탐색 > 스크랩 수 많은 공고를 조회하는데 성공했습니다") }
+                jsonPath("$.result.announcements.size()") { value(2) }
+                jsonPath("$.result.announcements[0].internshipAnnouncementId") { value(50L) }
+                jsonPath("$.result.announcements[0].title") { value("스크랩 많은 공고 1") }
             }
     }
 }
