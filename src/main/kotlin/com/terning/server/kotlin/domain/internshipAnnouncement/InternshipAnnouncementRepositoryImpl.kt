@@ -107,14 +107,6 @@ class InternshipAnnouncementRepositoryImpl(
             .fetch()
     }
 
-    override fun findTop5ByScraps(): List<InternshipAnnouncement> {
-        return queryFactory
-            .selectFrom(internshipAnnouncement)
-            .orderBy(internshipAnnouncement.internshipAnnouncementScrapCount.value.desc())
-            .limit(5)
-            .fetch()
-    }
-
     private fun baseQuery(user: User): JPAQuery<Tuple> {
         return queryFactory
             .select(internshipAnnouncement, scrap.id, scrap.color)

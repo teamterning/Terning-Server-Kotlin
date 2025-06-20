@@ -185,61 +185,6 @@ class SearchServiceTest {
         }
     }
 
-    @Nested
-    @DisplayName("getMostScrappedAnnouncements 메소드는")
-    inner class GetMostScrappedAnnouncements {
-        @Test
-        @DisplayName("사용자를 찾을 수 없으면 UserException을 던진다")
-        fun `it throws exception when user not found`() {
-            // given
-            every { userRepository.existsById(userId) } returns false
-
-            // when & then
-            val exception =
-                assertThrows<UserException> {
-                    service.getMostScrappedAnnouncements(userId)
-                }
-            assertEquals(UserErrorCode.USER_NOT_FOUND, exception.errorCode)
-        }
-
-        @Test
-        @DisplayName("스크랩 많은 공고가 없으면 빈 리스트를 반환한다")
-        fun `it returns empty list when no announcements found`() {
-            // given
-            every { userRepository.existsById(userId) } returns true
-            every { internshipAnnouncementRepository.findTop5ByScraps() } returns emptyList()
-
-            // when
-            val response = service.getMostScrappedAnnouncements(userId)
-
-            // then
-            assertEquals(0, response.announcements.size)
-        }
-
-        @Test
-        @DisplayName("스크랩 많은 공고 조회에 성공하면 DTO 리스트를 반환한다")
-        fun `it returns dto list on success`() {
-            // given
-            every { userRepository.existsById(userId) } returns true
-
-            val announcement1 = createMockInternship(10L, "스크랩 많은 공고 1", now)
-            val announcement2 = createMockInternship(20L, "스크랩 많은 공고 2", now)
-            val mockAnnouncements = listOf(announcement1, announcement2)
-
-            every { internshipAnnouncementRepository.findTop5ByScraps() } returns mockAnnouncements
-
-            // when
-            val response = service.getMostScrappedAnnouncements(userId)
-
-            // then
-            assertEquals(2, response.announcements.size)
-            assertEquals(10L, response.announcements[0].internshipAnnouncementId)
-            assertEquals("스크랩 많은 공고 1", response.announcements[0].title)
-            assertEquals(20L, response.announcements[1].internshipAnnouncementId)
-            assertEquals("스크랩 많은 공고 2", response.announcements[1].title)
-        }
-    }
-
     private fun createMockInternship(
         id: Long,
         title: String,

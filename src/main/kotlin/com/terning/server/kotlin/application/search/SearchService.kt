@@ -1,7 +1,5 @@
 package com.terning.server.kotlin.application.search
 
-import com.terning.server.kotlin.application.search.dto.ScrapCountAnnouncementResponse
-import com.terning.server.kotlin.application.search.dto.ScrapCountResponse
 import com.terning.server.kotlin.application.search.dto.SearchAnnouncementResponse
 import com.terning.server.kotlin.application.search.dto.SearchPageResponse
 import com.terning.server.kotlin.application.search.dto.ViewCountAnnouncementResponse
@@ -63,20 +61,5 @@ class SearchService(
             }
 
         return ViewCountResponse(announcements = responses)
-    }
-
-    fun getMostScrappedAnnouncements(userId: Long): ScrapCountResponse {
-        if (!userRepository.existsById(userId)) {
-            throw UserException(UserErrorCode.USER_NOT_FOUND)
-        }
-
-        val announcements = internshipAnnouncementRepository.findTop5ByScraps()
-
-        val responses =
-            announcements.map {
-                ScrapCountAnnouncementResponse.from(it)
-            }
-
-        return ScrapCountResponse(announcements = responses)
     }
 }

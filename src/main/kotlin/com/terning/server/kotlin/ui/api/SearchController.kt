@@ -1,7 +1,6 @@
 package com.terning.server.kotlin.ui.api
 
 import com.terning.server.kotlin.application.search.SearchService
-import com.terning.server.kotlin.application.search.dto.ScrapCountResponse
 import com.terning.server.kotlin.application.search.dto.SearchPageResponse
 import com.terning.server.kotlin.application.search.dto.ViewCountResponse
 import org.springframework.data.domain.Pageable
@@ -56,23 +55,6 @@ class SearchController(
             ApiResponse.success(
                 status = HttpStatus.OK,
                 message = "탐색 > 조회수 많은 공고를 조회하는데 성공했습니다",
-                result = response,
-            ),
-        )
-    }
-
-    @GetMapping("/scraps")
-    fun getMostScrappedAnnouncements(
-        // TODO: @AuthenticationPrincipal userId: Long,
-    ): ResponseEntity<ApiResponse<ScrapCountResponse>> {
-        val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
-
-        val response = searchService.getMostScrappedAnnouncements(userId)
-
-        return ResponseEntity.ok(
-            ApiResponse.success(
-                status = HttpStatus.OK,
-                message = "탐색 > 스크랩 수 많은 공고를 조회하는데 성공했습니다",
                 result = response,
             ),
         )
