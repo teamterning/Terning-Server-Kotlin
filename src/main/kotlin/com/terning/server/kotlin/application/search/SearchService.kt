@@ -1,7 +1,5 @@
 package com.terning.server.kotlin.application.search
 
-import com.terning.server.kotlin.application.search.dto.Banner
-import com.terning.server.kotlin.application.search.dto.BannersView
 import com.terning.server.kotlin.application.search.dto.ScrapCountAnnouncementResponse
 import com.terning.server.kotlin.application.search.dto.ScrapCountResponse
 import com.terning.server.kotlin.application.search.dto.SearchAnnouncementResponse
@@ -80,30 +78,5 @@ class SearchService(
             }
 
         return ScrapCountResponse(announcements = responses)
-    }
-
-    fun getBanners(userId: Long): BannersView {
-        if (!userRepository.existsById(userId)) {
-            throw UserException(UserErrorCode.USER_NOT_FOUND)
-        }
-        return BannersView(banners = banners)
-    }
-
-    companion object {
-        private val banners =
-            listOf(
-                Banner(
-                    imageUrl = "https://bit.ly/3Ytoq8p",
-                    link = "https://forms.gle/4btEwEbUQ3JSjTKP7",
-                ),
-                Banner(
-                    imageUrl = "https://bit.ly/4ea2jtn",
-                    link = "https://www.instagram.com/terning_official/",
-                ),
-                Banner(
-                    imageUrl = "https://bit.ly/4hoZSWR",
-                    link = "https://www.instagram.com/terning_official/",
-                ),
-            )
     }
 }

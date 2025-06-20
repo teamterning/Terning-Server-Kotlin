@@ -2,8 +2,6 @@ package com.terning.server.kotlin.ui.api
 
 import com.ninjasquad.springmockk.MockkBean
 import com.terning.server.kotlin.application.search.SearchService
-import com.terning.server.kotlin.application.search.dto.Banner
-import com.terning.server.kotlin.application.search.dto.BannersView
 import com.terning.server.kotlin.application.search.dto.ScrapCountAnnouncementResponse
 import com.terning.server.kotlin.application.search.dto.ScrapCountResponse
 import com.terning.server.kotlin.application.search.dto.SearchAnnouncementResponse
@@ -189,40 +187,6 @@ class SearchControllerTest {
                 jsonPath("$.result.announcements.size()") { value(2) }
                 jsonPath("$.result.announcements[0].internshipAnnouncementId") { value(50L) }
                 jsonPath("$.result.announcements[0].title") { value("스크랩 많은 공고 1") }
-            }
-    }
-
-    @Test
-    @DisplayName("배너를 성공적으로 조회한다")
-    fun getBannersSuccessfully() {
-        // given
-        val userId = 1L
-        val bannersView =
-            BannersView(
-                banners =
-                    listOf(
-                        Banner(
-                            imageUrl = "https://bit.ly/3Ytoq8p",
-                            link = "https://forms.gle/4btEwEbUQ3JSjTKP7",
-                        ),
-                        Banner(
-                            imageUrl = "https://bit.ly/4ea2jtn",
-                            link = "https://www.instagram.com/terning_official/",
-                        ),
-                    ),
-            )
-
-        every { searchService.getBanners(userId) } returns bannersView
-
-        // when & then
-        mockMvc.get("/api/v1/search/banners")
-            .andExpect {
-                status { isOk() }
-                jsonPath("$.status") { value(200) }
-                jsonPath("$.message") { value("탐색 뷰 > 배너 조회에 성공했습니다") }
-                jsonPath("$.result.banners.size()") { value(2) }
-                jsonPath("$.result.banners[0].imageUrl") { value("https://bit.ly/3Ytoq8p") }
-                jsonPath("$.result.banners[0].link") { value("https://forms.gle/4btEwEbUQ3JSjTKP7") }
             }
     }
 }

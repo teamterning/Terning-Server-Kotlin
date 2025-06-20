@@ -240,39 +240,6 @@ class SearchServiceTest {
         }
     }
 
-    @Nested
-    @DisplayName("getBanners 메소드는")
-    inner class GetBanners {
-        @Test
-        @DisplayName("사용자를 찾을 수 없으면 UserException을 던진다")
-        fun `it throws exception when user not found`() {
-            // given
-            every { userRepository.existsById(userId) } returns false
-
-            // when & then
-            val exception =
-                assertThrows<UserException> {
-                    service.getBanners(userId)
-                }
-            assertEquals(UserErrorCode.USER_NOT_FOUND, exception.errorCode)
-        }
-
-        @Test
-        @DisplayName("사용자가 존재하면 하드코딩된 배너 리스트를 반환한다")
-        fun `it returns hardcoded banner list on success`() {
-            // given
-            every { userRepository.existsById(userId) } returns true
-
-            // when
-            val response = service.getBanners(userId)
-
-            // then
-            assertEquals(3, response.banners.size)
-            assertEquals("https://bit.ly/3Ytoq8p", response.banners[0].imageUrl)
-            assertEquals("https://forms.gle/4btEwEbUQ3JSjTKP7", response.banners[0].link)
-        }
-    }
-
     private fun createMockInternship(
         id: Long,
         title: String,
