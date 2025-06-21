@@ -48,7 +48,7 @@ class AuthService(
         val token = jwtTokenManager.generateToken(user)
 
         auth.updateRefreshToken(
-            newRefreshToken = RefreshToken.from(token.refreshToken)
+            newRefreshToken = RefreshToken.from(token.refreshToken),
         )
 
         return SignInResponse.of(
