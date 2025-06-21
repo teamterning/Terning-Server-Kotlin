@@ -1,6 +1,10 @@
 package com.terning.server.kotlin.application.auth.social.apple
 
-import com.google.gson.*
+import com.google.gson.Gson
+import com.google.gson.JsonArray
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import com.terning.server.kotlin.domain.auth.exception.AuthErrorCode
 import com.terning.server.kotlin.domain.auth.exception.AuthException
 import com.terning.server.kotlin.domain.common.config.ValueConfig
@@ -16,7 +20,7 @@ import java.net.URL
 import java.security.KeyFactory
 import java.security.PublicKey
 import java.security.spec.RSAPublicKeySpec
-import java.util.*
+import java.util.Base64
 import kotlin.text.Charsets.UTF_8
 
 @Component

@@ -5,7 +5,7 @@ import com.terning.server.kotlin.domain.common.security.jwt.provider.JwtKeyProvi
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import org.springframework.stereotype.Component
-import java.util.*
+import java.util.Date
 
 @Component
 class JwtSigner(
