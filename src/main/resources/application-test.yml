@@ -1,9 +1,9 @@
 jwt:
-  secret-key: ${secret_key}
-  kakao-url: ${kakao_url}
-  apple-url: ${apple_url}
-  access-token-expired: ${access_token_expired}
-  refresh-token-expired: ${refresh_token_expired}
+  secret_key: ${secret_key}
+  kakao_url: ${kakao_url}
+  apple_url: ${apple_url}
+  access_token_expired: ${access_token_expired}
+  refresh_token_expired: ${refresh_token_expired}
 
 spring:
   datasource:
