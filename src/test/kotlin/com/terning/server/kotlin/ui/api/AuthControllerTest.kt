@@ -5,22 +5,21 @@ import com.ninjasquad.springmockk.MockkBean
 import com.terning.server.kotlin.application.auth.AuthService
 import com.terning.server.kotlin.application.auth.dto.SignInRequest
 import com.terning.server.kotlin.application.auth.dto.SignInResponse
-import com.terning.server.kotlin.config.TestSecurityConfig
 import com.terning.server.kotlin.domain.auth.vo.AuthType
 import com.terning.server.kotlin.domain.auth.vo.Token
 import io.mockk.every
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
-import org.springframework.context.annotation.Import
 import org.springframework.http.MediaType
+import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
 
 @WebMvcTest(AuthController::class)
-@Import(TestSecurityConfig::class)
+@WithMockUser
 @ActiveProfiles("test")
 class AuthControllerTest {
     @Autowired
