@@ -8,19 +8,19 @@ import java.util.Base64
 
 @Configuration
 class ValueConfig(
-    @Value("\${jwt.secret_key}")
+    @Value("\${jwt.SECRET_KEY}")
     private var secretKeyRaw: String,
 
-    @Value("\${jwt.kakao_url}")
+    @Value("\${jwt.KAKAO_URL}")
     val kakaoUri: String,
 
-    @Value("\${jwt.apple_url}")
+    @Value("\${jwt.APPLE_URL}")
     val appleUri: String,
 
-    @Value("\${jwt.access_token_expired}")
+    @Value("\${jwt.ACCESS_TOKEN_EXPIRED}")
     val accessTokenExpired: Long,
 
-    @Value("\${jwt.refresh_token_expired}")
+    @Value("\${jwt.REFRESH_TOKEN_EXPIRED}")
     val refreshTokenExpired: Long,
 ) {
     lateinit var secretKey: String
