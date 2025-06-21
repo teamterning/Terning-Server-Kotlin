@@ -6,11 +6,20 @@ import com.terning.server.kotlin.application.auth.social.SocialAuthProvider
 import com.terning.server.kotlin.application.auth.social.SocialAuthServiceManager
 import com.terning.server.kotlin.domain.auth.Auth
 import com.terning.server.kotlin.domain.auth.AuthRepository
-import com.terning.server.kotlin.domain.auth.vo.*
+import com.terning.server.kotlin.domain.auth.vo.AuthId
+import com.terning.server.kotlin.domain.auth.vo.AuthType
+import com.terning.server.kotlin.domain.auth.vo.RefreshToken
+import com.terning.server.kotlin.domain.auth.vo.Token
 import com.terning.server.kotlin.domain.common.security.jwt.application.JwtTokenManager
 import com.terning.server.kotlin.domain.user.User
-import io.mockk.*
-import org.junit.jupiter.api.Assertions.*
+import io.mockk.Runs
+import io.mockk.every
+import io.mockk.just
+import io.mockk.mockk
+import io.mockk.spyk
+import io.mockk.verify
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
