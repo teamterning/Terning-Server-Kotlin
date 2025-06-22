@@ -42,18 +42,19 @@ class AuthController(
     fun signUp(
         @RequestHeader("Authorization") authId: String,
         @RequestBody signUpRequest: SignUpRequest,
-    ) : ResponseEntity<ApiResponse<SignUpResponse>>{
-        val response = authService.signUpUser(
-            authId = authId,
-            signUpRequest = signUpRequest
-        )
+    ): ResponseEntity<ApiResponse<SignUpResponse>> {
+        val response =
+            authService.signUpUser(
+                authId = authId,
+                signUpRequest = signUpRequest,
+            )
 
         return ResponseEntity.ok(
             ApiResponse.success(
                 status = HttpStatus.OK,
                 message = "회원가입에 성공하였습니다",
                 result = response,
-            )
+            ),
         )
     }
 }
