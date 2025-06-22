@@ -29,7 +29,7 @@ class ApplePublicKeyClient(
                 requestMethod = REQUEST_METHOD
             }
         } catch (e: Exception) {
-            throw RuntimeException(e)
+            throw RuntimeException("Apple 공개키 요청에 실패했습니다", e)
         }
 
     private fun getHttpResponse(connection: HttpURLConnection): StringBuilder =
@@ -40,7 +40,7 @@ class ApplePublicKeyClient(
                 }.let { StringBuilder(it) }
             }
         } catch (e: Exception) {
-            throw RuntimeException(e)
+            throw RuntimeException("Apple 서버 응답 읽기에 실패했습니다", e)
         }
 
     companion object {
