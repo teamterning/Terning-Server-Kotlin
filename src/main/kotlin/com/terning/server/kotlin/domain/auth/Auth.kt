@@ -49,11 +49,7 @@ class Auth private constructor(
     }
 
     fun resetRefreshToken() {
-        try {
-            this.refreshToken = RefreshToken.from(null)
-        } catch (e: Exception) {
-            throw AuthException(AuthErrorCode.FAILED_REFRESH_TOKEN_RESET)
-        }
+        this.refreshToken = RefreshToken.from(null)
     }
 
     fun authType(): AuthType = authType
