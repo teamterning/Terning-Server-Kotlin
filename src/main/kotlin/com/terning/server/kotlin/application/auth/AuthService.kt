@@ -103,6 +103,13 @@ class AuthService(
         )
     }
 
+    @Transactional
+    fun singOut(userId: Long) {
+        val auth = authRepository.findByUserId(userId)
+
+        auth.resetRefreshToken()
+    }
+
     companion object {
         private const val BEARER = "Bearer"
     }
