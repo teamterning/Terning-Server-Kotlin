@@ -120,11 +120,13 @@ class AuthControllerTest {
 
     @Test
     fun `유저를 로그아웃한다`() {
+        // given
         val authentication = UsernamePasswordAuthenticationToken(1L, null, emptyList())
         SecurityContextHolder.getContext().authentication = authentication
 
         every { authService.singOut(1L) } just Runs
 
+        // when & then
         mockMvc.post("/api/v1/auth/logout")
             .andExpect {
                 status { isOk() }
