@@ -7,16 +7,11 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.terning.server.kotlin.domain.auth.exception.AuthErrorCode
 import com.terning.server.kotlin.domain.auth.exception.AuthException
-import com.terning.server.kotlin.domain.common.config.ValueConfig
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Component
-import java.io.BufferedReader
-import java.io.InputStreamReader
 import java.math.BigInteger
-import java.net.HttpURLConnection
-import java.net.URL
 import java.security.KeyFactory
 import java.security.PublicKey
 import java.security.spec.RSAPublicKeySpec
@@ -26,10 +21,10 @@ import kotlin.text.Charsets.UTF_8
 @Component
 @Transactional
 class AppleAuthTokenValidator(
-    private val valueConfig: ValueConfig,
+    private val applePublicKeyClient: ApplePublicKeyClient,
 ) {
     fun extractAppleId(authAccessToken: String): String {
-        val publicKeys = getApplePublicKeys()
+        val publicKeys = applePublicKeyClient.getApplePublicKeys()
         val publicKey = makePublicKey(authAccessToken, publicKeys)
 
         val claims: Claims =
@@ -43,35 +38,6 @@ class AppleAuthTokenValidator(
 
         return userInfo[ID].asString
     }
-
-    private fun getApplePublicKeys(): JsonArray {
-        val conn = sendHttpRequest()
-        val response = getHttpResponse(conn)
-        val json = JsonParser.parseString(response.toString()).asJsonObject
-
-        return json[KEY].asJsonArray
-    }
-
-    private fun sendHttpRequest(): HttpURLConnection =
-        try {
-            val url = URL(valueConfig.appleUri)
-            (url.openConnection() as HttpURLConnection).apply {
-                requestMethod = "GET"
-            }
-        } catch (e: Exception) {
-            throw RuntimeException(e)
-        }
-
-    private fun getHttpResponse(connection: HttpURLConnection): StringBuilder =
-        try {
-            BufferedReader(InputStreamReader(connection.inputStream, UTF_8)).use { reader ->
-                buildString {
-                    reader.lineSequence().forEach { append(it) }
-                }.let { StringBuilder(it) }
-            }
-        } catch (e: Exception) {
-            throw RuntimeException(e)
-        }
 
     private fun makePublicKey(
         token: String,
@@ -119,7 +85,6 @@ class AppleAuthTokenValidator(
         private const val KID_HEADER_KEY = "kid"
         private const val ALG_HEADER_KEY = "alg"
         private const val RSA = "RSA"
-        private const val KEY = "keys"
         private const val ID = "sub"
         private const val POSITIVE = 1
     }
