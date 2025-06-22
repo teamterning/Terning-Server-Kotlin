@@ -18,8 +18,8 @@ data class SignInResponse(
             userId: Long?,
             authType: AuthType,
             fcmTokenReissueRequired: Boolean = false,
-        ): SignInResponse {
-            return SignInResponse(
+        ): SignInResponse =
+            SignInResponse(
                 accessToken = token?.accessToken,
                 refreshToken = token?.refreshToken,
                 userId = userId,
@@ -27,6 +27,5 @@ data class SignInResponse(
                 authType = authType.name,
                 fcmTokenReissueRequired = fcmTokenReissueRequired,
             )
-        }
     }
 }
