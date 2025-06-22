@@ -52,7 +52,7 @@ class AuthController(
         return ResponseEntity.ok(
             ApiResponse.success(
                 status = HttpStatus.OK,
-                message = "회원가입에 성공하였습니다",
+                message = "회원가입에 성공하였습니다.",
                 result = response,
             ),
         )
