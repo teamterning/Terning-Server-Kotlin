@@ -13,7 +13,7 @@ class AuthController(
     private val authService: AuthService,
 ) {
     @PostMapping("/sign-in")
-    fun singIn(
+    fun signIn(
         @RequestHeader("Authorization")authAccessToken: String,
         @RequestBody signInRequest: SignInRequest,
     ): ResponseEntity<ApiResponse<SignInResponse>> {
