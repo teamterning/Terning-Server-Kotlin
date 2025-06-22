@@ -5,6 +5,7 @@ import com.ninjasquad.springmockk.MockkBean
 import com.terning.server.kotlin.application.mypage.MyPageService
 import com.terning.server.kotlin.application.mypage.ProfileRequest
 import com.terning.server.kotlin.application.mypage.ProfileResponse
+import com.terning.server.kotlin.config.TestSecurityConfig
 import io.mockk.every
 import io.mockk.just
 import io.mockk.runs
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.context.annotation.Import
 import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
@@ -20,6 +22,7 @@ import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.patch
 
 @WebMvcTest(MyPageController::class)
+@Import(TestSecurityConfig::class)
 @ActiveProfiles("test")
 class MyPageControllerTest {
     @Autowired

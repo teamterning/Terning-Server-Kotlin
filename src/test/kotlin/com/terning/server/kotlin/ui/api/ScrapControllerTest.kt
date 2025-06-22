@@ -5,6 +5,7 @@ import com.ninjasquad.springmockk.MockkBean
 import com.terning.server.kotlin.application.scrap.ScrapService
 import com.terning.server.kotlin.application.scrap.dto.ScrapRequest
 import com.terning.server.kotlin.application.scrap.dto.ScrapUpdateRequest
+import com.terning.server.kotlin.config.TestSecurityConfig
 import io.mockk.every
 import io.mockk.just
 import io.mockk.runs
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.context.annotation.Import
 import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
@@ -21,6 +23,7 @@ import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
 
 @WebMvcTest(ScrapController::class)
+@Import(TestSecurityConfig::class)
 @ActiveProfiles("test")
 class ScrapControllerTest {
     @Autowired
