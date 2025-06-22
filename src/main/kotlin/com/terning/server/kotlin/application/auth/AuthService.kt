@@ -2,12 +2,19 @@ package com.terning.server.kotlin.application.auth
 
 import com.terning.server.kotlin.application.auth.dto.SignInRequest
 import com.terning.server.kotlin.application.auth.dto.SignInResponse
+import com.terning.server.kotlin.application.auth.dto.SignUpRequest
+import com.terning.server.kotlin.application.auth.dto.SignUpResponse
 import com.terning.server.kotlin.application.auth.social.SocialAuthServiceManager
+import com.terning.server.kotlin.domain.auth.Auth
 import com.terning.server.kotlin.domain.auth.AuthRepository
 import com.terning.server.kotlin.domain.auth.vo.AuthId
 import com.terning.server.kotlin.domain.auth.vo.AuthType
 import com.terning.server.kotlin.domain.auth.vo.RefreshToken
 import com.terning.server.kotlin.domain.common.security.jwt.application.JwtTokenManager
+import com.terning.server.kotlin.domain.user.User
+import com.terning.server.kotlin.domain.user.UserRepository
+import com.terning.server.kotlin.domain.user.exception.UserErrorCode
+import com.terning.server.kotlin.domain.user.exception.UserException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -17,7 +24,9 @@ class AuthService(
     private val socialAuthServiceManager: SocialAuthServiceManager,
     private val jwtTokenManager: JwtTokenManager,
     private val authRepository: AuthRepository,
+    private val userRepository: UserRepository,
 ) {
+    @Transactional
     fun signInUser(
         socialAccessToken: String,
         signInRequest: SignInRequest,
@@ -57,5 +66,42 @@ class AuthService(
             authType = authType,
             userId = user.id,
         )
+    }
+
+    @Transactional
+    fun signUpUser(
+        authId: String,
+        signUpRequest: SignUpRequest,
+    ): SignUpResponse {
+        val tokenWithoutBearer = authId.removePrefix("$BEARER ").trim()
+        val user =
+            User.of(
+                name = signUpRequest.name,
+                profile = signUpRequest.profileImage,
+            )
+        val auth =
+            Auth.of(
+                user = user,
+                authId = AuthId.from(tokenWithoutBearer),
+                authType = AuthType.from(signUpRequest.authType),
+                refreshToken = RefreshToken.from(null),
+            )
+
+        userRepository.save(user)
+        authRepository.save(auth)
+
+        val token = jwtTokenManager.generateToken(user)
+
+        auth.updateRefreshToken(RefreshToken.from(token.refreshToken))
+
+        return SignUpResponse.from(
+            token = token,
+            userId = user.id ?: throw UserException(UserErrorCode.USER_NOT_FOUND),
+            authType = auth.authType(),
+        )
+    }
+
+    companion object {
+        private const val BEARER = "Bearer"
     }
 }
