@@ -62,7 +62,7 @@ class AuthController(
     @PostMapping("/logout")
     fun singOut(
         @AuthenticationPrincipal userId: Long,
-    ): ResponseEntity<ApiResponse<Unit>>  {
+    ): ResponseEntity<ApiResponse<Unit>> {
         authService.singOut(userId)
 
         return ResponseEntity.ok(
