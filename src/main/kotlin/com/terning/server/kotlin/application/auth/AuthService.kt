@@ -94,7 +94,7 @@ class AuthService(
 
         auth.updateRefreshToken(RefreshToken.from(token.refreshToken))
 
-        // TODO : ApplicationEventPublisher 구현 by 이유빈
+        // TODO : ApplicationEventPublisher 구현
 
         return SignUpResponse.from(
             token = token,
