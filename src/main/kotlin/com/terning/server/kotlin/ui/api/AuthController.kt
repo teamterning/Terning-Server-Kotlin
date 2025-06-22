@@ -14,12 +14,12 @@ class AuthController(
 ) {
     @PostMapping("/sign-in")
     fun signIn(
-        @RequestHeader("Authorization")authAccessToken: String,
+        @RequestHeader("Authorization")socialAccessToken: String,
         @RequestBody signInRequest: SignInRequest,
     ): ResponseEntity<ApiResponse<SignInResponse>> {
         val response =
             authService.signInUser(
-                authAccessToken = authAccessToken,
+                socialAccessToken = socialAccessToken,
                 signInRequest = signInRequest,
             )
 

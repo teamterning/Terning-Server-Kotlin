@@ -19,7 +19,7 @@ class AuthService(
     private val authRepository: AuthRepository,
 ) {
     fun signInUser(
-        authAccessToken: String,
+        socialAccessToken: String,
         signInRequest: SignInRequest,
     ): SignInResponse {
         val authType = AuthType.from(signInRequest.authType)
@@ -27,7 +27,7 @@ class AuthService(
             socialAuthServiceManager.getAuthService(
                 authType = authType,
             ).getAuthId(
-                authAccessToken = authAccessToken,
+                authAccessToken = socialAccessToken,
             )
         val auth =
             authRepository.findByAuthIdAndAuthType(

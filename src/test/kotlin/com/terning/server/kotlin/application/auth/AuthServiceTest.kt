@@ -20,7 +20,7 @@ class AuthServiceTest {
     private val authRepository: AuthRepository = mockk()
     private lateinit var authService: AuthService
 
-    private val authAccessToken = "authAccessToken"
+    private val socialAccessToken = "socialAccessToken"
     private val signInRequest = SignInRequest(authType = "KAKAO", fcmToken = "")
     private val authType = AuthType.KAKAO
     private val authId = "123456"
@@ -40,13 +40,13 @@ class AuthServiceTest {
     fun `회원이 존재하지 않으면 null 토큰과 null 유저아이디를 반환한다`() {
         // given
         every { socialAuthServiceManager.getAuthService(authType) } returns kakaoProvider
-        every { kakaoProvider.getAuthId(authAccessToken) } returns authId
+        every { kakaoProvider.getAuthId(socialAccessToken) } returns authId
         every { authRepository.findByAuthIdAndAuthType(AuthId.from(authId), authType) } returns null
 
         // when
         val result: SignInResponse =
             authService.signInUser(
-                authAccessToken = authAccessToken,
+                socialAccessToken = socialAccessToken,
                 signInRequest = signInRequest,
             )
 
@@ -79,13 +79,13 @@ class AuthServiceTest {
             )
 
         every { socialAuthServiceManager.getAuthService(authType) } returns kakaoProvider
-        every { kakaoProvider.getAuthId(authAccessToken) } returns authId
+        every { kakaoProvider.getAuthId(socialAccessToken) } returns authId
         every { authRepository.findByAuthIdAndAuthType(authIdVo, authType) } returns auth
         every { jwtTokenManager.generateToken(user) } returns token
         every { auth.updateRefreshToken(any()) } just Runs
 
         // when
-        val result = authService.signInUser(authAccessToken, signInRequest)
+        val result = authService.signInUser(socialAccessToken, signInRequest)
 
         // then
         assertEquals("newAccess", result.accessToken)
