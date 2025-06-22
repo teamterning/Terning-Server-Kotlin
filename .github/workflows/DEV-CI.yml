@@ -7,6 +7,13 @@ jobs:
   ci:
     runs-on: ubuntu-22.04
 
+    env:
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      KAKAO_URL: ${{ secrets.KAKAO_URL }}
+      APPLE_URL: ${{ secrets.APPLE_URL }}
+      ACCESS_TOKEN_EXPIRED: ${{ secrets.ACCESS_TOKEN_EXPIRED }}
+      REFRESH_TOKEN_EXPIRED: ${{ secrets.REFRESH_TOKEN_EXPIRED }}
+
     steps:
       - name: 체크아웃
         uses: actions/checkout@v3

@@ -2,9 +2,10 @@ package com.terning.server.kotlin.ui.api
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
-import com.terning.server.kotlin.application.profile.ProfileRequest
-import com.terning.server.kotlin.application.profile.ProfileResponse
-import com.terning.server.kotlin.application.profile.ProfileService
+import com.terning.server.kotlin.application.mypage.MyPageService
+import com.terning.server.kotlin.application.mypage.ProfileRequest
+import com.terning.server.kotlin.application.mypage.ProfileResponse
+import com.terning.server.kotlin.config.TestSecurityConfig
 import io.mockk.every
 import io.mockk.just
 import io.mockk.runs
@@ -13,20 +14,22 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.context.annotation.Import
 import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.patch
 
-@WebMvcTest(ProfileController::class)
+@WebMvcTest(MyPageController::class)
+@Import(TestSecurityConfig::class)
 @ActiveProfiles("test")
-class ProfileControllerTest {
+class MyPageControllerTest {
     @Autowired
     private lateinit var mockMvc: MockMvc
 
     @MockkBean
-    private lateinit var profileService: ProfileService
+    private lateinit var mypageService: MyPageService
 
     @Autowired
     private lateinit var objectMapper: ObjectMapper
@@ -54,7 +57,7 @@ class ProfileControllerTest {
     fun getProfile() {
         // given
         val userId = 1L
-        every { profileService.getUserProfile(userId = userId) } returns profileResponse
+        every { mypageService.getUserProfile(userId = userId) } returns profileResponse
 
         // when
         mockMvc.get("/api/v1/mypage/profile") {
@@ -74,7 +77,7 @@ class ProfileControllerTest {
         // given
         val userId = 1L
         every {
-            profileService.updateUserProfile(
+            mypageService.updateUserProfile(
                 userId = userId,
                 profileRequest = profileRequest,
             )

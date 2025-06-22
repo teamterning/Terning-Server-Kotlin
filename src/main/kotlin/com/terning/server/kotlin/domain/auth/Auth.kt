@@ -1,7 +1,5 @@
 package com.terning.server.kotlin.domain.auth
 
-import com.terning.server.kotlin.domain.auth.exception.AuthErrorCode
-import com.terning.server.kotlin.domain.auth.exception.AuthException
 import com.terning.server.kotlin.domain.auth.vo.AuthId
 import com.terning.server.kotlin.domain.auth.vo.AuthType
 import com.terning.server.kotlin.domain.auth.vo.RefreshToken
@@ -49,11 +47,7 @@ class Auth private constructor(
     }
 
     fun resetRefreshToken() {
-        try {
-            this.refreshToken = RefreshToken(null)
-        } catch (e: Exception) {
-            throw AuthException(AuthErrorCode.FAILED_REFRESH_TOKEN_RESET)
-        }
+        this.refreshToken = RefreshToken.from(null)
     }
 
     fun authType(): AuthType = authType

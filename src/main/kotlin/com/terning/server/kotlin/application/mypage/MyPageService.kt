@@ -1,4 +1,4 @@
-package com.terning.server.kotlin.application.profile
+package com.terning.server.kotlin.application.mypage
 
 import com.terning.server.kotlin.domain.auth.AuthRepository
 import com.terning.server.kotlin.domain.auth.exception.AuthErrorCode
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional(readOnly = true)
-class ProfileService(
+class MyPageService(
     private val authRepository: AuthRepository,
     private val userRepository: UserRepository,
 ) {
