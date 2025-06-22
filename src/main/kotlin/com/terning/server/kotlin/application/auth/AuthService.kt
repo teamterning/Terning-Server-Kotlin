@@ -94,6 +94,8 @@ class AuthService(
 
         auth.updateRefreshToken(RefreshToken.from(token.refreshToken))
 
+        // TODO : ApplicationEventPublisher 구현 by 이유빈
+
         return SignUpResponse.from(
             token = token,
             userId = user.id ?: throw UserException(UserErrorCode.USER_NOT_FOUND),
