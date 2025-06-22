@@ -1,7 +1,5 @@
 package com.terning.server.kotlin.domain.auth
 
-import com.terning.server.kotlin.domain.auth.exception.AuthErrorCode
-import com.terning.server.kotlin.domain.auth.exception.AuthException
 import com.terning.server.kotlin.domain.auth.vo.AuthId
 import com.terning.server.kotlin.domain.auth.vo.AuthType
 import com.terning.server.kotlin.domain.auth.vo.RefreshToken
