@@ -114,8 +114,10 @@ class AuthService(
 
     @Transactional
     fun withdraw(userId: Long) {
-        val auth = authRepository.findByUserId(userId) ?: throw AuthException(AuthErrorCode.NOT_FOUND_USER_EXCEPTION)
-        val user = auth.user
+        val user =
+            userRepository.findById(userId).orElseThrow {
+                UserException(UserErrorCode.USER_NOT_FOUND)
+            }
 
         userRepository.delete(user)
     }
