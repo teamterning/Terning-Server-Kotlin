@@ -24,6 +24,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.post
 
 @WebMvcTest(AuthController::class)
@@ -134,5 +135,24 @@ class AuthControllerTest {
             }
 
         verify { authService.signOut(1L) }
+    }
+
+    @Test
+    fun `유저를 탈퇴한다`() {
+        // given
+        val authentication = UsernamePasswordAuthenticationToken(1L, null, emptyList())
+        SecurityContextHolder.getContext().authentication = authentication
+
+        every { authService.withdraw(1L) } just Runs
+
+        // when & then
+        mockMvc.delete("/api/v1/auth/withdraw") {
+            contentType = MediaType.APPLICATION_JSON
+        }.andExpect {
+            status { isOk() }
+            jsonPath("$.message") { value("계정탈퇴에 성공하였습니다.") }
+        }
+
+        verify { authService.withdraw(1L) }
     }
 }
