@@ -124,7 +124,7 @@ class AuthControllerTest {
         val authentication = UsernamePasswordAuthenticationToken(1L, null, emptyList())
         SecurityContextHolder.getContext().authentication = authentication
 
-        every { authService.singOut(1L) } just Runs
+        every { authService.signOut(1L) } just Runs
 
         // when & then
         mockMvc.post("/api/v1/auth/logout")
@@ -133,6 +133,6 @@ class AuthControllerTest {
                 jsonPath("$.message") { value("로그아웃에 성공하였습니다.") }
             }
 
-        verify { authService.singOut(1L) }
+        verify { authService.signOut(1L) }
     }
 }

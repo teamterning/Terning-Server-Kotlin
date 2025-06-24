@@ -167,7 +167,7 @@ class AuthServiceTest {
             every { authRepository.findByUserId(userId) } returns mockAuth
 
             // when
-            authService.singOut(userId)
+            authService.signOut(userId)
 
             // then
             verify { mockAuth.resetRefreshToken() }
