@@ -10,5 +10,5 @@ interface AuthRepository : JpaRepository<Auth, Long> {
         authType: AuthType,
     ): Auth?
 
-    fun findByUserId(userId: Long): Auth
+    fun findByUserId(userId: Long): Auth?
 }
