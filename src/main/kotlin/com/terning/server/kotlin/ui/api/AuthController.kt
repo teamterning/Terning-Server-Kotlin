@@ -3,6 +3,8 @@ package com.terning.server.kotlin.ui.api
 import com.terning.server.kotlin.application.auth.AuthService
 import com.terning.server.kotlin.application.auth.dto.SignInRequest
 import com.terning.server.kotlin.application.auth.dto.SignInResponse
+import com.terning.server.kotlin.application.auth.dto.SignUpRequest
+import com.terning.server.kotlin.application.auth.dto.SignUpResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -31,6 +33,26 @@ class AuthController(
             ApiResponse.success(
                 status = HttpStatus.OK,
                 message = "로그인에 성공했습니다.",
+                result = response,
+            ),
+        )
+    }
+
+    @PostMapping("/sign-up")
+    fun signUp(
+        @RequestHeader("Authorization") authId: String,
+        @RequestBody signUpRequest: SignUpRequest,
+    ): ResponseEntity<ApiResponse<SignUpResponse>> {
+        val response =
+            authService.signUpUser(
+                authId = authId,
+                signUpRequest = signUpRequest,
+            )
+
+        return ResponseEntity.ok(
+            ApiResponse.success(
+                status = HttpStatus.OK,
+                message = "회원가입에 성공하였습니다.",
                 result = response,
             ),
         )
