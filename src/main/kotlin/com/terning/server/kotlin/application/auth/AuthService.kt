@@ -1,6 +1,10 @@
 package com.terning.server.kotlin.application.auth
 
-import com.terning.server.kotlin.application.auth.dto.*
+import com.terning.server.kotlin.application.auth.dto.SignInRequest
+import com.terning.server.kotlin.application.auth.dto.SignInResponse
+import com.terning.server.kotlin.application.auth.dto.SignUpRequest
+import com.terning.server.kotlin.application.auth.dto.SignUpResponse
+import com.terning.server.kotlin.application.auth.dto.TokenReissueResponse
 import com.terning.server.kotlin.application.auth.social.SocialAuthServiceManager
 import com.terning.server.kotlin.domain.auth.Auth
 import com.terning.server.kotlin.domain.auth.AuthRepository
@@ -121,8 +125,9 @@ class AuthService(
 
     @Transactional
     fun tokenReissue(refreshToken: String): TokenReissueResponse {
-        val auth = authRepository.findByRefreshToken(RefreshToken.from(refreshToken))
-            ?: throw AuthException(AuthErrorCode.FAILED_REFRESH_TOKEN_RESET)
+        val auth =
+            authRepository.findByRefreshToken(RefreshToken.from(refreshToken))
+                ?: throw AuthException(AuthErrorCode.FAILED_REFRESH_TOKEN_RESET)
 
         val token = jwtTokenManager.issueAccessToken(auth)
 
