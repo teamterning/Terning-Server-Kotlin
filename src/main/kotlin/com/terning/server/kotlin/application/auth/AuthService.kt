@@ -104,7 +104,7 @@ class AuthService(
     }
 
     @Transactional
-    fun singOut(userId: Long) {
+    fun signOut(userId: Long) {
         val auth = authRepository.findByUserId(userId)
 
         auth.resetRefreshToken()

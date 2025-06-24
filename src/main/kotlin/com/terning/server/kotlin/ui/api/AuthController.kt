@@ -63,7 +63,7 @@ class AuthController(
     fun signOut(
         @AuthenticationPrincipal userId: Long,
     ): ResponseEntity<ApiResponse<Unit>> {
-        authService.singOut(userId)
+        authService.signOut(userId)
 
         return ResponseEntity.ok(
             ApiResponse.success(
