@@ -28,6 +28,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import java.util.Optional
 
 class AuthServiceTest {
     private val socialAuthServiceManager: SocialAuthServiceManager = mockk()
@@ -182,19 +183,16 @@ class AuthServiceTest {
             // given
             val userId = 1L
             val user = mockk<User>()
-            val auth =
-                mockk<Auth> {
-                    every { this@mockk.user } returns user
-                }
 
-            every { authRepository.findByUserId(userId) } returns auth
+            every { userRepository.findById(userId) } returns Optional.of(user)
+            every { userRepository.delete(user) } just Runs
+
             every { userRepository.delete(user) } just Runs
 
             // when
             authService.withdraw(userId)
 
             // then
-            verify(exactly = 1) { authRepository.findByUserId(userId) }
             verify(exactly = 1) { userRepository.delete(user) }
         }
     }
