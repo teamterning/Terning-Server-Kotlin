@@ -104,7 +104,7 @@ class AuthServiceTest {
             every { socialAuthServiceManager.getAuthService(authType) } returns kakaoProvider
             every { kakaoProvider.getAuthId(accessToken) } returns authId
             every { authRepository.findByAuthIdAndAuthType(authIdVo, authType) } returns auth
-            every { jwtTokenManager.generateToken(user) } returns token
+            every { jwtTokenManager.generateToken(auth) } returns token
             every { auth.updateRefreshToken(any()) } just Runs
 
             // when

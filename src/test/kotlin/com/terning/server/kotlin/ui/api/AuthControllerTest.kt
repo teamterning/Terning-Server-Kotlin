@@ -7,6 +7,7 @@ import com.terning.server.kotlin.application.auth.dto.SignInRequest
 import com.terning.server.kotlin.application.auth.dto.SignInResponse
 import com.terning.server.kotlin.application.auth.dto.SignUpRequest
 import com.terning.server.kotlin.application.auth.dto.SignUpResponse
+import com.terning.server.kotlin.application.auth.dto.TokenReissueResponse
 import com.terning.server.kotlin.config.TestSecurityConfig
 import com.terning.server.kotlin.domain.auth.vo.AuthType
 import com.terning.server.kotlin.domain.auth.vo.Token
@@ -154,5 +155,28 @@ class AuthControllerTest {
         }
 
         verify { authService.withdraw(1L) }
+    }
+
+    @Test
+    fun `리프레시 토큰으로 액세스 토큰을 재발급받는다`() {
+        // given
+        val refreshToken = "Bearer oldRefreshToken"
+        val tokenReissueResponse =
+            TokenReissueResponse(
+                accessToken = "newAccessToken",
+            )
+
+        every { authService.tokenReissue(refreshToken) } returns tokenReissueResponse
+
+        // when & then
+        mockMvc.post("/api/v1/auth/token-reissue") {
+            header("Authorization", refreshToken)
+        }.andExpect {
+            status { isOk() }
+            jsonPath("$.message") { value("토근 재발급에 성공하였습니다.") }
+            jsonPath("$.result.accessToken") { value("newAccessToken") }
+        }
+
+        verify(exactly = 1) { authService.tokenReissue(refreshToken) }
     }
 }
