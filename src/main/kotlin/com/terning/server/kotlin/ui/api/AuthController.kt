@@ -78,7 +78,7 @@ class AuthController(
     @DeleteMapping("/withdraw")
     fun withdraw(
         @AuthenticationPrincipal userId: Long,
-    ): ResponseEntity<ApiResponse<Unit>>  {
+    ): ResponseEntity<ApiResponse<Unit>> {
         authService.withdraw(userId)
 
         return ResponseEntity.ok(
