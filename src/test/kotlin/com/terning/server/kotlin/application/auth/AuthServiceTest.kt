@@ -173,4 +173,29 @@ class AuthServiceTest {
             verify { mockAuth.resetRefreshToken() }
         }
     }
+
+    @Nested
+    @DisplayName("withdraw 메소드는")
+    inner class  Withdraw {
+        @Test
+        fun `회원탈퇴 시 유저의 정보를 지운다`() {
+            // given
+            val userId = 1L
+            val user = mockk<User>()
+            val auth = mockk<Auth> {
+                every { this@mockk.user } returns user
+            }
+
+            every { authRepository.findByUserId(userId) } returns auth
+            every { userRepository.delete(user) } just Runs
+
+            // when
+            authService.withdraw(userId)
+
+            // then
+            verify(exactly = 1) { authRepository.findByUserId(userId) }
+            verify(exactly = 1) { userRepository.delete(user) }
+
+        }
+    }
 }
