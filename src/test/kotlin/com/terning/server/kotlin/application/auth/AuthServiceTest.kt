@@ -155,4 +155,22 @@ class AuthServiceTest {
             assertEquals("KAKAO", response.authType)
         }
     }
+
+    @Nested
+    @DisplayName("signOut 메소드는")
+    inner class SignOut {
+        @Test
+        fun `로그아웃 시 유저의 리프레시 토큰을 초기화한다`() {
+            // given
+            val userId = 1L
+            val mockAuth = mockk<Auth>(relaxed = true)
+            every { authRepository.findByUserId(userId) } returns mockAuth
+
+            // when
+            authService.signOut(userId)
+
+            // then
+            verify { mockAuth.resetRefreshToken() }
+        }
+    }
 }

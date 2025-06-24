@@ -7,21 +7,27 @@ import com.terning.server.kotlin.application.auth.dto.SignInRequest
 import com.terning.server.kotlin.application.auth.dto.SignInResponse
 import com.terning.server.kotlin.application.auth.dto.SignUpRequest
 import com.terning.server.kotlin.application.auth.dto.SignUpResponse
+import com.terning.server.kotlin.config.TestSecurityConfig
 import com.terning.server.kotlin.domain.auth.vo.AuthType
 import com.terning.server.kotlin.domain.auth.vo.Token
+import io.mockk.Runs
 import io.mockk.every
+import io.mockk.just
+import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.context.annotation.Import
 import org.springframework.http.MediaType
-import org.springframework.security.test.context.support.WithMockUser
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
 
 @WebMvcTest(AuthController::class)
-@WithMockUser
+@Import(TestSecurityConfig::class)
 @ActiveProfiles("test")
 class AuthControllerTest {
     @Autowired
@@ -110,5 +116,23 @@ class AuthControllerTest {
             jsonPath("$.result.userId") { value(1L) }
             jsonPath("$.result.authType") { value("KAKAO") }
         }
+    }
+
+    @Test
+    fun `유저를 로그아웃한다`() {
+        // given
+        val authentication = UsernamePasswordAuthenticationToken(1L, null, emptyList())
+        SecurityContextHolder.getContext().authentication = authentication
+
+        every { authService.signOut(1L) } just Runs
+
+        // when & then
+        mockMvc.post("/api/v1/auth/logout")
+            .andExpect {
+                status { isOk() }
+                jsonPath("$.message") { value("로그아웃에 성공하였습니다.") }
+            }
+
+        verify { authService.signOut(1L) }
     }
 }

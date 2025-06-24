@@ -7,6 +7,8 @@ import com.terning.server.kotlin.application.auth.dto.SignUpResponse
 import com.terning.server.kotlin.application.auth.social.SocialAuthServiceManager
 import com.terning.server.kotlin.domain.auth.Auth
 import com.terning.server.kotlin.domain.auth.AuthRepository
+import com.terning.server.kotlin.domain.auth.exception.AuthErrorCode
+import com.terning.server.kotlin.domain.auth.exception.AuthException
 import com.terning.server.kotlin.domain.auth.vo.AuthId
 import com.terning.server.kotlin.domain.auth.vo.AuthType
 import com.terning.server.kotlin.domain.auth.vo.RefreshToken
@@ -101,6 +103,13 @@ class AuthService(
             userId = user.id ?: throw UserException(UserErrorCode.USER_NOT_FOUND),
             authType = auth.authType(),
         )
+    }
+
+    @Transactional
+    fun signOut(userId: Long) {
+        val auth = authRepository.findByUserId(userId) ?: throw AuthException(AuthErrorCode.NOT_FOUND_USER_EXCEPTION)
+
+        auth.resetRefreshToken()
     }
 
     companion object {
