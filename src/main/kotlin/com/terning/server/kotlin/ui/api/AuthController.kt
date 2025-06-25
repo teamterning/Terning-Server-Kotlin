@@ -100,7 +100,7 @@ class AuthController(
         return ResponseEntity.ok(
             ApiResponse.success(
                 status = HttpStatus.OK,
-                message = "토근 재발급에 성공하였습니다.",
+                message = "토큰 재발급에 성공하였습니다.",
                 result = response,
             ),
         )
