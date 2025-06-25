@@ -28,6 +28,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import java.util.Optional
 
 class AuthServiceTest {
     private val socialAuthServiceManager: SocialAuthServiceManager = mockk()
@@ -171,6 +172,26 @@ class AuthServiceTest {
 
             // then
             verify { mockAuth.resetRefreshToken() }
+        }
+    }
+
+    @Nested
+    @DisplayName("withdraw 메소드는")
+    inner class Withdraw {
+        @Test
+        fun `회원탈퇴 시 유저의 정보를 지운다`() {
+            // given
+            val userId = 1L
+            val user = mockk<User>()
+
+            every { userRepository.findById(userId) } returns Optional.of(user)
+            every { userRepository.delete(user) } just Runs
+
+            // when
+            authService.withdraw(userId)
+
+            // then
+            verify(exactly = 1) { userRepository.delete(user) }
         }
     }
 }

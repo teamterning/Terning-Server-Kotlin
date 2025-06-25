@@ -112,6 +112,16 @@ class AuthService(
         auth.resetRefreshToken()
     }
 
+    @Transactional
+    fun withdraw(userId: Long) {
+        val user =
+            userRepository.findById(userId).orElseThrow {
+                UserException(UserErrorCode.USER_NOT_FOUND)
+            }
+
+        userRepository.delete(user)
+    }
+
     companion object {
         private const val BEARER = "Bearer"
     }
