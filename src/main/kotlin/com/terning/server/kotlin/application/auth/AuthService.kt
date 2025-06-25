@@ -4,6 +4,7 @@ import com.terning.server.kotlin.application.auth.dto.SignInRequest
 import com.terning.server.kotlin.application.auth.dto.SignInResponse
 import com.terning.server.kotlin.application.auth.dto.SignUpRequest
 import com.terning.server.kotlin.application.auth.dto.SignUpResponse
+import com.terning.server.kotlin.application.auth.dto.TokenReissueResponse
 import com.terning.server.kotlin.application.auth.social.SocialAuthServiceManager
 import com.terning.server.kotlin.domain.auth.Auth
 import com.terning.server.kotlin.domain.auth.AuthRepository
@@ -56,7 +57,7 @@ class AuthService(
         }
 
         val user = auth.user
-        val token = jwtTokenManager.generateToken(user)
+        val token = jwtTokenManager.generateToken(auth)
 
         auth.updateRefreshToken(
             newRefreshToken = RefreshToken.from(token.refreshToken),
@@ -92,7 +93,7 @@ class AuthService(
         userRepository.save(user)
         authRepository.save(auth)
 
-        val token = jwtTokenManager.generateToken(user)
+        val token = jwtTokenManager.generateToken(auth)
 
         auth.updateRefreshToken(RefreshToken.from(token.refreshToken))
 
@@ -120,6 +121,19 @@ class AuthService(
             }
 
         userRepository.delete(user)
+    }
+
+    @Transactional
+    fun tokenReissue(refreshToken: String): TokenReissueResponse {
+        val auth =
+            authRepository.findByRefreshToken(RefreshToken.from(refreshToken))
+                ?: throw AuthException(AuthErrorCode.FAILED_REFRESH_TOKEN_RESET)
+
+        val token = jwtTokenManager.issueAccessToken(auth)
+
+        return TokenReissueResponse(
+            accessToken = token.accessToken,
+        )
     }
 
     companion object {

@@ -5,6 +5,7 @@ import com.terning.server.kotlin.application.auth.dto.SignInRequest
 import com.terning.server.kotlin.application.auth.dto.SignInResponse
 import com.terning.server.kotlin.application.auth.dto.SignUpRequest
 import com.terning.server.kotlin.application.auth.dto.SignUpResponse
+import com.terning.server.kotlin.application.auth.dto.TokenReissueResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -86,6 +87,21 @@ class AuthController(
                 status = HttpStatus.OK,
                 message = "계정탈퇴에 성공하였습니다.",
                 result = Unit,
+            ),
+        )
+    }
+
+    @PostMapping("/token-reissue")
+    fun tokenReissue(
+        @RequestHeader("Authorization") refreshToken: String,
+    ): ResponseEntity<ApiResponse<TokenReissueResponse>> {
+        val response = authService.tokenReissue(refreshToken)
+
+        return ResponseEntity.ok(
+            ApiResponse.success(
+                status = HttpStatus.OK,
+                message = "토큰 재발급에 성공하였습니다.",
+                result = response,
             ),
         )
     }
