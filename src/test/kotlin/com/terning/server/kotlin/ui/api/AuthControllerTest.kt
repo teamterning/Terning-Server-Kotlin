@@ -173,7 +173,7 @@ class AuthControllerTest {
             header("Authorization", refreshToken)
         }.andExpect {
             status { isOk() }
-            jsonPath("$.message") { value("토근 재발급에 성공하였습니다.") }
+            jsonPath("$.message") { value("토큰 재발급에 성공하였습니다.") }
             jsonPath("$.result.accessToken") { value("newAccessToken") }
         }
 
