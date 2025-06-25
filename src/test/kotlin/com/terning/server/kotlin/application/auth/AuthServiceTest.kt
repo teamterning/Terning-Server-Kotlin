@@ -187,8 +187,6 @@ class AuthServiceTest {
             every { userRepository.findById(userId) } returns Optional.of(user)
             every { userRepository.delete(user) } just Runs
 
-            every { userRepository.delete(user) } just Runs
-
             // when
             authService.withdraw(userId)
 
