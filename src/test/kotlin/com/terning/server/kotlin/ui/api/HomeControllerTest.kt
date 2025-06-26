@@ -4,20 +4,22 @@ import com.ninjasquad.springmockk.MockkBean
 import com.terning.server.kotlin.application.home.HomeService
 import com.terning.server.kotlin.application.home.dto.Home
 import com.terning.server.kotlin.application.home.dto.HomeResponse
+import com.terning.server.kotlin.config.TestSecurityConfig
+import com.terning.server.kotlin.support.WithMockCustomUser
 import io.mockk.every
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.context.annotation.Import
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
-import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 
 @WebMvcTest(HomeController::class)
-@WithMockUser
+@Import(TestSecurityConfig::class)
 @ActiveProfiles("test")
 class HomeControllerTest {
     @Autowired
@@ -28,6 +30,7 @@ class HomeControllerTest {
 
     @Test
     @DisplayName("필터링 조건에 맞는 인턴 공고를 조회한다")
+    @WithMockCustomUser(userId = 1L)
     fun getInternshipAnnouncementsFilteredByUserFilter() {
         // given
         val pageable: Pageable = PageRequest.of(0, 10)
@@ -56,6 +59,8 @@ class HomeControllerTest {
         // when & then
         mockMvc.get("/api/v1/home") {
             param("sortBy", sortBy)
+            param("page", "0")
+            param("size", "10")
         }.andExpect {
             status { isOk() }
             jsonPath("$.status") { value(200) }

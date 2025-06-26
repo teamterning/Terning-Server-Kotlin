@@ -10,19 +10,21 @@ import com.terning.server.kotlin.application.search.dto.SearchAnnouncementRespon
 import com.terning.server.kotlin.application.search.dto.SearchPageResponse
 import com.terning.server.kotlin.application.search.dto.ViewCountAnnouncementResponse
 import com.terning.server.kotlin.application.search.dto.ViewCountResponse
+import com.terning.server.kotlin.config.TestSecurityConfig
+import com.terning.server.kotlin.support.WithMockCustomUser
 import io.mockk.every
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.context.annotation.Import
 import org.springframework.data.domain.PageRequest
-import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 
 @WebMvcTest(SearchController::class)
-@WithMockUser
+@Import(TestSecurityConfig::class)
 @ActiveProfiles("test")
 class SearchControllerTest {
     @Autowired
@@ -33,6 +35,7 @@ class SearchControllerTest {
 
     @Test
     @DisplayName("키워드로 공고를 검색하고 성공적으로 결과를 반환한다")
+    @WithMockCustomUser(userId = 1L)
     fun searchSuccessfully() {
         // given
         val userId = 1L
@@ -82,6 +85,7 @@ class SearchControllerTest {
 
     @Test
     @DisplayName("파라미터 없이 요청 시 기본값으로 검색하고 결과를 반환한다")
+    @WithMockCustomUser(userId = 1L)
     fun searchWithDefaultParameters() {
         // given
         val userId = 1L
@@ -124,6 +128,7 @@ class SearchControllerTest {
 
     @Test
     @DisplayName("조회수 많은 공고를 성공적으로 조회한다")
+    @WithMockCustomUser(userId = 1L)
     fun getMostViewedAnnouncementsSuccessfully() {
         // given
         val userId = 1L
@@ -160,6 +165,7 @@ class SearchControllerTest {
 
     @Test
     @DisplayName("스크랩 많은 공고를 성공적으로 조회한다")
+    @WithMockCustomUser(userId = 1L)
     fun getMostScrappedAnnouncementsSuccessfully() {
         // given
         val userId = 1L
@@ -196,6 +202,7 @@ class SearchControllerTest {
 
     @Test
     @DisplayName("배너를 성공적으로 조회한다")
+    @WithMockCustomUser(userId = 1L)
     fun getBannersSuccessfully() {
         // given
         val userId = 1L

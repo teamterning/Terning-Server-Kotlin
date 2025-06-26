@@ -3,18 +3,20 @@ package com.terning.server.kotlin.ui.api
 import com.ninjasquad.springmockk.MockkBean
 import com.terning.server.kotlin.application.announcement.AnnouncementService
 import com.terning.server.kotlin.application.announcement.dto.DetailAnnouncementResponse
+import com.terning.server.kotlin.config.TestSecurityConfig
+import com.terning.server.kotlin.support.WithMockCustomUser
 import io.mockk.every
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
-import org.springframework.security.test.context.support.WithMockUser
+import org.springframework.context.annotation.Import
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 
 @WebMvcTest(AnnouncementController::class)
-@WithMockUser
+@Import(TestSecurityConfig::class)
 @ActiveProfiles("test")
 class AnnouncementControllerTest {
     @Autowired
@@ -25,6 +27,7 @@ class AnnouncementControllerTest {
 
     @Test
     @DisplayName("사용자가 원하는 특정 인턴공고 상세 페이지를 조회한다")
+    @WithMockCustomUser(userId = 1L)
     fun getDetailInternshipAnnouncement() {
         // given
         val internshipAnnouncementId = 1L
