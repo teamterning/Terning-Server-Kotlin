@@ -125,8 +125,7 @@ class AuthControllerTest {
     @WithMockCustomUser(userId = 1L)
     fun logoutUser() {
         // given
-        val userId = 1L
-        every { authService.signOut(userId) } just Runs
+        every { authService.signOut(1L) } just Runs
 
         // when & then
         mockMvc.post("/api/v1/auth/logout") {
@@ -136,6 +135,6 @@ class AuthControllerTest {
             jsonPath("$.message") { value("로그아웃에 성공하였습니다.") }
         }
 
-        verify(exactly = 1) { authService.signOut(userId) }
+        verify(exactly = 1) { authService.signOut(1L) }
     }
 }
