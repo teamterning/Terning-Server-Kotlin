@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -19,17 +20,14 @@ class HomeController(
 ) {
     @GetMapping
     fun getInternshipAnnouncementsFilteredByUserFilter(
-        // TODO: 실제 로그인된 사용자의 인증 정보 주입 필요
-        // @AuthenticationPrincipal userId: Long,
+        @AuthenticationPrincipal userId: Long,
         @RequestParam(name = "sortBy", required = false, defaultValue = "deadlineSoon")
         sortingCondition: String,
         @PageableDefault(size = 10) pageable: Pageable,
     ): ResponseEntity<ApiResponse<HomeResponse>> {
-        val authenticatedUserId: Long = 1L // TODO: 인증 시스템 연동 시 실제 유저 ID로 대체
-
         val internshipAnnouncementResponse: HomeResponse =
             homeService.getFilteredAnnouncements(
-                userId = authenticatedUserId,
+                userId = userId,
                 sortBy = sortingCondition,
                 pageable = pageable,
             )
@@ -45,9 +43,8 @@ class HomeController(
 
     @GetMapping("/upcoming")
     fun getUpcomingDeadlineScraps(
-        // TODO: @AuthenticationPrincipal userId: Long,
+        @AuthenticationPrincipal userId: Long,
     ): ResponseEntity<ApiResponse<UpcomingDeadlineScrapResponse>> {
-        val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 교체
         val response = homeService.findUpcomingDeadlineScraps(userId)
 
         return ResponseEntity.ok(

@@ -6,6 +6,7 @@ import com.terning.server.kotlin.application.filter.dto.GetFilterResponse
 import com.terning.server.kotlin.application.filter.dto.UpdateFilterRequest
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -20,11 +21,9 @@ class FilterController(
 ) {
     @PostMapping("auth/sign-up/filter")
     fun createUserFilter(
-        // TODO : @AuthenticationPrincipal userId: Long,
+        @AuthenticationPrincipal userId: Long,
         @RequestBody createFilterRequest: CreateFilterRequest,
     ): ResponseEntity<ApiResponse<Unit>> {
-        val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
-
         filterService.createUserFilter(
             userId = userId,
             createFilterRequest = createFilterRequest,
@@ -41,10 +40,8 @@ class FilterController(
 
     @GetMapping("filters")
     fun getUserFilter(
-        // TODO : @AuthenticationPrincipal userId: Long,
+        @AuthenticationPrincipal userId: Long,
     ): ResponseEntity<ApiResponse<GetFilterResponse>> {
-        val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
-
         val response = filterService.getUserFilter(userId)
 
         return ResponseEntity.ok(
@@ -58,11 +55,9 @@ class FilterController(
 
     @PutMapping("filters")
     fun updateUserFilter(
-        // TODO: @AuthenticationPrincipal userId: Long,
+        @AuthenticationPrincipal userId: Long,
         @RequestBody updateFilterRequest: UpdateFilterRequest,
     ): ResponseEntity<ApiResponse<Unit>> {
-        val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
-
         filterService.updateUserFilter(
             userId = userId,
             updateFilterRequest = updateFilterRequest,

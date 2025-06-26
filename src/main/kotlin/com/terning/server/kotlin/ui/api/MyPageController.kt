@@ -5,6 +5,7 @@ import com.terning.server.kotlin.application.mypage.ProfileRequest
 import com.terning.server.kotlin.application.mypage.ProfileResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -18,30 +19,24 @@ class MyPageController(
 ) {
     @GetMapping("/profile")
     fun getProfile(
-        // TODO : @AuthenticationPrincipal userId: Long,
+        @AuthenticationPrincipal userId: Long,
     ): ResponseEntity<ApiResponse<ProfileResponse>> {
-        val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
-
         val response = mypageService.getUserProfile(userId)
 
-        return ResponseEntity
-            .status(HttpStatus.CREATED)
-            .body(
-                ApiResponse.success(
-                    status = HttpStatus.OK,
-                    message = "마이페이지 > 프로필 정보 불러오기를 성공했습니다",
-                    result = response,
-                ),
-            )
+        return ResponseEntity.ok(
+            ApiResponse.success(
+                status = HttpStatus.OK,
+                message = "마이페이지 > 프로필 정보 불러오기를 성공했습니다",
+                result = response,
+            ),
+        )
     }
 
     @PatchMapping("/profile")
     fun updateProfile(
-        // TODO : @AuthenticationPrincipal userId: Long,
+        @AuthenticationPrincipal userId: Long,
         @RequestBody profileRequest: ProfileRequest,
     ): ResponseEntity<ApiResponse<Unit>> {
-        val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
-
         mypageService.updateUserProfile(
             userId = userId,
             profileRequest = profileRequest,
