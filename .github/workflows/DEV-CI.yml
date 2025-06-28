@@ -58,14 +58,7 @@ jobs:
         run: ./gradlew ktlintCheck
 
       - name: 테스트 프로필로 Gradle 빌드 및 테스트 실행
-        run: |
-          ./gradlew build \
-            -Dspring.profiles.active=test \
-            -DSECRET_KEY=$SECRET_KEY \
-            -DKAKAO_URL=$KAKAO_URL \
-            -DAPPLE_URL=$APPLE_URL \
-            -DACCESS_TOKEN_EXPIRED=$ACCESS_TOKEN_EXPIRED \
-            -DREFRESH_TOKEN_EXPIRED=$REFRESH_TOKEN_EXPIRED
+        run: ./gradlew build -Dspring.profiles.active=test
 
       # GraalVM 네이티브 이미지 빌드를 위한 주석 처리된 단계
       # - name: Native Image Compile (Fail-safe)
