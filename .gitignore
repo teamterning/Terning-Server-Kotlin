@@ -117,4 +117,4 @@ native-build-tools/
 # ================================
 # 📁yml 파일
 # ================================
-/src/main/resources/*.yml
+src/main/resources/*.yml
