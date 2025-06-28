@@ -1,18 +1,24 @@
 package com.terning.server.kotlin.domain.user
 
+import com.terning.server.kotlin.domain.auth.Auth
 import com.terning.server.kotlin.domain.common.BaseRootEntity
+import com.terning.server.kotlin.domain.scrap.Scrap
 import com.terning.server.kotlin.domain.user.vo.ProfileImage
 import com.terning.server.kotlin.domain.user.vo.UserName
 import com.terning.server.kotlin.domain.user.vo.UserState
 import jakarta.persistence.AttributeOverride
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Embedded
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
+import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.OneToMany
+import jakarta.persistence.OneToOne
 import jakarta.persistence.Table
 
 @Entity
@@ -36,6 +42,12 @@ class User private constructor(
     @Enumerated(EnumType.STRING)
     @Column(name = "state", length = 12, nullable = false)
     private var userState: UserState,
+
+    @OneToOne(mappedBy = "user", cascade = [CascadeType.REMOVE], fetch = FetchType.LAZY)
+    var auth: Auth? = null,
+
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.REMOVE], fetch = FetchType.LAZY)
+    val scraps: MutableList<Scrap> = mutableListOf(),
 ) : BaseRootEntity() {
     fun name(): String = name.value
 

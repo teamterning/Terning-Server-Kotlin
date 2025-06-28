@@ -28,6 +28,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import java.util.Optional
 
 class AuthServiceTest {
     private val socialAuthServiceManager: SocialAuthServiceManager = mockk()
@@ -43,6 +44,7 @@ class AuthServiceTest {
     private val authId = "123456"
     private val kakaoProvider = mockk<SocialAuthProvider>()
     private val profileImage = ProfileImage.LUCKY.value
+    private val userId = 1L
 
     @BeforeEach
     fun setup() {
@@ -103,7 +105,7 @@ class AuthServiceTest {
             every { socialAuthServiceManager.getAuthService(authType) } returns kakaoProvider
             every { kakaoProvider.getAuthId(accessToken) } returns authId
             every { authRepository.findByAuthIdAndAuthType(authIdVo, authType) } returns auth
-            every { jwtTokenManager.generateToken(user) } returns token
+            every { jwtTokenManager.generateToken(auth) } returns token
             every { auth.updateRefreshToken(any()) } just Runs
 
             // when
@@ -162,7 +164,6 @@ class AuthServiceTest {
         @Test
         fun `로그아웃 시 유저의 리프레시 토큰을 초기화한다`() {
             // given
-            val userId = 1L
             val mockAuth = mockk<Auth>(relaxed = true)
             every { authRepository.findByUserId(userId) } returns mockAuth
             every { mockAuth.resetRefreshToken() } just Runs
@@ -172,6 +173,49 @@ class AuthServiceTest {
 
             // then
             verify(exactly = 1) { mockAuth.resetRefreshToken() }
+        }
+    }
+
+    @Nested
+    @DisplayName("withdraw 메소드는")
+    inner class Withdraw {
+        @Test
+        fun `회원탈퇴 시 유저의 정보를 지운다`() {
+            // given
+            val user = mockk<User>()
+
+            every { userRepository.findById(userId) } returns Optional.of(user)
+            every { userRepository.delete(user) } just Runs
+
+            // when
+            authService.withdraw(userId)
+
+            // then
+            verify(exactly = 1) { userRepository.delete(user) }
+        }
+    }
+
+    @Nested
+    @DisplayName("tokenReissue 메소드는")
+    inner class TokenReissue {
+        @Test
+        fun `리프레시 토큰으로 액세스 토큰을 재발급받는다`() {
+            // given
+            val refreshToken = "oldRefreshToken"
+            val refreshTokenVo = RefreshToken.from(refreshToken)
+            val auth = mockk<Auth>(relaxed = true)
+            val jwtToken = Token(accessToken = "newAccessToken")
+
+            every { authRepository.findByRefreshToken(refreshTokenVo) } returns auth
+            every { jwtTokenManager.issueAccessToken(auth) } returns jwtToken
+
+            // when
+            val result = authService.tokenReissue(refreshToken)
+
+            // then
+            assertEquals("newAccessToken", result.accessToken)
+            verify(exactly = 1) { authRepository.findByRefreshToken(refreshTokenVo) }
+            verify(exactly = 1) { jwtTokenManager.issueAccessToken(auth) }
         }
     }
 }
