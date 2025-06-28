@@ -5,9 +5,9 @@ This project is focused on **migrating an existing Java-based server** to **Kotl
 The goal is to leverage Kotlin’s concise syntax, enhanced null-safety, and improved maintainability, while enhancing object-oriented design and overall code quality.
 
 ## CONTRIBUTORS
-| <img src="https://github.com/user-attachments/assets/4a2d8949-4e05-4b2f-a98f-3663f5b6bc4b" width=300px /> | <img src="https://github.com/user-attachments/assets/ad575fae-f553-4b9f-95cb-4b50043a4c85" width=300px />  | 
-|:---------------------------------------------------------------------------------------------------------:| :-----: |
-|                             [권장순/jsoonworld](https://github.com/jsoonworld)                             | [이유빈/leeeyubin](https://github.com/leeeyubin) 
+| <img src="https://github.com/user-attachments/assets/4a2d8949-4e05-4b2f-a98f-3663f5b6bc4b" width=200px /> | <img src="https://github.com/user-attachments/assets/ad575fae-f553-4b9f-95cb-4b50043a4c85" width=200px /> | 
+|:---------------------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------------------:|
+|                           권장순 <br> [jsoonworld](https://github.com/jsoonworld)                            |                               이유빈 <br> [leeeyubin](https://github.com/leeeyubin)                               
 
 
 ## Purpose
