@@ -1,4 +1,4 @@
-# <img src="https://github.com/user-attachments/assets/1db82861-3c16-4918-9781-4eacfc0f9893" width=55px />  Kotlin Migration Project
+# <img src="https://github.com/user-attachments/assets/1db82861-3c16-4918-9781-4eacfc0f9893" width=50px />  Kotlin Migration Project
 
 ## Overview
 This project is focused on **migrating an existing Java-based server** to **Kotlin**.
