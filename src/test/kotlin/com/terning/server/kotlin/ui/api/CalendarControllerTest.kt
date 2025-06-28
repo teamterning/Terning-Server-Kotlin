@@ -5,14 +5,16 @@ import com.terning.server.kotlin.application.calendar.CalendarService
 import com.terning.server.kotlin.application.calendar.dto.DailyScrapsResponse
 import com.terning.server.kotlin.application.calendar.dto.DetailedMonthlyScrapsResponse
 import com.terning.server.kotlin.application.calendar.dto.MonthlyViewResponse
+import com.terning.server.kotlin.config.TestSecurityConfig
 import com.terning.server.kotlin.domain.internshipAnnouncement.InternshipAnnouncement
+import com.terning.server.kotlin.support.WithMockCustomUser
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
-import org.springframework.security.test.context.support.WithMockUser
+import org.springframework.context.annotation.Import
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
@@ -21,7 +23,7 @@ import java.time.LocalDate
 import java.time.ZoneId
 
 @WebMvcTest(CalendarController::class)
-@WithMockUser
+@Import(TestSecurityConfig::class)
 @ActiveProfiles("test")
 class CalendarControllerTest {
     @Autowired
@@ -32,6 +34,7 @@ class CalendarControllerTest {
 
     @Test
     @DisplayName("일간 스크랩 데이터를 조회한다")
+    @WithMockCustomUser(userId = 1L)
     fun getDailyScraps() {
         // given
         val userId = 1L
@@ -73,6 +76,7 @@ class CalendarControllerTest {
 
     @Test
     @DisplayName("월간 스크랩 데이터를 리스트 형태로 조회한다")
+    @WithMockCustomUser(userId = 1L)
     fun getDetailedMonthlyScraps() {
         // given
         val userId = 1L
@@ -116,6 +120,7 @@ class CalendarControllerTest {
 
     @Test
     @DisplayName("월간 스크랩 데이터를 기본 형태로 조회한다")
+    @WithMockCustomUser(userId = 1L)
     fun getMonthlyScraps() {
         // given
         val userId = 1L

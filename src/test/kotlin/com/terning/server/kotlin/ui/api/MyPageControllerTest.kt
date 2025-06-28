@@ -6,6 +6,7 @@ import com.terning.server.kotlin.application.mypage.MyPageService
 import com.terning.server.kotlin.application.mypage.ProfileRequest
 import com.terning.server.kotlin.application.mypage.ProfileResponse
 import com.terning.server.kotlin.config.TestSecurityConfig
+import com.terning.server.kotlin.support.WithMockCustomUser
 import io.mockk.every
 import io.mockk.just
 import io.mockk.runs
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.context.annotation.Import
 import org.springframework.http.MediaType
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
@@ -54,6 +56,7 @@ class MyPageControllerTest {
 
     @Test
     @DisplayName("유저 정보를 가져온다")
+    @WithMockCustomUser(userId = 1L)
     fun getProfile() {
         // given
         val userId = 1L
@@ -64,7 +67,7 @@ class MyPageControllerTest {
             contentType = MediaType.APPLICATION_JSON
         }.andExpect {
             // then
-            status { isCreated() }
+            status { isOk() }
             jsonPath("$.result.name") { value("이유빈") }
             jsonPath("$.result.profileImage") { value("BASIC") }
             jsonPath("$.result.authType") { value("KAKAO") }
@@ -73,6 +76,7 @@ class MyPageControllerTest {
 
     @Test
     @DisplayName("유저 정보를 수정한다")
+    @WithMockCustomUser(userId = 1L)
     fun updateProfile() {
         // given
         val userId = 1L
@@ -87,6 +91,7 @@ class MyPageControllerTest {
         mockMvc.patch("/api/v1/mypage/profile") {
             contentType = MediaType.APPLICATION_JSON
             content = objectMapper.writeValueAsString(profileRequest)
+            with(csrf())
         }.andExpect {
             // then
             status { isOk() }

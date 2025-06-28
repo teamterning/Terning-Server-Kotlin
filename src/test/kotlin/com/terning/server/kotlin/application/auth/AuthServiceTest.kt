@@ -166,12 +166,13 @@ class AuthServiceTest {
             // given
             val mockAuth = mockk<Auth>(relaxed = true)
             every { authRepository.findByUserId(userId) } returns mockAuth
+            every { mockAuth.resetRefreshToken() } just Runs
 
             // when
             authService.signOut(userId)
 
             // then
-            verify { mockAuth.resetRefreshToken() }
+            verify(exactly = 1) { mockAuth.resetRefreshToken() }
         }
     }
 

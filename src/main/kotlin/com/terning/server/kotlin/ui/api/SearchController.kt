@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -21,13 +22,11 @@ class SearchController(
 ) {
     @GetMapping
     fun search(
-        // TODO: @AuthenticationPrincipal userId: Long,
+        @AuthenticationPrincipal userId: Long,
         @RequestParam(required = false) keyword: String?,
         @RequestParam(defaultValue = "DEADLINE_SOON") sortBy: String,
         @PageableDefault(size = 10) pageable: Pageable,
     ): ResponseEntity<ApiResponse<SearchPageResponse>> {
-        val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
-
         val response =
             searchService.search(
                 userId = userId,
@@ -47,10 +46,8 @@ class SearchController(
 
     @GetMapping("/views")
     fun getMostViewedAnnouncements(
-        // TODO: @AuthenticationPrincipal userId: Long,
+        @AuthenticationPrincipal userId: Long,
     ): ResponseEntity<ApiResponse<ViewCountResponse>> {
-        val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
-
         val response = searchService.getMostViewedAnnouncements(userId)
 
         return ResponseEntity.ok(
@@ -64,10 +61,8 @@ class SearchController(
 
     @GetMapping("/scraps")
     fun getMostScrappedAnnouncements(
-        // TODO: @AuthenticationPrincipal userId: Long,
+        @AuthenticationPrincipal userId: Long,
     ): ResponseEntity<ApiResponse<ScrapCountResponse>> {
-        val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
-
         val response = searchService.getMostScrappedAnnouncements(userId)
 
         return ResponseEntity.ok(
@@ -81,10 +76,8 @@ class SearchController(
 
     @GetMapping("/banners")
     fun getBanners(
-        // TODO: @AuthenticationPrincipal userId: Long,
+        @AuthenticationPrincipal userId: Long,
     ): ResponseEntity<ApiResponse<BannersView>> {
-        val userId: Long = 1 // TODO: @AuthenticationPrincipal 구현 시 제거
-
         val response = searchService.getBanners(userId)
 
         return ResponseEntity.ok(

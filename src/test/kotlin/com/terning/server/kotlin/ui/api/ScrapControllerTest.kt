@@ -6,6 +6,7 @@ import com.terning.server.kotlin.application.scrap.ScrapService
 import com.terning.server.kotlin.application.scrap.dto.ScrapRequest
 import com.terning.server.kotlin.application.scrap.dto.ScrapUpdateRequest
 import com.terning.server.kotlin.config.TestSecurityConfig
+import com.terning.server.kotlin.support.WithMockCustomUser
 import io.mockk.every
 import io.mockk.just
 import io.mockk.runs
@@ -46,6 +47,7 @@ class ScrapControllerTest {
 
     @Test
     @DisplayName("스크랩을 생성한다")
+    @WithMockCustomUser(userId = 1L)
     fun createScrap() {
         // given
         val internshipAnnouncementId = 1L
@@ -65,6 +67,7 @@ class ScrapControllerTest {
 
     @Test
     @DisplayName("스크랩 색상을 업데이트한다")
+    @WithMockCustomUser(userId = 1L)
     fun updateScrap() {
         // given
         val internshipAnnouncementId = 1L
@@ -84,6 +87,7 @@ class ScrapControllerTest {
 
     @Test
     @DisplayName("스크랩을 취소한다")
+    @WithMockCustomUser(userId = 1L)
     fun cancelScrap() {
         // given
         val internshipAnnouncementId = 1L

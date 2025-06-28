@@ -11,10 +11,12 @@ import com.terning.server.kotlin.application.auth.dto.TokenReissueResponse
 import com.terning.server.kotlin.config.TestSecurityConfig
 import com.terning.server.kotlin.domain.auth.vo.AuthType
 import com.terning.server.kotlin.domain.auth.vo.Token
+import com.terning.server.kotlin.support.WithMockCustomUser
 import io.mockk.Runs
 import io.mockk.every
 import io.mockk.just
 import io.mockk.verify
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -42,7 +44,8 @@ class AuthControllerTest {
     lateinit var objectMapper: ObjectMapper
 
     @Test
-    fun `유저를 로그인한다`() {
+    @DisplayName("소셜 로그인을 통해 서비스에 로그인한다")
+    fun signInUser() {
         // given
         val accessTokenHeader = "Bearer dummyKakaoToken"
         val request =
@@ -60,7 +63,7 @@ class AuthControllerTest {
 
         every {
             authService.signInUser(
-                eq("Bearer dummyKakaoToken"),
+                eq(accessTokenHeader),
                 any(),
             )
         } returns response
@@ -83,7 +86,8 @@ class AuthControllerTest {
     }
 
     @Test
-    fun `유저를 회원가입한다`() {
+    @DisplayName("소셜 로그인을 통해 서비스에 회원가입한다")
+    fun signUpUser() {
         // given
         val request =
             SignUpRequest(
@@ -121,21 +125,21 @@ class AuthControllerTest {
     }
 
     @Test
-    fun `유저를 로그아웃한다`() {
+    @DisplayName("로그인된 유저를 로그아웃한다")
+    @WithMockCustomUser(userId = 1L)
+    fun logoutUser() {
         // given
-        val authentication = UsernamePasswordAuthenticationToken(1L, null, emptyList())
-        SecurityContextHolder.getContext().authentication = authentication
-
         every { authService.signOut(1L) } just Runs
 
         // when & then
-        mockMvc.post("/api/v1/auth/logout")
-            .andExpect {
-                status { isOk() }
-                jsonPath("$.message") { value("로그아웃에 성공하였습니다.") }
-            }
+        mockMvc.post("/api/v1/auth/logout") {
+            with(csrf())
+        }.andExpect {
+            status { isOk() }
+            jsonPath("$.message") { value("로그아웃에 성공하였습니다.") }
+        }
 
-        verify { authService.signOut(1L) }
+        verify(exactly = 1) { authService.signOut(1L) }
     }
 
     @Test

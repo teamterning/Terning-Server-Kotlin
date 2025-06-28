@@ -7,6 +7,7 @@ import com.terning.server.kotlin.application.filter.dto.CreateFilterRequest
 import com.terning.server.kotlin.application.filter.dto.GetFilterResponse
 import com.terning.server.kotlin.application.filter.dto.UpdateFilterRequest
 import com.terning.server.kotlin.config.TestSecurityConfig
+import com.terning.server.kotlin.support.WithMockCustomUser
 import io.mockk.every
 import io.mockk.just
 import io.mockk.runs
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.context.annotation.Import
 import org.springframework.http.MediaType
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
@@ -73,6 +75,7 @@ class FilterControllerTest {
 
     @Test
     @DisplayName("필터링 정보를 생성한다")
+    @WithMockCustomUser(userId = 1L)
     fun createUserFilter() {
         // given
         every {
@@ -86,6 +89,7 @@ class FilterControllerTest {
         mockMvc.post("/api/v1/auth/sign-up/filter") {
             contentType = MediaType.APPLICATION_JSON
             content = objectMapper.writeValueAsString(createFilterRequest)
+            with(csrf())
         }.andExpect {
             // then
             status { isOk() }
@@ -94,6 +98,7 @@ class FilterControllerTest {
 
     @Test
     @DisplayName("필터링 정보를 가져온다")
+    @WithMockCustomUser(userId = 1L)
     fun getFilter() {
         // given
         every { filterService.getUserFilter(userId = userId) } returns getFilterResponse
@@ -114,6 +119,7 @@ class FilterControllerTest {
 
     @Test
     @DisplayName("사용자가 요청한 필터링 정보를 저장한다")
+    @WithMockCustomUser(userId = 1L)
     fun updateUserFilter() {
         // given
         every {
@@ -127,6 +133,7 @@ class FilterControllerTest {
         mockMvc.put("/api/v1/filters") {
             contentType = MediaType.APPLICATION_JSON
             content = objectMapper.writeValueAsString(updateFilterRequest)
+            with(csrf())
         }.andExpect {
             // then
             status { isOk() }
