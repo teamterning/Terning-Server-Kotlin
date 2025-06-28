@@ -4,6 +4,12 @@
 This project is focused on **migrating an existing Java-based server** to **Kotlin**.
 The goal is to leverage Kotlin’s concise syntax, enhanced null-safety, and improved maintainability, while enhancing object-oriented design and overall code quality.
 
+## CONTRIBUTORS
+| <img src="https://github.com/user-attachments/assets/01207b94-ea52-4233-b454-a9d49469608c" width=300px /> | <img src="https://github.com/user-attachments/assets/ad575fae-f553-4b9f-95cb-4b50043a4c85" width=300px />  | 
+|:---------------------------------------------------------------------------------------------------------:| :-----: |
+|                             [권장순/jsoonworld](https://github.com/jsoonworld)                             | [이유빈/leeeyubin](https://github.com/leeeyubin) 
+
+
 ## Purpose
 - **Modernization**: Improve code readability, reduce boilerplate, and adopt modern language features.
 - **Refactoring**: Redesign the system with better object-oriented principles during migration.
