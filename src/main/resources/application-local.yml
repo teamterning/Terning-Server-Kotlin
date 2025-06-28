@@ -23,3 +23,11 @@ spring:
 
 server:
   port: ${SERVER_PORT_LOCAL}
+
+
+jwt:
+  secret-key: ${SECRET_KEY}
+  kakao-url: ${KAKAO_URL}
+  apple-url: ${APPLE_URL}
+  access-token-expired: ${ACCESS_TOKEN_EXPIRED}
+  refresh-token-expired: ${REFRESH_TOKEN_EXPIRED}
