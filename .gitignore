@@ -13,6 +13,8 @@ out/
 jdks/
 jdks/**
 
+# Gradle wrapper distribution (자동 설치된 바이너리 - 커밋 X)
+#wrapper/
 
 # Gradle Wrapper (필수 파일은 제외)
 !gradle/wrapper/gradle-wrapper.jar
@@ -104,9 +106,6 @@ desktop.ini
 # 📘 기타
 # ================================
 HELP.md
-
-# Gradle wrapper distribution (자동 설치된 바이너리 - 커밋 X)
-wrapper/
 
 # 🧊 GraalVM Native Build Tools
 native-build-tools/
