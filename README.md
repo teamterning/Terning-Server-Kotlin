@@ -1,4 +1,4 @@
-# 🛠 Kotlin Migration Project
+# <img src="https://github.com/user-attachments/assets/1db82861-3c16-4918-9781-4eacfc0f9893" width=50px />  Kotlin Migration Project
 
 ## Overview
 This project is focused on **migrating an existing Java-based server** to **Kotlin**.
@@ -10,6 +10,11 @@ The goal is to leverage Kotlin’s concise syntax, enhanced null-safety, and imp
 - **Performance Improvement**: Review the legacy code and optimize performance where possible.
 - **Stability and Reliability**: Strengthen testing coverage to ensure system reliability.
 - **Maintainability and Scalability**: Make the system easier to maintain and extend in the future.
+
+## Contributors
+| <img src="https://github.com/user-attachments/assets/4a2d8949-4e05-4b2f-a98f-3663f5b6bc4b" width=200px /> | <img src="https://github.com/user-attachments/assets/ad575fae-f553-4b9f-95cb-4b50043a4c85" width=200px /> | 
+|:---------------------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------------------:|
+|                           권장순 <br> [jsoonworld](https://github.com/jsoonworld)                            |                               이유빈 <br> [leeeyubin](https://github.com/leeeyubin)                               
 
 ## Scope
 - Migrate all server-side Java classes to Kotlin.
