@@ -31,4 +31,3 @@ jwt:
   apple-url: ${APPLE_URL}
   access-token-expired: ${ACCESS_TOKEN_EXPIRED}
   refresh-token-expired: ${REFRESH_TOKEN_EXPIRED}
-# 주석
