@@ -1,37 +1,42 @@
-# =======================================================
+# =================================================================
 #  Stage 1: Builder - 네이티브 실행 파일을 만드는 단계
-# =======================================================
-# GraalVM 공식 빌더 이미지를 사용합니다.
-FROM ghcr.io/graalvm/graalvm-ce:java21 as builder
+# =================================================================
+
+# [최종 확인] 오류 없는 공식 GraalVM 이미지를 사용합니다.
+FROM ghcr.io/graalvm/community:21 as builder
 
 WORKDIR /build
 
-# 빌드에 필요한 소스코드 전체를 복사합니다.
+
+# 1. 먼저 빌드에 필요한 파일들만 복사합니다.
+COPY build.gradle.kts settings.gradle.kts gradlew ./
+COPY gradle ./gradle
+
+# 2. 라이브러리 의존성을 먼저 다운로드합니다. (이 단계는 자주 바뀌지 않으므로 캐시됩니다)
+RUN ./gradlew dependencies
+
+# 3. 소스 코드 전체를 복사합니다. (소스 코드만 변경 시 위 단계는 캐시를 사용합니다)
 COPY . .
 
-# Gradle을 사용하여 네이티브 실행 파일을 빌드합니다.
-# 이 명령어는 시간이 다소 걸릴 수 있습니다.
+# 4. 네이티브 실행 파일을 빌드합니다.
 RUN ./gradlew nativeCompile
 
 
-# ===============================================================
+# =================================================================
 #  Stage 2: Runner - 최종 실행 이미지를 만드는 단계
-# ===============================================================
-# JVM이 없는 초경량(Distroless) 이미지를 사용합니다.
+# =================================================================
+
+# JVM이 없는 초경량(Distroless) 이미지를 사용하여 보안과 효율을 높입니다.
 FROM gcr.io/distroless/cc-debian12
 
 WORKDIR /app
 
-# --- 중요 ---
-# Builder(1단계)에서 만들어진 네이티브 실행 파일만 복사해옵니다.
+# Builder(1단계)에서 만들어진 네이티브 실행 파일 '하나만' 복사해옵니다.
 COPY --from=builder /build/build/native/nativeCompile/server-kotlin .
 
-# 환경 변수는 동일하게 설정합니다.
-ENV TZ=Asia/Seoul
-ENV SPRING_PROFILES_ACTIVE=staging
-ENV APP_PORT=8080
+# EXPOSE는 문서화 목적으로, 표준 포트(8080)를 명시합니다.
+EXPOSE 8080
 
-EXPOSE ${APP_PORT}
-
-# "java -jar"가 아닌, 실행 파일 자체를 실행합니다.
-CMD ["./server-kotlin", "--server.port=${APP_PORT}"]
+# 모든 설정(프로파일, 포트 등)은 deploy.sh 스크립트에서 환경변수로 주입되므로
+# Dockerfile은 어떤 환경에도 종속되지 않는 범용성을 갖게 됩니다.
+CMD ["./server-kotlin"]
