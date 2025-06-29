@@ -2,7 +2,7 @@
 #  Stage 1: Builder - 네이티브 실행 파일을 만드는 단계
 # =======================================================
 # GraalVM 공식 빌더 이미지를 사용합니다.
-FROM oracle/graalvm-community:21-jdk as builder
+FROM ghcr.io/graalvm/graalvm-ce:java21 as builder
 
 WORKDIR /build
 
