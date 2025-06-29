@@ -36,7 +36,7 @@ jobs:
 
       - name: Docker Image Build and Push (Native)
         run: |
-          docker build -f Dockerfile-native-staging \
+          docker build -f Dockerfile-staging \
             -t ${{ secrets.STAGING_DOCKER_LOGIN_USERNAME }}/terning_kotlin:latest \
             -t ${{ secrets.STAGING_DOCKER_LOGIN_USERNAME }}/terning_kotlin:${{ github.sha }} .
           
