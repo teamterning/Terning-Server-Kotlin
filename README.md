@@ -50,3 +50,10 @@ The goal is to leverage Kotlin’s concise syntax, enhanced null-safety, and imp
 - We are **not** simply translating code — we are **rethinking and improving** design decisions.
 - Priority is given to system stability and long-term codebase maintainability.
 
+
+## ERD
+<img width="1187" height="542" alt="스크린샷 2025-07-29 오후 10 07 33" src="https://github.com/user-attachments/assets/110b795f-bf7f-4063-aeb0-7eaf6720c792" />
+
+## 🌱 Architecture Diagram
+<img width="2570" height="4233" alt="Architecture Diagram (1)" src="https://github.com/user-attachments/assets/4bda6df5-c267-4f27-a42f-bf9f4571db43" />
+
